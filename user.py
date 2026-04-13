@@ -35,7 +35,7 @@ class user:
         self.__game_recommendation = SparseMatrix()
 
     def update_history(self, session, history_type):
-        
+
         """
         Function takes in session and type of history, then adds to proper history
         """
@@ -47,4 +47,8 @@ class user:
         # if not a chat history, send to game history
         elif history_type == "game":
             self.play_history.set_history(session)
+
+        # if random history is tried, raise error
+        else:
+            raise TypeError("Only chat or game histories are available for storage.")
 
