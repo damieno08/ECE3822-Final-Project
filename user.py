@@ -10,6 +10,7 @@ Revision History:
 # import all datastructures
 
 from datastructures.sparse_matrix import SparseMatrix
+from history import History
 
 # class storing user information
 class user:
@@ -24,7 +25,7 @@ class user:
         # id is bucket index
 
         # store their individual play history
-        self.History = None
+        self.History = History()
 
         # store sparse matrix to get recommendations
         self.__game_recommendation = SparseMatrix()
