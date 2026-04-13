@@ -63,8 +63,8 @@ class Stack:
         # Return bottom of stack
         return self.__array.pop()
 
-    
-    def peek(self):
+    # updated peek to look at any chosen index
+    def peek(self, index=-1):
         """
         Return the top item without removing it.
         
@@ -78,8 +78,14 @@ class Stack:
             # Return none if it is
             return None
         
-        # Return the last value on stack
-        return self.__array[self.size()-1]
+        if index == -1:
+            # Return the last value on stack
+            return self.__array[self.size()-1]
+        
+        # Return any value besides end
+        else:
+            data = self.get_array
+            return data[index]
     
     def is_empty(self):
         """
