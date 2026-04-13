@@ -10,7 +10,8 @@ Revision History:
 # import all datastructures
 
 from datastructures.sparse_matrix import SparseMatrix
-from history import History
+from chat_history import Chat_history
+from play_history import Play_history
 
 # class storing user information
 class user:
@@ -25,7 +26,25 @@ class user:
         # id is bucket index
 
         # store their individual play history
-        self.History = History()
+        self.play_history = Play_history()
+
+        # store chat history
+        self.chat_history = Chat_history()
 
         # store sparse matrix to get recommendations
         self.__game_recommendation = SparseMatrix()
+
+    def update_history(self, session, history_type):
+        
+        """
+        Function takes in session and type of history, then adds to proper history
+        """
+        
+        # check if chat and send to chat history
+        if history_type == "chat":
+            self.chat_history.set_history(session)
+
+        # if not a chat history, send to game history
+        elif history_type == "game":
+            self.play_history.set_history(session)
+
