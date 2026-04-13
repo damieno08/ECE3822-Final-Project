@@ -34,7 +34,7 @@ class user:
         # store sparse matrix to get recommendations
         self.__game_recommendation = SparseMatrix()
 
-    def update_history(self, session, history_type):
+    def update_history(self, history_type, session):
 
         """
         Function takes in session and type of history, then adds to proper history
@@ -52,3 +52,20 @@ class user:
         else:
             raise TypeError("Only chat or game histories are available for storage.")
 
+    def get_history(self, history_type, idx=-1):
+
+        """
+        Function takes in index and type of history, then returns history at index
+        """
+        
+        # check if chat and get history
+        if history_type == "chat":
+            self.chat_history.get_history(idx)
+
+        # if not a chat history, get game history
+        elif history_type == "game":
+            self.play_history.get_history(idx)
+
+        # if random history is tried, raise error
+        else:
+            raise TypeError("Only chat or game histories are available for indexing.")
