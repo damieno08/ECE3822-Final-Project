@@ -1,4 +1,4 @@
-from history import History
+from user_interaction.history import History
 
 class Chat_history(History):
     def __init__(self, time, message):
