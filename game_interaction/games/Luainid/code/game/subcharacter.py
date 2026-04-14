@@ -40,7 +40,7 @@ class Cleric(Character):
         self.defense = 1
         self.speed = 8
         self.healing = 5
-        Staff = Weapon("Staff", "The staff allows the user to cast grand magic. It is also the starting weapon of a Druid.", start_path + "/../graphics/items/Staff.png", attack_bonus=2, value=40)
+        Staff = Weapon("Staff", "The staff allows the user to cast grand magic. It is also the starting weapon of a Druid.", start_path + "/../../graphics/items/Staff.png", attack_bonus=2, value=40)
         self.equipped_weapon = Staff
 
 
@@ -127,7 +127,7 @@ class Paladin(Character):
         self.healing = -1
         self.shield = False
         self.import_player_assets(animate=True)
-        GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path+ "/../graphics/item/GreatSword.png", attack_bonus=5, value=100)
+        GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path+ "/../../graphics/item/GreatSword.png", attack_bonus=5, value=100)
         self.equipped_weapon = GreatSword
 
         
@@ -199,7 +199,7 @@ class Barbarian(Character):
         self.speed = 10
         self.healing = 0
         self.import_player_assets(animate=True)
-        GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path + "/../graphics/item/GreatSword.png", attack_bonus=5, value=100)
+        GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path + "/../../graphics/item/GreatSword.png", attack_bonus=5, value=100)
         self.equipped_weapon = GreatSword
 
     
@@ -254,7 +254,7 @@ class Sorcerer(Character):
         self.healing = 0
         self.spell_charge = 0
         self.import_player_assets(animate=True)
-        Dagger = Weapon("Dagger", "A small one handed blade that does not do much damage. It is the starter weapon for sorcerers.", "../graphics/item/Dagger.png", attack_bonus=2, value=30)
+        Dagger = Weapon("Dagger", "A small one handed blade that does not do much damage. It is the starter weapon for sorcerers.", "/../../graphics/item/Dagger.png", attack_bonus=2, value=30)
         self.equipped_weapon = Dagger
 
     
