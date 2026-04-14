@@ -176,7 +176,7 @@ class Game:
             f"Connecting as: {self.player_name} | Server: {self.server_host}:{self.server_port} | {self.serializer.upper()}", 
             True, (200, 200, 200)
         )
-        network_info_rect = network_info.get_rect(center=(WIDTH/2, 600))
+        network_info_rect = network_info.get_rect(center=(WIDTH/2, 650))
         
         # Get all available character classes
         character_classes = get_all_character_classes()
@@ -193,7 +193,9 @@ class Game:
         # Buttons
         button_width, button_height = 300, 50
         confirm_button_rect = pygame.Rect(WIDTH/2 - button_width/2, 480, button_width, button_height)
-        
+        return_button_rect = pygame.Rect(WIDTH/2 - button_width/2, 550, button_width, button_height)
+
+
         selected_card = None
         clicked_this_frame = False
         
@@ -208,10 +210,8 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         char_select = False
                         self.running = False
-                        """
                         pygame.quit()
-                        sys.exit()
-                        """
+                        
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     clicked_this_frame = True
             
@@ -234,6 +234,11 @@ class Game:
                 self.selected_character = selected_card.character_class
                 char_select = False
             
+            # for now, close game when we hit return button
+            if clicked_this_frame and return_button_rect.collidepoint(mouse_pos):
+                pygame.quit()
+                sys.exit()
+
             # Reset click flag
             if not mouse_pressed[0]:
                 clicked_this_frame = False
@@ -251,13 +256,23 @@ class Game:
                 button_color = (50, 150, 50) if confirm_button_rect.collidepoint(mouse_pos) else (30, 100, 30)
             else:
                 button_color = (100, 100, 100)  # Grayed out if nothing selected
-            
+
             pygame.draw.rect(self.screen, button_color, confirm_button_rect)
             pygame.draw.rect(self.screen, (255, 255, 255), confirm_button_rect, 2)
             confirm_text = self.button_font.render("Confirm", True, (255, 255, 255))
             confirm_rect = confirm_text.get_rect(center=confirm_button_rect.center)
             self.screen.blit(confirm_text, confirm_rect)
             
+            # Draw return button
+            button_color = (150, 30, 30) if return_button_rect.collidepoint(mouse_pos) else (100, 100, 100)
+
+
+            pygame.draw.rect(self.screen, button_color, return_button_rect)
+            pygame.draw.rect(self.screen, (255, 255, 255), return_button_rect, 2)
+            return_text = self.button_font.render("Return", True, (255, 255, 255))
+            return_rect = confirm_text.get_rect(center=return_button_rect.center)
+            self.screen.blit(return_text, return_rect)
+
             # Draw network info
             self.screen.blit(network_info, network_info_rect)
             
@@ -292,11 +307,7 @@ class Game:
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        """
-                        self.level.network.disconnect()
-                        pygame.quit()
-                        sys.exit()
-                        """
+                        self.character_select()
                         
 
             self.screen.fill('black')
