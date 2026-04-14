@@ -5,18 +5,18 @@ Integrated version combining lab-03 and project-01
 """
 
 import pygame
-from games.Luainid.code.game.settings import *
-from games.Luainid.code.game.tile import Tile
-from games.Luainid.code.game.map_loader import load_layer
-from games.Luainid.code.game.character import Character
-from games.Luainid.code.game.subcharacter import get_all_character_classes
-from games.Luainid.code.game.network_client import NetworkClient
-from games.Luainid.code.game.inventory_ui import InventoryUI
-from games.Luainid.code.game.item import create_example_items
-from games.Luainid.code.game.time_travel import TimeTravel
-from games.Luainid.code.game.enemy import Enemy, ENEMY_SPAWN_DATA
-from games.Luainid.code.game.datastructures.patrol_path import PatrolPath
-from games.Luainid.code.game.weapon import Weapon as WeaponSprite
+from settings import *
+from tile import Tile
+from map_loader import load_layer
+from character import Character
+from subcharacter import get_all_character_classes
+from network_client import NetworkClient
+from inventory_ui import InventoryUI
+from item import create_example_items
+from time_travel import TimeTravel
+from enemy import Enemy, ENEMY_SPAWN_DATA
+from datastructures.patrol_path import PatrolPath
+from weapon import Weapon as WeaponSprite
 import sys
 
 class Level:
@@ -94,7 +94,7 @@ class Level:
             return {}
 
     def create_map(self):
-        from games.Luainid.code.game.support import import_csv_to_sparse
+        from support import import_csv_to_sparse
 
         # add starting path to files
         start_path = str(sys.path[0])

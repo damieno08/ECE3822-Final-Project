@@ -8,7 +8,7 @@ Author: Damien Ortiz
 Date: 02/20/2026
 Lab: Lab 4 - Time Travel with Stacks
 """
-from games.Luainid.code.game.datastructures.array import ArrayList
+from datastructures.array import ArrayList
 
 class Stack:
     """

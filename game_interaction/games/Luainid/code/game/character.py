@@ -7,10 +7,10 @@ Integrated version combining:
 """
 
 import pygame
-from games.Luainid.code.game.settings import *
-from games.Luainid.code.game.support import import_folder
-from games.Luainid.code.game.inventory import Inventory
-from games.Luainid.code.game.item import Weapon
+from settings import *
+from support import import_folder
+from inventory import Inventory
+from item import Weapon
 
 class Character(pygame.sprite.Sprite):
     """Base Character class with inventory and networking"""

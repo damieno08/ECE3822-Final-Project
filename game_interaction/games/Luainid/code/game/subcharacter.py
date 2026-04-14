@@ -6,8 +6,8 @@ Lab 4 Update: Characters now have inventories using ArrayList!
 
 import pygame
 import sys
-from games.Luainid.code.game.character import Character
-from games.Luainid.code.game.item import Weapon
+from character import Character
+from item import Weapon
 
 start_path = str(sys.path[0])
 

@@ -7,9 +7,9 @@ Integrated version combining lab-03 and project-01
 import pygame
 import sys
 import argparse
-from games.Luainid.code.game.settings import *
-from games.Luainid.code.game.level import Level
-from games.Luainid.code.game.subcharacter import get_all_character_classes
+from settings import *
+from level import Level
+from subcharacter import get_all_character_classes
 
 class Button:
     def __init__(self, x, y, width, height, fg, bg, content, fontsize):

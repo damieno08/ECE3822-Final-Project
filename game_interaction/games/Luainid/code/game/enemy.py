@@ -10,7 +10,7 @@ Lab: Lab 6 - Sparse World Map
 import pygame
 import math
 import random
-from games.Luainid.code.game.datastructures.patrol_path import PatrolPath
+from datastructures.patrol_path import PatrolPath
 
 ENEMY_SPAWN_DATA = [
     {
