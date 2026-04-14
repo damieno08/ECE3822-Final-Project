@@ -1,0 +1,163 @@
+"""
+sparse_matrix_tests.py - Tests for SparseMatrix
+
+Author: Damien Ortiz (Updated)
+Date:   04/10/2026
+Lab:    Lab 6 - Sparse World Map
+"""
+
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+
+from datastructures.sparse_matrix import SparseMatrix
+
+def assert_equal(actual, expected, name):
+    if actual == expected:
+        print(f"  [✓] {name}")
+    else:
+        print(f"  [✗] {name} - Expected {expected}, got {actual}")
+        sys.exit(1)
+
+# --- Original Tests ---
+
+def test_set_and_get():
+    print("Running: test_set_and_get")
+    m = SparseMatrix(rows=5, cols=5, default=0)
+    m.set(1, 2, 50)
+    assert_equal(m.get(1, 2), 50, "Retrieve stored value")
+    assert_equal(m.get(0, 0), 0, "Retrieve default value")
+
+def test_default_value():
+    print("Running: test_default_value")
+    m = SparseMatrix(rows=3, cols=3, default=-1)
+    assert_equal(m.get(0, 0), -1, "Correct custom default")
+
+def test_len_logic():
+    print("Running: test_len_logic")
+    m = SparseMatrix(10, 10, 0)
+    assert_equal(len(m), 0, "Empty matrix length")
+    m.set(0, 0, 1)
+    m.set(1, 1, 2)
+    assert_equal(len(m), 2, "Length after two sets")
+    m.set(0, 0, 0)
+    assert_equal(len(m), 1, "Length after setting back to default")
+
+def test_items():
+    print("Running: test_items")
+    m = SparseMatrix(5, 5, 0)
+    m.set(0, 0, 10)
+    m.set(4, 4, 20)
+    items = m.items()
+    assert_equal(len(items), 2, "Items contains exactly 2 entries")
+    found_10 = False
+    for i in range(len(items)):
+        coords, val = items[i]
+        if coords == (0, 0) and val == 10: found_10 = True
+    assert_equal(found_10, True, "Correct coordinates in items")
+
+def test_overwrite():
+    print("Running: test_overwrite")
+    m = SparseMatrix(2, 2)
+    m.set(0, 0, 1)
+    m.set(0, 0, 2)
+    assert_equal(m.get(0, 0), 2, "New value overwrites old")
+    assert_equal(len(m), 1, "Length remains 1 after overwrite")
+
+# --- New Requested Tests ---
+
+def test_set_to_default_removes_entry():
+    print("Running: test_set_to_default_removes_entry")
+    m = SparseMatrix(3, 3, default=0)
+    m.set(1, 1, 100)
+    assert_equal(len(m), 1, "Length is 1")
+    m.set(1, 1, 0) # Set to default
+    assert_equal(len(m), 0, "Setting to default removes entry from storage")
+    assert_equal(m.get(1, 1), 0, "Value is still default")
+
+def test_empty_matrix_edge_case():
+    print("Running: test_empty_matrix_edge_case")
+    m = SparseMatrix(0, 0)
+    assert_equal(len(m), 0, "Zero-dimension matrix has length 0")
+    assert_equal(len(m.items()), 0, "Zero-dimension matrix has no items")
+
+def test_large_matrix_specified():
+    print("Running: test_large_matrix_specified")
+    # 1000 x 1000 with exactly 10 entries
+    m = SparseMatrix(1000, 1000, 0)
+    for i in range(10):
+        m.set(i, i, i + 1)
+    assert_equal(len(m), 10, "Correct length for 10 entries")
+    assert_equal(m.get(9, 9), 10, "Retrieve last entry in large matrix")
+    assert_equal(m.get(500, 500), 0, "Unset value is still default")
+
+def test_multiply_zero_matrix():
+    print("Running: test_multiply_zero_matrix")
+    a = SparseMatrix(2, 2)
+    a.set(0, 0, 5); a.set(1, 1, 10)
+    zero = SparseMatrix(2, 2) # All default 0
+    res = a.multiply(zero)
+    assert_equal(len(res), 0, "Multiplying by zero matrix results in empty matrix")
+    assert_equal(res.get(0, 0), 0, "Result [0,0] is 0")
+
+def test_multiply_identity_large():
+    print("Running: test_multiply_identity_large")
+    a = SparseMatrix(3, 3)
+    a.set(0, 0, 1); a.set(1, 1, 2); a.set(2, 2, 3)
+    identity = SparseMatrix(3, 3)
+    for i in range(3): identity.set(i, i, 1)
+    
+    res = a.multiply(identity)
+    assert_equal(res.get(0, 0), 1, "I * A [0,0]")
+    assert_equal(res.get(1, 1), 2, "I * A [1,1]")
+    assert_equal(res.get(2, 2), 3, "I * A [2,2]")
+
+def test_multiply_hand_computed_2x2():
+    print("Running: test_multiply_hand_computed_2x2")
+    # C = [[1, 2], [3, 4]] * [[2, 0], [1, 2]]
+    # Expected: [[4, 4], [10, 8]]
+    m1 = SparseMatrix(2, 2)
+    m1.set(0,0,1); m1.set(0,1,2); m1.set(1,0,3); m1.set(1,1,4)
+    m2 = SparseMatrix(2, 2)
+    m2.set(0,0,2); m2.set(1,0,1); m2.set(1,1,2)
+    
+    res = m1.multiply(m2)
+    assert_equal(res.get(0,0), 4, "2x2 Hand-calc [0,0]")
+    assert_equal(res.get(0,1), 4, "2x2 Hand-calc [0,1]")
+    assert_equal(res.get(1,0), 10, "2x2 Hand-calc [1,0]")
+    assert_equal(res.get(1,1), 8, "2x2 Hand-calc [1,1]")
+
+def test_str_verification():
+    print("Running: test_str_verification")
+    m = SparseMatrix(2, 2)
+    m.set(0, 0, 9)
+    res_str = str(m)
+    assert_equal(isinstance(res_str, str), True, "str() returns a string")
+    # Basic check to see if value is in string
+    assert_equal("9" in res_str, True, "String representation contains set values")
+
+def test_large_sparse_original():
+    print("Running: test_large_sparse_original")
+    m = SparseMatrix(1000000, 1000000, 0)
+    m.set(500, 500, 99)
+    assert_equal(m.get(500, 500), 99, "Sparse storage handles large dimensions")
+
+def run_all_test():
+    test_set_and_get()
+    test_default_value()
+    test_len_logic()
+    test_items()
+    test_overwrite()
+    test_large_sparse_original()
+    test_set_to_default_removes_entry()
+    test_empty_matrix_edge_case()
+    test_large_matrix_specified()
+    test_multiply_zero_matrix()
+    test_multiply_identity_large()
+    test_multiply_hand_computed_2x2()
+    test_str_verification()
+
+if __name__ == '__main__':
+    run_all_test()
+    
+    print("\nALL 13+ TESTS PASSED!")
