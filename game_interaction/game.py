@@ -17,14 +17,17 @@ class Game:
     def handle_game(self):
         self._game_session = GameSession(self.user, self.name)
 
+# Damien's game
 class Luaianid(Game):
 
+    # intialize game with name and user
     def __init__(self, user):
         super().__init__(user, "Luaianid")
 
+    # run the game and handle game session recording
     def handle_game(self):
         super().handle_game()
-        start_string = "python3 /home/damien/ECE3822/projects/ECE3822-Final-Project/game_interaction/games/Luainid/code/game/main.py " + self.user
+        start_string = "python3 " + start_path + "/game_interaction/games/Luainid/code/game/main.py " + self.user
         os.system(start_string)
         self._game_session.end_session()
         return self._game_session.get_time_played()

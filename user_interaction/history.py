@@ -1,11 +1,3 @@
-"""
-This program will define the playhistory class for the arcade project of ECE3822
-
-Revision History:
-    (All) 04/14/2026 Create initial program
-
-"""
-
 from datastructures.stack import Stack
 
 class History:
