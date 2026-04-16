@@ -10,7 +10,7 @@ Lab: Lab 3 - Inventory System
 """
 
 import pygame
-from settings import *
+from game_interaction.games.Luainid.code.game.settings import *
 
 class InventoryUI:
     """Scrolling inventory interface overlay."""

@@ -7,9 +7,9 @@ Integrated version combining lab-03 and project-01
 import pygame
 import sys
 import argparse
-from settings import *
-from level import Level
-from subcharacter import get_all_character_classes
+from game_interaction.games.Luainid.code.game.settings import *
+from game_interaction.games.Luainid.code.game.level import Level
+from game_interaction.games.Luainid.code.game.subcharacter import get_all_character_classes
 
 class Button:
     def __init__(self, x, y, width, height, fg, bg, content, fontsize):
@@ -139,9 +139,10 @@ class CharacterCard:
 class Game:
     def __init__(self, player_name, server_host='localhost', server_port=8080, serializer='text'):
         # general setup
+        
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGTH))
-        
+
         try:
             self.font = pygame.font.Font(None, 48)
             self.button_font = pygame.font.Font(None, 32)
@@ -163,6 +164,7 @@ class Game:
         self.selected_character = None
         self.level = None
         self.running = True
+
 
     def character_select(self):
         """Character selection screen"""
@@ -205,13 +207,14 @@ class Game:
                     char_select = False
                     self.running = False
                     pygame.quit()
-                    sys.exit()
+                    return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         char_select = False
                         self.running = False
-                        pygame.quit()
-                        
+                        self.running = False
+                        return
+
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     clicked_this_frame = True
             
@@ -236,8 +239,10 @@ class Game:
             
             # for now, close game when we hit return button
             if clicked_this_frame and return_button_rect.collidepoint(mouse_pos):
+                self.running = False
+                char_select = False
                 pygame.quit()
-                sys.exit()
+                return
 
             # Reset click flag
             if not mouse_pressed[0]:
@@ -283,8 +288,8 @@ class Game:
         """Main game loop"""
         # Character selection
         self.character_select()
-        
         if not self.running or self.selected_character is None:
+            pygame.quit()
             return
         
         # Create level with selected character
@@ -301,20 +306,25 @@ class Game:
             events = []
             for event in pygame.event.get():
                 events.append(event)
+
                 if event.type == pygame.QUIT:
+                    self.running = False
                     self.level.network.disconnect()
                     pygame.quit()
-                    sys.exit()
+
+                    return
+
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
+                        self.running = False
                         self.character_select()
+                        return
                         
 
             self.screen.fill('black')
             self.level.run(events)
             pygame.display.update()
             self.clock.tick(FPS)
-
 
 if __name__ == '__main__':
     # Parse command-line arguments

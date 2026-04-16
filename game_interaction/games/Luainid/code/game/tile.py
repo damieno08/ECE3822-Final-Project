@@ -1,5 +1,5 @@
 import pygame
-from settings import *
+from game_interaction.games.Luainid.code.game.settings import *
 import os
 import sys
 
@@ -17,9 +17,9 @@ class Tile(pygame.sprite.Sprite):
         else:
             # Hardcoded path mapping based on area_id
             paths = {
-                0: {'grass': start_path + '/../../graphics/tilemap/ground.png', 'object': start_path + '/../../graphics/tilemap/wall.png'},
-                1: {'grass': start_path + '/../../graphics/tilemap/dirt.png',   'object': start_path+ '/../../graphics/tilemap/forest_wall.png'},
-                2: {'grass': start_path + '/../../graphics/tilemap/forge_oven.png', 'object': start_path + '/../../graphics/tilemap/forge_wall.png'}
+                0: {'grass': 'game_interaction/games/Luainid/graphics/tilemap/ground.png', 'object': start_path + 'game_interaction/games/Luainid/graphics/tilemap/wall.png'},
+                1: {'grass': start_path + 'game_interaction/games/Luainid/graphics/tilemap/dirt.png',   'object': start_path+ 'game_interaction/games/Luainid/graphics/tilemap/forest_wall.png'},
+                2: {'grass': start_path + 'game_interaction/games/Luainid/graphics/tilemap/forge_oven.png', 'object': start_path + 'game_interaction/games/Luainid/graphics/tilemap/forge_wall.png'}
             }
             
             # Get the specific path, defaulting to Area 0 if ID is unknown

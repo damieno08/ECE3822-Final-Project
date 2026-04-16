@@ -6,8 +6,8 @@ Lab 4 Update: Characters now have inventories using ArrayList!
 
 import pygame
 import sys
-from character import Character
-from item import Weapon
+from game_interaction.games.Luainid.code.game.character import Character
+from game_interaction.games.Luainid.code.game.item import Weapon
 
 start_path = str(sys.path[0])
 
@@ -25,7 +25,7 @@ class Cleric(Character):
         if test:
             self.image = pygame.Surface((64, 64))
         else:
-            self.image = pygame.image.load(start_path + '/../../graphics/characters/Cleric.png').convert_alpha()
+            self.image = pygame.image.load(start_path + '/game_interaction/games/Luainid/graphics/characters/Cleric.png').convert_alpha()
 
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -26)
@@ -40,7 +40,7 @@ class Cleric(Character):
         self.defense = 1
         self.speed = 8
         self.healing = 5
-        Staff = Weapon("Staff", "The staff allows the user to cast grand magic. It is also the starting weapon of a Druid.", start_path + "/../../graphics/items/Staff.png", attack_bonus=2, value=40)
+        Staff = Weapon("Staff", "The staff allows the user to cast grand magic. It is also the starting weapon of a Druid.", start_path + "/game_interaction/games/Luainid/graphics/items/Staff.png", attack_bonus=2, value=40)
         self.equipped_weapon = Staff
 
 
@@ -95,7 +95,7 @@ class Cleric(Character):
     @staticmethod
     def get_preview_image():
         
-        return start_path + "/../../graphics/characters/Cleric.png"
+        return start_path + "/game_interaction/games/Luainid/graphics/characters/Cleric.png"
 
 
 class Paladin(Character):
@@ -112,7 +112,7 @@ class Paladin(Character):
         if test:
             self.image = pygame.Surface((64, 64))
         else:
-            self.image = pygame.image.load(start_path + '/../../graphics/characters/Paladin.png').convert_alpha()
+            self.image = pygame.image.load(start_path + '/game_interaction/games/Luainid/graphics/characters/Paladin.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -26)
         
@@ -127,7 +127,7 @@ class Paladin(Character):
         self.healing = -1
         self.shield = False
         self.import_player_assets(animate=True)
-        GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path+ "/../../graphics/item/GreatSword.png", attack_bonus=5, value=100)
+        GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path+ "/game_interaction/games/Luainid/graphics/item/GreatSword.png", attack_bonus=5, value=100)
         self.equipped_weapon = GreatSword
 
         
@@ -169,7 +169,7 @@ class Paladin(Character):
     @staticmethod
     def get_preview_image():
         
-        return start_path + "/../../graphics/characters/Paladin.png"
+        return start_path + "/game_interaction/games/Luainid/graphics/characters/Paladin.png"
 
 class Barbarian(Character):
     """
@@ -185,7 +185,7 @@ class Barbarian(Character):
         if test:
             self.image = pygame.Surface((64, 64))
         else:
-            self.image = pygame.image.load(start_path + '/../../graphics/characters/Barbarian.png').convert_alpha()
+            self.image = pygame.image.load(start_path + '/game_interaction/games/Luainid/graphics/characters/Barbarian.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -26)
         
@@ -199,7 +199,7 @@ class Barbarian(Character):
         self.speed = 10
         self.healing = 0
         self.import_player_assets(animate=True)
-        GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path + "/../../graphics/item/GreatSword.png", attack_bonus=5, value=100)
+        GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path + "/game_interaction/games/Luainid/graphics/item/GreatSword.png", attack_bonus=5, value=100)
         self.equipped_weapon = GreatSword
 
     
@@ -223,7 +223,7 @@ class Barbarian(Character):
     @staticmethod
     def get_preview_image():
         
-        return start_path + "/../../graphics/characters/Barbarian.png"
+        return start_path + "/game_interaction/games/Luainid/graphics/characters/Barbarian.png"
 
 class Sorcerer(Character):
     """
@@ -239,7 +239,7 @@ class Sorcerer(Character):
         if test:
             self.image = pygame.Surface((64, 64))
         else:
-            self.image = pygame.image.load(start_path + '/../../graphics/characters/Sorcerer.png').convert_alpha()
+            self.image = pygame.image.load(start_path + '/game_interaction/games/Luainid/graphics/characters/Sorcerer.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -26)
         
@@ -254,7 +254,7 @@ class Sorcerer(Character):
         self.healing = 0
         self.spell_charge = 0
         self.import_player_assets(animate=True)
-        Dagger = Weapon("Dagger", "A small one handed blade that does not do much damage. It is the starter weapon for sorcerers.", "/../../graphics/item/Dagger.png", attack_bonus=2, value=30)
+        Dagger = Weapon("Dagger", "A small one handed blade that does not do much damage. It is the starter weapon for sorcerers.", "/game_interaction/games/Luainid/graphics/item/Dagger.png", attack_bonus=2, value=30)
         self.equipped_weapon = Dagger
 
     
@@ -300,12 +300,12 @@ class Sorcerer(Character):
     @staticmethod
     def get_preview_image():
         
-        return start_path + "/../../graphics/characters/Sorcerer.png"
+        return start_path + "/game_interaction/games/Luainid/graphics/characters/Sorcerer.png"
     
     @staticmethod
     def get_preview_image():
         
-        return start_path + "/../../graphics/characters/Sorcerer.png"
+        return start_path + "/game_interaction/games/Luainid/graphics/characters/Sorcerer.png"
 
 
 def get_all_character_classes():

@@ -176,7 +176,7 @@ def create_example_items():
     items.append(Weapon(
         name="GreatSword",
         description="A large two handed sword that serves as the starter weapon for Barbarians and Paladins.",
-        image_path=start_path + "/../../graphics/items/GreatSword.png",
+        image_path=start_path + "game_interaction/games/Luainid/graphics/items/GreatSword.png",
         attack_bonus=5,
         value=100
     ))
@@ -184,7 +184,7 @@ def create_example_items():
     items.append(Weapon(
         name="Dagger",
         description="A small one handed blade that does not do much damage. It is the starter weapon for sorcerers.",
-        image_path=start_path + "/../../graphics/items/Dagger.png",
+        image_path=start_path + "game_interaction/games/Luainid/graphics/items/Dagger.png",
         attack_bonus=2,
         value=30
     ))
@@ -192,14 +192,14 @@ def create_example_items():
     items.append(Armor(
         name="Spider-Silk Shield",
         description="A shield stolen from the armory of the Lolth sworn Drow; This shield is hastily made and not very powerful; This is the starting gear for a cleric",
-        image_path=start_path + "/../../graphics/items/SpiderSilkShield.png",
+        image_path=start_path + "game_interaction/games/Luainid/graphics/items/SpiderSilkShield.png",
         defense_bonus=1,
         value=20
     ))
     items.append(Armor(
         name="Moonmaiden Cloak",
         description="Woven with moon-silver thread; grants increased power when in possession of a Shard of the Moonmaiden",
-        image_path=start_path + "/../../graphics/items/CloakMoonMaiden.png",
+        image_path=start_path + "game_interaction/games/Luainid/graphics/items/CloakMoonMaiden.png",
         defense_bonus=1,
         value=50
     ))
@@ -207,7 +207,7 @@ def create_example_items():
     items.append(Weapon(
         name="Longbows",
         description="This bow was made to shoot down its target from anywhere.",
-        image_path=start_path + "/../../graphics/items/Longbow.png",
+        image_path=start_path + "game_interaction/games/Luainid/graphics/items/Longbow.png",
         attack_bonus=3,
         value=70
     ))
@@ -215,7 +215,7 @@ def create_example_items():
     items.append(Weapon(
         name="Staff",
         description="This staff allows the user to cast grand magic. It is also the starting weapon for a druid.",
-        image_path=start_path + "/../../graphics/items/Staff.png",
+        image_path=start_path + "game_interaction/games/Luainid/graphics/items/Staff.png",
         attack_bonus=2,
         value=40
     ))
@@ -223,7 +223,7 @@ def create_example_items():
     items.append(Consumable(
         name="Shard of the Moonmaiden",
         description="Once the player has collected all the Shards of the Moonmaiden, the game will be beaten.",
-        image_path= start_path + "/../../graphics/items/MoonMaidenShard.png",
+        image_path= start_path + "game_interaction/games/Luainid/graphics/items/MoonMaidenShard.png",
         effect_type="Damage Boost",
         effect_amount=1,
         value=20,
@@ -233,7 +233,7 @@ def create_example_items():
     items.append(QuestItem(
         name="Soulstrike Sword",
         description="This sword is said to strike the very soul of the opponent, meaning even the toughest exteriors can't take many hits.",
-        image_path= start_path + "/../../graphics/items/SoulStrikeSword.png",
+        image_path= start_path + "game_interaction/games/Luainid/graphics/items/SoulStrikeSword.png",
         quest_id="Mycanoid",
     ))
     
@@ -321,12 +321,12 @@ if __name__ == "__main__":
     # Test item creation
     print("Testing Item classes...\n")
     
-    sword = Weapon("Test Sword", "A test weapon", start_path + "/../../graphics/test.png", attack_bonus=5, value=50)
+    sword = Weapon("Test Sword", "A test weapon", "game_interaction/games/Luainid/graphics/test.png", attack_bonus=5, value=50)
     print(f"Created: {sword}")
     print(f"Type: {sword.item_type}")
     print(f"Attack bonus: {sword.attack_bonus}\n")
     
-    potion = Consumable("Test Potion", "Heals 20 HP", start_path + "/../../graphics/test.png", 
+    potion = Consumable("Test Potion", "Heals 20 HP", start_path + "game_interaction/games/Luainid/graphics/test.png", 
                        effect_type="heal", effect_amount=20, value=10)
     print(f"Created: {potion}")
     print(f"Stackable: {potion.stackable}")

@@ -6,7 +6,7 @@ This replaces using Python's built-in list.
 """
 
 from datastructures.array import ArrayList
-from item import Item
+from game_interaction.games.Luainid.code.game.item import Item
 import sys
 
 start_path = str(sys.path[0])
@@ -292,16 +292,16 @@ if __name__ == "__main__":
     
     # Add items
     print("Adding items...")
-    GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path + "/../graphics/item/GreatSword.png", attack_bonus=5, value=100)
+    GreatSword = Weapon("GreatSword", "A large two handed sword that serves as the starter weapon for Barbarians and Paladins", start_path + "/game_interaction/games/Luainid/graphics/items/GreatSword.png", attack_bonus=5, value=100)
     inventory.add_item(GreatSword)
 
-    Dagger = Weapon("Dagger", "A small one handed blade that does not do much damage. It is the starter weapon for sorcerers.", start_path + "/../graphics/item/Dagger.png", attack_bonus=2, value=30)
+    Dagger = Weapon("Dagger", "A small one handed blade that does not do much damage. It is the starter weapon for sorcerers.", start_path + "/game_interaction/games/Luainid/graphics/items/Dagger.png", attack_bonus=2, value=30)
     inventory.add_item(GreatSword)
 
     Longbow = Weapon("Longbow", "This bow was made to shoot down its target from anywhere.", "../graphics/item/Longbow.png", attack_bonus=3, value=70)
     inventory.add_item(Longbow)
 
-    Staff = Weapon("Staff", "The staff allows the user to cast grand magic. It is also the starting weapon of a Druid.", start_path + "/../graphics/item/Staff.png", attack_bonus=2, value=40)
+    Staff = Weapon("Staff", "The staff allows the user to cast grand magic. It is also the starting weapon of a Druid.", start_path + "/game_interaction/games/Luainid/graphics/items/Staff.png", attack_bonus=2, value=40)
     inventory.add_item(Staff)
 
     armor = Armor("Leather Armor", "Light protection", "../graphics/test.png", defense_bonus=5, value=80)

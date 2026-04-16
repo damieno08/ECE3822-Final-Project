@@ -73,14 +73,18 @@ class ArcadeClient:
             
             # 2. CALL YOUR FUNCTION
             # This is exactly what you requested:
-            played = self.games[0].handle_game()
-            
-            self.update_display(">>> Game session ended.")
-            self.update_display(f"The game lasted {played}")
+            played,score = self.games[0].start_game()
+            self.s.sendall(b"DISCONNECT")
+            self.root.after(0, lambda: self.update_display(">>> Game session ended."))
+            self.root.after(0, lambda: self.update_display(f"The game lasted {played}"))
+            self.root.after(0, lambda: self.update_display(f"The game score was {score}"))
+
         except IndexError:
             self.update_display("ERROR: Game index 0 not found.")
+        """
         except Exception as e:
             self.update_display(f"GAME ERROR: {e}")
+        """
 
     # ==========================================
     # HELPER METHODS

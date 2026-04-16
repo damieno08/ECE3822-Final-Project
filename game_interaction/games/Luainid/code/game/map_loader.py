@@ -14,7 +14,7 @@ works regardless of which backing store is used.
 Lab: Lab 6 - Sparse World Map
 """
 
-from support import import_csv_layout
+from game_interaction.games.Luainid.code.game.support import import_csv_layout
 
 
 def load_layer(path):
