@@ -10,8 +10,9 @@ Revision History:
 # import all datastructures
 
 from datastructures.sparse_matrix import SparseMatrix
-from chat_history import Chat_history
-from play_history import Play_history
+from .chat_history import Chat_history
+from .play_history import Play_history
+from datetime import datetime
 
 # class storing user information
 class user:
@@ -26,13 +27,13 @@ class user:
         # id is bucket index
 
         # store their individual play history
-        self.play_history = Play_history()
+        self.play_history = Play_history(datetime.now())
 
         # store chat history
         self.chat_history = Chat_history()
 
         # store sparse matrix to get recommendations
-        self.__game_recommendation = SparseMatrix()
+        self.__game_recommendation = SparseMatrix(datetime.now())
 
     def update_history(self, history_type, session):
 

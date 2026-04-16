@@ -14,6 +14,7 @@ class GameSession:
     # record the time session ended
     def end_session(self):
         self.end_time = datetime.now()
+        self.user.update_history("game", self)
         return self.end_time
 
     # calculate the time session was for

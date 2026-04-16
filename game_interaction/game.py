@@ -2,6 +2,7 @@ import os
 import sys
 
 from .game_session import GameSession
+from user_interaction.user import user
 
 start_path = str(sys.path[0])
 
@@ -34,4 +35,4 @@ class Luaianid(Game):
     
 
 
-games = [Luaianid("Damien")]
+games = [Luaianid(user("Damien"))]
