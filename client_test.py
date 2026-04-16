@@ -73,9 +73,10 @@ class ArcadeClient:
             
             # 2. CALL YOUR FUNCTION
             # This is exactly what you requested:
-            self.games[0].handle_game()
+            played = self.games[0].handle_game()
             
             self.update_display(">>> Game session ended.")
+            self.update_display(f"The game lasted {played}")
         except IndexError:
             self.update_display("ERROR: Game index 0 not found.")
         except Exception as e:

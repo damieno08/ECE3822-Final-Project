@@ -30,7 +30,7 @@ class user:
         self.play_history = Play_history(datetime.now())
 
         # store chat history
-        self.chat_history = Chat_history()
+        self.chat_history = Chat_history(datetime.now())
 
         # store sparse matrix to get recommendations
         self.__game_recommendation = SparseMatrix(datetime.now())

@@ -10,3 +10,6 @@ class Play_history(History):
         self.time = time
         
         # add more data related to play history...
+
+    def pop(self):
+        return self._history.pop()
