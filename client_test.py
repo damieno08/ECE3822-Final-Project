@@ -2,7 +2,7 @@ import socket
 import tkinter as tk
 from threading import Thread
 
-from game_interaction.game import games
+from game_interaction.game_handler import games
 
 class ArcadeClient:
     def __init__(self, games_list):

@@ -1,6 +1,6 @@
 import socket
 import threading
-from game_interaction.game import games
+from game_interaction.game_handler import games
 
 class ArcadeServer:
     def __init__(self, host='0.0.0.0', port=65432):
