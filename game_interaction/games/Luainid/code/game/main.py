@@ -10,6 +10,9 @@ import argparse
 from game_interaction.games.Luainid.code.game.settings import *
 from game_interaction.games.Luainid.code.game.level import Level
 from game_interaction.games.Luainid.code.game.subcharacter import get_all_character_classes
+import sys
+import time
+start_path = str(sys.path[0])
 
 class Button:
     def __init__(self, x, y, width, height, fg, bg, content, fontsize):
@@ -292,6 +295,7 @@ class Game:
             pygame.quit()
             return
         
+
         # Create level with selected character
         self.level = Level(
             self.player_name, 
@@ -303,6 +307,34 @@ class Game:
         
         # Game loop
         while self.running:
+
+             # Handle death
+            if not self.level.player.is_alive():
+
+                # black background
+                self.screen.fill((0,0,0))
+
+                # generate death image
+                self.death_image = pygame.image.load(start_path + "/game_interaction/games/Luainid/graphics/death.png").convert_alpha()
+                self.death_image = pygame.transform.scale(self.death_image, (WIDTH, HEIGHT))
+
+                # count death screen time
+                death_start = pygame.time.get_ticks()
+
+                while pygame.time.get_ticks() - death_start < 3000:  # 3 seconds
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            return
+
+                    self.screen.blit(self.death_image, (0, 0))
+                    pygame.display.update()
+                    self.clock.tick(FPS)
+
+                # exit
+                pygame.quit()
+                return
+            
             events = []
             for event in pygame.event.get():
                 events.append(event)
