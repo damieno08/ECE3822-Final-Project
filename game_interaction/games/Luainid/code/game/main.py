@@ -316,7 +316,7 @@ class Game:
              # Handle death
             if not self.level.player.is_alive():
 
-                # stop background music
+                # stop background music slowly
                 pygame.mixer.music.stop()
 
                 # start death audio
