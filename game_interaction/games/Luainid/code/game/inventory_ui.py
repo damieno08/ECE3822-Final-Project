@@ -72,6 +72,7 @@ class InventoryUI:
             if event.key == pygame.K_i:
                 self.toggle()
                 return True
+            
         
         # Only handle other events when inventory is active
         if not self.active:

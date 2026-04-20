@@ -53,6 +53,8 @@ class Character(pygame.sprite.Sprite):
         self.is_local = is_local
         self.name = ""
         self.other_players = []
+        self.last_used = None
+
         
         # For smooth network interpolation (remote players only)
         if not is_local:
@@ -431,6 +433,15 @@ class Character(pygame.sprite.Sprite):
     def _special_ability(self):
         """Special ability - override in subclasses"""
         pass
+
+    # function to call special ability
+    def get_special(self, frame=0):
+        if self.last_used == None or self.last_used < (frame + 2*FPS):
+            self._special_ability()
+            self.last_used = frame
+            return True
+
+        return False
 
     def attack(self, type="physical"):
         """

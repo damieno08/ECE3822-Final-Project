@@ -317,9 +317,15 @@ class Level:
 
             self.player.other_players = list(self.other_players.values())
 
-    def handle_events(self, events):
+    def handle_events(self, events, frame):
         """Handle pygame events (pass from main game loop)"""
         for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    self.destroy_attack()
+                    self.create_attack()
+                elif event.key == pygame.K_q:
+                    print(self.player.get_special(frame))
             self.inventory_ui.handle_event(event, self.player)
 
     def draw_names(self):
@@ -468,9 +474,6 @@ class Level:
                             snapshot = self.enemy_future.pop()
                             self.enemy_history.append(snapshot)
                             self._restore_enemies(snapshot)
-                elif event.key == pygame.K_SPACE:
-                    self.destroy_attack()
-                    self.create_attack()
                 else:
                     self.is_time_traveling = False
 
@@ -499,9 +502,9 @@ class Level:
     # Main loop
     # ------------------------------------------------------------------
 
-    def run(self, events):
+    def run(self, events, frame):
         """Main update loop"""
-        self.handle_events(events)
+        self.handle_events(events, frame)
         self.handle_time_travel_input(events)
         self.handle_enemy_debug_input(events)
 

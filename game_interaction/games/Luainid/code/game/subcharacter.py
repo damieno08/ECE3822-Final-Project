@@ -8,6 +8,7 @@ import pygame
 import sys
 from game_interaction.games.Luainid.code.game.character import Character
 from game_interaction.games.Luainid.code.game.item import Weapon
+from datetime import datetime
 
 start_path = str(sys.path[0])
 
@@ -42,6 +43,7 @@ class Cleric(Character):
         self.healing = 5
         Staff = Weapon("Staff", "The staff allows the user to cast grand magic. It is also the starting weapon of a Druid.", start_path + "/game_interaction/games/Luainid/graphics/items/Staff.png", attack_bonus=2, value=40)
         self.equipped_weapon = Staff
+        self.last_used = None
 
 
         # Special undead bonus damage
@@ -75,6 +77,8 @@ class Cleric(Character):
     #
     def _special_ability(self):
         
+        self.last_used = datetime.now()
+
         heal = self._heal(25)
 
         # Eventually add the ability to heal others
