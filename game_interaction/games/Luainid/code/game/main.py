@@ -12,6 +12,7 @@ from game_interaction.games.Luainid.code.game.level import Level
 from game_interaction.games.Luainid.code.game.subcharacter import get_all_character_classes
 import sys
 import time
+
 start_path = str(sys.path[0])
 
 class Button:
@@ -295,6 +296,10 @@ class Game:
             pygame.quit()
             return
         
+        pygame.mixer.init()
+
+        background_music = pygame.mixer.music.load(start_path + "/game_interaction/games/Luainid/audio/background.mp3")
+        pygame.mixer.music.play(-1)
 
         # Create level with selected character
         self.level = Level(
@@ -307,9 +312,16 @@ class Game:
         
         # Game loop
         while self.running:
-
+        
              # Handle death
             if not self.level.player.is_alive():
+
+                # stop background music
+                pygame.mixer.music.stop()
+
+                # start death audio
+                pygame.mixer.music.load(start_path + "/game_interaction/games/Luainid/audio/death.mp3")
+                pygame.mixer.music.play()
 
                 # black background
                 self.screen.fill((0,0,0))
@@ -321,7 +333,8 @@ class Game:
                 # count death screen time
                 death_start = pygame.time.get_ticks()
 
-                while pygame.time.get_ticks() - death_start < 3000:  # 3 seconds
+                # death screen count
+                while pygame.time.get_ticks() - death_start < 5000:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             pygame.quit()
