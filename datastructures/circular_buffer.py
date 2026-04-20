@@ -45,15 +45,16 @@ class CircularBuffer:
 
     def read(self):
         """
-        Read most oldest message in the buffer, self._head. If empty, return None. 
+        Read the latest message in the buffer, self._tail - 1. If buffer is empty, return None. 
 
         """
         # check if buffer is empty
         if(self.is_empty()):
             return None
-        # otherwise, return message at head
+        # otherwise, return message at index of tail with modular arithemtic.
+        # T = (T - 1 + capacity) % capacity
         else:
-            return self._buffer[self._head]
+            return self._buffer[(self._tail - 1 + self._capacity) % self._capacity]
 
     def is_full(self):
         """
@@ -86,7 +87,9 @@ class CircularBuffer:
     def peek(self):
         """
         
-        Peek the most recently written element in the buffer, tail.
+        Peek the next most recently written element in the buffer, tail - 2. 
+        Use module arithmetic, to move toward head from current tail.
+        T = (T - 2 + capacity) % capacity. If buffer is empty, return None.
         
         """
 
@@ -95,8 +98,8 @@ class CircularBuffer:
             return None
 
         # otherwise, return tail
-        else: 
-            return self._buffer[self._tail - 1]       
+        else:
+            return self._buffer[(self._tail - 2 + self._capacity) % self._capacity]        
         
     def __len__(self):
         """
