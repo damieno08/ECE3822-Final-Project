@@ -4,7 +4,6 @@ import pygame
 
 from .game_session import GameSession
 from user_interaction.user import user
-from game_interaction.games.Luainid.code.game.main import Game
 from game_interaction.games.Luainid.code.game.settings import WIDTH, HEIGTH
 
 start_path = str(sys.path[0])
@@ -32,6 +31,7 @@ class Luaianid(Game_Handler):
     # run the game and handle game session recording
     def start_game(self):
         super().start_game()
+        from game_interaction.games.Luainid.code.game.main import Game
         self.game = Game(self.user)
         self.game.run()
         self.score = self.game.level.player.exp
