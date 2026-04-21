@@ -211,8 +211,6 @@ class Game:
                     char_select = False
                     self.running = False
                     pygame.quit()
-                    pygame.mixer.music.stop()
-
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -248,7 +246,6 @@ class Game:
                 self.running = False
                 char_select = False
                 pygame.quit()
-                pygame.mixer.music.stop()
 
                 return
 
@@ -298,7 +295,6 @@ class Game:
         self.character_select()
         if not self.running or self.selected_character is None:
             pygame.quit()
-            pygame.mixer.music.stop()
 
             return
         
@@ -343,8 +339,8 @@ class Game:
                 while pygame.time.get_ticks() - death_start < 5000:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
-                            pygame.quit()
                             pygame.mixer.music.stop()
+                            pygame.quit()
                             return
 
                     self.screen.blit(self.death_image, (0, 0))
@@ -353,8 +349,6 @@ class Game:
 
                 # exit
                 pygame.quit()
-                pygame.mixer.music.stop()
-
                 return
             
             events = []
@@ -365,7 +359,6 @@ class Game:
                     self.running = False
                     self.level.network.disconnect()
                     pygame.quit()
-                    pygame.mixer.music.stop()
                     return
 
                 elif event.type == pygame.KEYDOWN:
