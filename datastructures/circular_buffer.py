@@ -18,6 +18,8 @@ class CircularBuffer:
     def __init__(self, capacity):
         self._capacity = capacity
         self._buffer = ArrayList(capacity)
+        for _ in range(capacity):
+            self._buffer.append(None)
         self._head = 0
         self._tail = 0
         self._size = 0
@@ -37,7 +39,7 @@ class CircularBuffer:
             self._size += 1
 
         # write item to buffer at tail position then update tail position and size
-        self._buffer[self._tail] = item
+        self._buffer.__setitem__(self._tail, item)
         self._tail = (self._tail + 1) % self._capacity
 
         # return true for successful write
@@ -99,7 +101,7 @@ class CircularBuffer:
 
         # otherwise, return tail
         else:
-            return self._buffer[(self._tail - 2 + self._capacity) % self._capacity]        
+            return self._buffer.__getitem__((self._tail - 2 + self._capacity) % self._capacity)
         
     def __len__(self):
         """
