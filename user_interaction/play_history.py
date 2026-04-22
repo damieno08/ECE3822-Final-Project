@@ -17,20 +17,6 @@ class Play_history(History):
 
         # Save time the message was sent
         self.time = time
-        
-        # add more data related to play history...
-
-    def pop(self):
-        """
-        Gives the most recent session
-        """
-        return self._history.pop()
-    
-    def size(self):
-        """
-        Total number of games played
-        """
-        return self._history.size()
 
     def get_total_time(self):
         """
