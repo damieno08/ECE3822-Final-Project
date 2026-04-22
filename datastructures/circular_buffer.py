@@ -39,6 +39,7 @@ class CircularBuffer:
             self._size += 1
 
         # write item to buffer at tail position then update tail position and size
+        # (After each write, tail is is incremented to point to index right after most recently written message. Head and tail will point to same index at this point.)
         self._buffer.__setitem__(self._tail, item)
         self._tail = (self._tail + 1) % self._capacity
 
@@ -95,8 +96,8 @@ class CircularBuffer:
         
         """
 
-        # check if buffer is empty, if so, return None
-        if(self.is_empty()):
+        # check if buffer is empty or if only one element in buffer, if so, return None"
+        if(self.is_empty() or self.__len__() == 1):
             return None
 
         # otherwise, return tail
