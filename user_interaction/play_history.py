@@ -43,9 +43,3 @@ class Play_history(History):
             total += session.get_time_played().total_seconds()
         
         return total
-
-    def get_history(self, idx=-1):
-        """
-        Get session by index
-        """
-        return self._history.peek(idx)
