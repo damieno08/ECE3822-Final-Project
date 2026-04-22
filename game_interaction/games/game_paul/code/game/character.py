@@ -17,6 +17,8 @@ class Character(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacle_sprites, player_id=None, is_local=True):
         super().__init__(groups)
         
+        self.exp = 0
+
         # Basic sprite setup
         self.image = pygame.Surface((64, 64))
         self.image.fill((255, 0, 255))
