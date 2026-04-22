@@ -109,14 +109,20 @@ class Level:
             return surf
 
         # Load each CSV layer — returns SparseMatrix (or dict fallback)
-        floor_blocks = import_csv_to_sparse(start_path + '/game_interaction.games/game_santiago/code/game/map/map_lab_6_FloorBlocks.csv')
-        grass        = import_csv_to_sparse(start_path + '/game_interaction.games/game_santiago/code/game/map/map_lab_6_Grass.csv')
-        objects      = import_csv_to_sparse(start_path + '/game_interaction.games/game_santiago/code/game/map/map_lab_6_Objects.csv')
+        floor_blocks = import_csv_to_sparse(start_path + '/game_interaction/games/game_santiago/code/game/map/map_lab_6_FloorBlocks.csv')
+        grass        = import_csv_to_sparse(start_path + '/game_interaction/games/game_santiago/code/game/map/map_lab_6_Grass.csv')
+        objects      = import_csv_to_sparse(start_path + '/game_interaction/games/game_santiago/code/game/map/map_lab_6_Objects.csv')
 
         # --- Background: stretch ground.png over the entire map as one image ---
         if floor_blocks:
-            all_rows = [r for (r, _) in floor_blocks.keys()]
-            all_cols = [c for (_, c) in floor_blocks.keys()]
+            # We use .items() because it's defined in your SparseMatrix
+            # pos is a tuple: (row, col)
+            all_rows = []
+            all_cols = []
+            for pos, value in floor_blocks.items():
+                all_rows.append(pos[0])
+                all_cols.append(pos[1])
+            
             map_px_w = (max(all_cols) + 1) * TILESIZE
             map_px_h = (max(all_rows) + 1) * TILESIZE
         else:
