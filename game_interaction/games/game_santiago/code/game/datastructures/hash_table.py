@@ -8,7 +8,7 @@ Date:   04/09/2026
 Lab:    Lab 6 - Sparse World Map
 """
 
-from .array import ArrayList
+from game_interaction.games.game_santiago.code.game.datastructures.array import ArrayList
 
 
 class HashTable:

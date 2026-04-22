@@ -14,7 +14,7 @@ Lab: Lab 6 - Sparse World Map
 """
 
 import pygame
-from settings import *
+from game_interaction.games.game_santiago.code.game.settings import *
 
 
 class Tile(pygame.sprite.Sprite):

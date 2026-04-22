@@ -10,7 +10,7 @@ Lab: Lab 6 - Sparse World Map
 import pygame
 import math
 import random
-from datastructures.patrol_path import PatrolPath
+from game_interaction.games.game_santiago.code.game.datastructures.patrol_path import PatrolPath
 
 # Enemy spawn data
 ENEMY_SPAWN_DATA = [

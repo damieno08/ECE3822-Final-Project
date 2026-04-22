@@ -5,18 +5,18 @@ Integrated version combining lab-03 and project-01
 """
 
 import pygame
-from game_interaction.games.Luainid.code.game.settings import *
-from game_interaction.games.Luainid.code.game.tile import Tile
-from game_interaction.games.Luainid.code.game.map_loader import load_layer
-from game_interaction.games.Luainid.code.game.character import Character
-from game_interaction.games.Luainid.code.game.subcharacter import get_all_character_classes
-from game_interaction.games.Luainid.code.game.network_client import NetworkClient
-from game_interaction.games.Luainid.code.game.inventory_ui import InventoryUI
-from game_interaction.games.Luainid.code.game.item import create_example_items
-from game_interaction.games.Luainid.code.game.time_travel import TimeTravel
-from game_interaction.games.Luainid.code.game.enemy import Enemy, ENEMY_SPAWN_DATA
-from game_interaction.games.Luainid.code.game.datastructures.patrol_path import PatrolPath
-from game_interaction.games.Luainid.code.game.weapon import Weapon as WeaponSprite
+from game_interaction.games.game_damien.code.game.settings import *
+from game_interaction.games.game_damien.code.game.tile import Tile
+from game_interaction.games.game_damien.code.game.map_loader import load_layer
+from game_interaction.games.game_damien.code.game.character import Character
+from game_interaction.games.game_damien.code.game.subcharacter import get_all_character_classes
+from game_interaction.games.game_damien.code.game.network_client import NetworkClient
+from game_interaction.games.game_damien.code.game.inventory_ui import InventoryUI
+from game_interaction.games.game_damien.code.game.item import create_example_items
+from game_interaction.games.game_damien.code.game.time_travel import TimeTravel
+from game_interaction.games.game_damien.code.game.enemy import Enemy, ENEMY_SPAWN_DATA
+from game_interaction.games.game_damien.code.game.datastructures.patrol_path import PatrolPath
+from game_interaction.games.game_damien.code.game.weapon import Weapon as WeaponSprite
 import sys
 
 class Level:
@@ -94,15 +94,15 @@ class Level:
             return {}
 
     def create_map(self):
-        from game_interaction.games.Luainid.code.game.support import import_csv_to_sparse
+        from game_interaction.games.game_damien.code.game.support import import_csv_to_sparse
 
         # add starting path to files
         start_path = str(sys.path[0])
         # 1. Load Sparse Layouts
         layouts = {
-            'boundary': import_csv_to_sparse(start_path +'/game_interaction/games/Luainid/code/game/map/map_FloorBlocks.csv'),
-            'grass':    import_csv_to_sparse(start_path +'/game_interaction/games/Luainid/code/game/map/map_Grass.csv'),
-            'object':   import_csv_to_sparse(start_path +'/game_interaction/games/Luainid/code/game/map/map_Objects.csv'),
+            'boundary': import_csv_to_sparse(start_path +'/game_interaction/games/game_damien/code/game/map/map_FloorBlocks.csv'),
+            'grass':    import_csv_to_sparse(start_path +'/game_interaction/games/game_damien/code/game/map/map_Grass.csv'),
+            'object':   import_csv_to_sparse(start_path +'/game_interaction/games/game_damien/code/game/map/map_Objects.csv'),
         }
 
         floor_blocks_loaded = False

@@ -27,11 +27,11 @@ class ArcadeClient:
         )
         self.display.pack(padx=20, pady=20)
 
-        # The Magic Button
-        self.action_btn = tk.Button(
+        # game buttons
+        self.damien_btn = tk.Button(
             self.root, 
-            text="LAUNCH GAME [0]", 
-            command=self.run_game_thread, # Calls the threader
+            text="LAUNCH Luainid", 
+            command=lambda: self.run_game_thread(0), # Calls the threader
             bg="#333",
             fg="#00FF00",
             font=("Courier", 12, "bold"),
@@ -39,7 +39,31 @@ class ArcadeClient:
             padx=10,
             pady=5
         )
-        self.action_btn.pack(pady=10)
+        self.damien_btn.pack(pady=10)
+        self.santi_btn = tk.Button(
+            self.root, 
+            text="LAUNCH Santiago", 
+            command=lambda: self.run_game_thread(1), # Calls the threader
+            bg="#333",
+            fg="#00FF00",
+            font=("Courier", 12, "bold"),
+            activebackground="#00FF00",
+            padx=10,
+            pady=5
+        )
+        self.santi_btn.pack(pady=10)
+        self.paul_btn = tk.Button(
+            self.root, 
+            text="LAUNCH Vermis", 
+            command=lambda: self.run_game_thread(2), # Calls the threader
+            bg="#333",
+            fg="#00FF00",
+            font=("Courier", 12, "bold"),
+            activebackground="#00FF00",
+            padx=10,
+            pady=5
+        )
+        self.paul_btn.pack(pady=10)
 
         # --- Networking Setup ---
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -58,22 +82,22 @@ class ArcadeClient:
     # ==========================================
     # GAME EXECUTION LOGIC
     # ==========================================
-    def run_game_thread(self):
+    def run_game_thread(self, game_type):
         """Starts the game in a separate thread to keep GUI alive."""
-        game_thread = Thread(target=self.execute_game_logic, daemon=True)
+        game_thread = Thread(target=self.execute_game_logic, args=(game_type,), daemon=True)
         game_thread.start()
 
-    def execute_game_logic(self):
+    def execute_game_logic(self, game_type):
         """The actual logic for calling your function."""
         try:
             self.update_display(">>> Requesting Game 0...")
             
             # 1. Notify the server you are starting
-            self.s.sendall(b"NOTIFY: Starting Game 0")
+            self.s.sendall(b"NOTIFY: Starting Game ")
             
             # 2. CALL YOUR FUNCTION
             # This is exactly what you requested:
-            played,score = self.games[0].start_game()
+            played,score = self.games[game_type].start_game()
             self.s.sendall(b"DISCONNECT")
             self.root.after(0, lambda: self.update_display(">>> Game session ended."))
             self.root.after(0, lambda: self.update_display(f"The game lasted {played}"))

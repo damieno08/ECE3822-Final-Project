@@ -7,9 +7,9 @@ Integrated version combining:
 """
 
 import pygame
-from settings import *
-from support import import_folder
-from inventory import Inventory
+from game_interaction.games.game_santiago.code.game.settings import *
+from game_interaction.games.game_santiago.code.game.support import import_folder
+from game_interaction.games.game_santiago.code.game.inventory import Inventory
 
 class Character(pygame.sprite.Sprite):
     """Base Character class with inventory and networking"""

@@ -4,7 +4,7 @@ import pygame
 
 from .game_session import GameSession
 from user_interaction.user import user
-from game_interaction.games.Luainid.code.game.settings import WIDTH, HEIGTH
+from game_interaction.games.game_damien.code.game.settings import WIDTH, HEIGTH
 
 start_path = str(sys.path[0])
 
@@ -20,8 +20,8 @@ class Game_Handler:
     def start_game(self):
         self._game_session = GameSession(self.user, self.name)
 
-# Damien's game
-class Luaianid(Game_Handler):
+# Damien game
+class Damien(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
@@ -31,12 +31,47 @@ class Luaianid(Game_Handler):
     # run the game and handle game session recording
     def start_game(self):
         super().start_game()
-        from game_interaction.games.Luainid.code.game.main import Game
-        self.game = Game(self.user)
+        from game_interaction.games.game_damien.code.game.main import game_damien
+        self.game = game_damien(self.user.name)
         self.game.run()
         self.score = self.game.level.player.exp
         self._game_session.end_session()
         return self._game_session.get_time_played(), self.score
     
+# Santiago game
+class Santiago(Game_Handler):
 
-games = [Luaianid(user("Damien"))]
+    # intialize game with name and user
+    def __init__(self, user):
+        super().__init__(user, "Santiago")
+        
+
+    # run the game and handle game session recording
+    def start_game(self):
+        super().start_game()
+        from game_interaction.games.game_santiago.code.game.main import game_santi
+        self.game = game_santi(self.user.name)
+        self.game.run()
+        self.score = self.game.level.player.exp
+        self._game_session.end_session()
+        return self._game_session.get_time_played(), self.score
+    
+# Paul game
+class Paul(Game_Handler):
+
+    # intialize game with name and user
+    def __init__(self, user):
+        super().__init__(user, "Paul")
+        
+
+    # run the game and handle game session recording
+    def start_game(self):
+        super().start_game()
+        from game_interaction.games.game_paul.code.game.main import game_paul
+        self.game = game_paul(self.user.name)
+        self.game.run()
+        self.score = self.game.level.player.exp
+        self._game_session.end_session()
+        return self._game_session.get_time_played(), self.score
+    
+games = [Damien(user("Damien")), Santiago(user("Santi")), Paul(user("Paul"))]

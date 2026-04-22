@@ -5,7 +5,7 @@ Different character types that players can choose from
 """
 
 import pygame
-from character import Character
+from game_interaction.games.game_santiago.code.game.character import Character
 
 class Character1(Character):
     """Cleric - Healing specialist"""

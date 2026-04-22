@@ -7,9 +7,9 @@ Integrated version combining lab-03 and project-01
 import pygame
 import sys
 import argparse
-from settings import *
-from level import Level
-from subcharacter import get_all_character_classes
+from game_interaction.games.game_santiago.code.game.settings import *
+from game_interaction.games.game_santiago.code.game.level import Level
+from game_interaction.games.game_santiago.code.game.subcharacter import get_all_character_classes
 
 class Button:
     def __init__(self, x, y, width, height, fg, bg, content, fontsize):
@@ -136,7 +136,7 @@ class CharacterCard:
         return False
 
 
-class Game:
+class game_santi:
     def __init__(self, player_name, server_host='localhost', server_port=8080, serializer='text'):
         # general setup
         pygame.init()

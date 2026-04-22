@@ -9,7 +9,7 @@ Date: 2/20/2026
 Lab: Lab 4 - Time Travel with Stacks
 """
 
-from datastructures.array import ArrayList
+from game_interaction.games.game_santiago.code.game.datastructures.array import ArrayList
 
 class Stack:
     """

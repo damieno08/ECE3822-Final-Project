@@ -5,8 +5,8 @@ Implement an inventory system using their custom ArrayList.
 This replaces using Python's built-in list.
 """
 
-from datastructures.array import ArrayList
-from item import Item
+from game_interaction.games.game_santiago.code.game.datastructures.array import ArrayList
+from game_interaction.games.game_santiago.code.game.item import Item
 
 class Inventory:
     """

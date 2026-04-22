@@ -9,7 +9,7 @@ Date:   04/10/2026
 Lab:    Lab 6 - Sparse World Map
 """
 
-from datastructures.stack import Stack
+from game_interaction.games.game_santiago.code.game.datastructures.stack import Stack
 
 
 class GameState:

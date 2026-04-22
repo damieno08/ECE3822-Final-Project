@@ -7,9 +7,9 @@ Integrated version combining lab-03 and project-01
 import pygame
 import sys
 import argparse
-from game_interaction.games.Luainid.code.game.settings import *
-from game_interaction.games.Luainid.code.game.level import Level
-from game_interaction.games.Luainid.code.game.subcharacter import get_all_character_classes
+from game_interaction.games.game_damien.code.game.settings import *
+from game_interaction.games.game_damien.code.game.level import Level
+from game_interaction.games.game_damien.code.game.subcharacter import get_all_character_classes
 import sys
 import time
 
@@ -140,7 +140,7 @@ class CharacterCard:
         return False
 
 
-class Game:
+class game_damien:
     def __init__(self, player_name, server_host='localhost', server_port=8080, serializer='text'):
         # general setup
         
@@ -300,7 +300,7 @@ class Game:
         
         pygame.mixer.init()
 
-        background_music = pygame.mixer.music.load(start_path + "/game_interaction/games/Luainid/audio/background.mp3")
+        background_music = pygame.mixer.music.load(start_path + "/game_interaction/games/game_damien/audio/background.mp3")
         pygame.mixer.music.play(-1)
 
         # Create level with selected character
@@ -322,14 +322,14 @@ class Game:
                 pygame.mixer.music.stop()
 
                 # start death audio
-                pygame.mixer.music.load(start_path + "/game_interaction/games/Luainid/audio/death.mp3")
+                pygame.mixer.music.load(start_path + "/game_interaction/games/game_damien/audio/death.mp3")
                 pygame.mixer.music.play()
 
                 # black background
                 self.screen.fill((0,0,0))
 
                 # generate death image
-                self.death_image = pygame.image.load(start_path + "/game_interaction/games/Luainid/graphics/death.png").convert_alpha()
+                self.death_image = pygame.image.load(start_path + "/game_interaction/games/game_damien/graphics/death.png").convert_alpha()
                 self.death_image = pygame.transform.scale(self.death_image, (WIDTH, HEIGHT))
 
                 # count death screen time

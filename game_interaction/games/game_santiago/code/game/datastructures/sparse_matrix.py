@@ -25,7 +25,7 @@ Date:   04/10/2026
 Lab:    Lab 6 - Sparse World Map
 """
 
-from .hash_table import HashTable
+from game_interaction.games.game_santiago.code.game.datastructures.hash_table import HashTable
 
 
 # =============================================================================

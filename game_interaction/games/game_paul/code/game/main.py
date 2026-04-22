@@ -136,7 +136,7 @@ class CharacterCard:
         return False
 
 
-class Game:
+class game_paul:
     def __init__(self, player_name, server_host='localhost', server_port=8080, serializer='text'):
         # general setup
         pygame.init()

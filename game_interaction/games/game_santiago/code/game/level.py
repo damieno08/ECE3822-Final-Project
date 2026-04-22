@@ -5,18 +5,20 @@ Integrated version combining lab-03 and project-01
 """
 
 import pygame
-from settings import *
-from tile import Tile
-from character import Character
-from subcharacter import get_all_character_classes
-from network_client import NetworkClient
-from inventory_ui import InventoryUI
-from item import create_example_items
-from time_travel import TimeTravel
-from enemy import Enemy, ENEMY_SPAWN_DATA
-from datastructures.patrol_path import PatrolPath
-from weapon import Weapon as WeaponSprite
+from game_interaction.games.game_santiago.code.game.settings import *
+from game_interaction.games.game_santiago.code.game.tile import Tile
+from game_interaction.games.game_santiago.code.game.character import Character
+from game_interaction.games.game_santiago.code.game.subcharacter import get_all_character_classes
+from game_interaction.games.game_santiago.code.game.network_client import NetworkClient
+from game_interaction.games.game_santiago.code.game.inventory_ui import InventoryUI
+from game_interaction.games.game_santiago.code.game.item import create_example_items
+from game_interaction.games.game_santiago.code.game.time_travel import TimeTravel
+from game_interaction.games.game_santiago.code.game.enemy import Enemy, ENEMY_SPAWN_DATA
+from game_interaction.games.game_santiago.code.game.datastructures.patrol_path import PatrolPath
+from game_interaction.games.game_santiago.code.game.weapon import Weapon as WeaponSprite
 import sys
+
+start_path = str(sys.path[0])
 
 class Level:
     def __init__(self, player_name, character_class, server_host='localhost', server_port=8080, serializer='text'):
@@ -86,7 +88,7 @@ class Level:
         """
         import os
         import pygame
-        from support import import_csv_to_sparse
+        from game_interaction.games.game_santiago.code.game.support import import_csv_to_sparse
 
         map_dir = os.path.join(os.path.dirname(__file__), 'map')
 
@@ -107,9 +109,9 @@ class Level:
             return surf
 
         # Load each CSV layer — returns SparseMatrix (or dict fallback)
-        floor_blocks = import_csv_to_sparse(os.path.join(map_dir, 'map_lab_6_FloorBlocks.csv'))
-        grass        = import_csv_to_sparse(os.path.join(map_dir, 'map_lab_6_Grass.csv'))
-        objects      = import_csv_to_sparse(os.path.join(map_dir, 'map_lab_6_Objects.csv'))
+        floor_blocks = import_csv_to_sparse(start_path + '/game_interaction.games/game_santiago/code/game/map/map_lab_6_FloorBlocks.csv')
+        grass        = import_csv_to_sparse(start_path + '/game_interaction.games/game_santiago/code/game/map/map_lab_6_Grass.csv')
+        objects      = import_csv_to_sparse(start_path + '/game_interaction.games/game_santiago/code/game/map/map_lab_6_Objects.csv')
 
         # --- Background: stretch ground.png over the entire map as one image ---
         if floor_blocks:

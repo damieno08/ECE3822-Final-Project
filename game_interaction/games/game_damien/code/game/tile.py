@@ -1,5 +1,5 @@
 import pygame
-from game_interaction.games.Luainid.code.game.settings import *
+from game_interaction.games.game_damien.code.game.settings import *
 import os
 import sys
 
