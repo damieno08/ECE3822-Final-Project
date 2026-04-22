@@ -5,16 +5,16 @@ Integrated version combining lab-03 and project-01
 """
 
 import pygame
-from settings import *
-from tile import Tile
-from character import Character
-from subcharacter import get_all_character_classes
-from network_client import NetworkClient
-from inventory_ui import InventoryUI
-from item import create_example_items
-from time_travel import TimeTravel
-from enemy import Enemy, ENEMY_SPAWN_DATA
-from datastructures.patrol_path import PatrolPath
+from game_interaction.games.game_paul.code.game.settings import *
+from game_interaction.games.game_paul.code.game.tile import Tile
+from game_interaction.games.game_paul.code.game.character import Character
+from game_interaction.games.game_paul.code.game.subcharacter import get_all_character_classes
+from game_interaction.games.game_paul.code.game.network_client import NetworkClient
+from game_interaction.games.game_paul.code.game.inventory_ui import InventoryUI
+from game_interaction.games.game_paul.code.game.item import create_example_items
+from game_interaction.games.game_paul.code.game.time_travel import TimeTravel
+from game_interaction.games.game_paul.code.game.enemy import Enemy, ENEMY_SPAWN_DATA
+from game_interaction.games.game_paul.code.game.datastructures.patrol_path import PatrolPath
 import sys
 
 class Level:

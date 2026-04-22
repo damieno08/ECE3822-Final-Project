@@ -5,7 +5,9 @@ Different character types that players can choose from
 """
 
 import pygame
-from character import Character
+from game_interaction.games.game_paul.code.game.character import Character
+import sys
+start_path = str(sys.path[0])
 
 class Character1(Character):
     """Cleric - Healing specialist"""
@@ -17,7 +19,7 @@ class Character1(Character):
         
         # Load image for remote players or as fallback
         try:
-            self.image = pygame.image.load('../../graphics/characters/cleric/down/frame_000.png').convert_alpha()
+            self.image = pygame.image.load(start_path + '/game_interaction/games/game_paul/graphics/characters/cleric/down/frame_000.png').convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
@@ -37,7 +39,7 @@ class Character1(Character):
     
     @staticmethod
     def get_preview_image():
-        return '../../graphics/characters/cleric/down/frame_000.png'
+        return start_path + '/game_interaction/games/game_paul/graphics/characters/cleric/down/frame_000.png'
 
 
 class Character2(Character):
@@ -50,7 +52,7 @@ class Character2(Character):
         self.speed = 6  # Faster than others
         
         try:
-            self.image = pygame.image.load('../../graphics/characters/hobbit/down/frame_000.png').convert_alpha()
+            self.image = pygame.image.load(start_path + '/game_interaction/games/game_paul/graphics/characters/hobbit/down/frame_000.png').convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
@@ -69,7 +71,7 @@ class Character2(Character):
     
     @staticmethod
     def get_preview_image():
-        return '../../graphics/characters/hobbit/down/frame_000.png'
+        return start_path + '/game_interaction/games/game_paul/graphics/characters/hobbit/down/frame_000.png'
 
 
 class Character3(Character):
@@ -81,7 +83,7 @@ class Character3(Character):
         self.attack, self.defense = 15, 3
         
         try:
-            self.image = pygame.image.load('../../graphics/characters/thief/down/frame_000.png').convert_alpha()
+            self.image = pygame.image.load(start_path + '/game_interaction/games/game_paul/graphics/characters/thief/down/frame_000.png').convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
@@ -100,7 +102,7 @@ class Character3(Character):
     
     @staticmethod
     def get_preview_image():
-        return '../../graphics/characters/thief/down/frame_000.png'
+        return start_path + '/game_interaction/games/game_paul/graphics/characters/thief/down/frame_000.png'
 
 
 class Character4(Character):
@@ -112,7 +114,7 @@ class Character4(Character):
         self.attack, self.defense = 10, 5
         
         try:
-            self.image = pygame.image.load('../../graphics/characters/wizard/down/frame_000.png').convert_alpha()
+            self.image = pygame.image.load(start_path + '/game_interaction/games/game_paul/graphics/characters/wizard/down/frame_000.png').convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
@@ -131,7 +133,7 @@ class Character4(Character):
     
     @staticmethod
     def get_preview_image():
-        return '../../graphics/characters/wizard/down/frame_000.png'
+        return start_path + '/game_interaction/games/game_paul/graphics/characters/wizard/down/frame_000.png'
 
 
 def get_all_character_classes():

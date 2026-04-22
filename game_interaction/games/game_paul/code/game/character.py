@@ -7,9 +7,9 @@ Integrated version combining:
 """
 
 import pygame
-from settings import *
-from support import import_folder
-from inventory import Inventory
+from game_interaction.games.game_paul.code.game.settings import *
+from game_interaction.games.game_paul.code.game.support import import_folder
+from game_interaction.games.game_paul.code.game.inventory import Inventory
 
 class Character(pygame.sprite.Sprite):
     """Base Character class with inventory and networking"""
@@ -64,7 +64,7 @@ class Character(pygame.sprite.Sprite):
 
     def import_player_assets(self, animate=True):
         """Load character animations using unified sprite system"""
-        from sprite_loader import SpriteLoader
+        from game_interaction.games.game_paul.code.game.sprite_loader import SpriteLoader
         
         # Use the unified sprite loader
         self.animations = SpriteLoader.load_character_sprites(self.character_name)

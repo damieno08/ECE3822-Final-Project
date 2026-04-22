@@ -9,7 +9,7 @@ Date: [2/22/2026]
 Lab: Lab 4 - Time Travel with Stacks
 """
 
-from datastructures.stack import Stack
+from game_interaction.games.game_paul.code.game.datastructures.stack import Stack
 
 
 class GameState:

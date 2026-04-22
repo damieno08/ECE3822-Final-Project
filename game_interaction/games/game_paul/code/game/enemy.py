@@ -10,7 +10,7 @@ Lab: Lab 5 - Enemy Patrol Paths with Linked Lists
 import pygame
 import math
 import random
-from datastructures.patrol_path import PatrolPath
+from game_interaction.games.game_paul.code.game.datastructures.patrol_path import PatrolPath
 
 # Enemy spawn data
 ENEMY_SPAWN_DATA = [
@@ -134,7 +134,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def load_sprites(self):
         """Load directional sprite animations using the unified sprite system."""
-        from sprite_loader import SpriteLoader
+        from game_interaction.games.game_paul.code.game.sprite_loader import SpriteLoader
         self.animations = SpriteLoader.load_enemy_sprites(self.sprite_name)
         sprite_info = SpriteLoader.get_sprite_info(self.sprite_name, "../../graphics/enemies")
         print(f"  Loaded {sprite_info['type']} sprites for {self.name}: {sprite_info}")
