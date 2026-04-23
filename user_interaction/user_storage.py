@@ -15,7 +15,7 @@ def get_all_users(file):
     # try to get users from file
     try:
         with open(file, "rb") as f:
-            users = pickle.load()
+            users = pickle.load(f)
     except:
         # make new list if one does not exist
         users = ArrayList()
