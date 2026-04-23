@@ -3,18 +3,18 @@ level.py - Game level with character classes and networking
 Integrated version combining lab-03 and project-01
 """
 import pygame
-from settings import *
-from tile import Tile
-from map_loader import load_layer
-from character import Character
-from subcharacter import get_all_character_classes
-from network_client import NetworkClient
-from inventory_ui import InventoryUI
-from item import create_example_items
-from time_travel import TimeTravel
-from enemy import Enemy, ENEMY_SPAWN_DATA
-from datastructures.patrol_path import PatrolPath
-from weapon import Weapon as WeaponSprite
+from game_interaction.games.game_richard.code.game.settings import *
+from game_interaction.games.game_richard.code.game.tile import Tile
+from game_interaction.games.game_richard.code.game.map_loader import load_layer
+from game_interaction.games.game_richard.code.game.character import Character
+from game_interaction.games.game_richard.code.game.subcharacter import get_all_character_classes
+from game_interaction.games.game_richard.code.game.network_client import NetworkClient
+from game_interaction.games.game_richard.code.game.inventory_ui import InventoryUI
+from game_interaction.games.game_richard.code.game.item import create_example_items
+from game_interaction.games.game_richard.code.game.time_travel import TimeTravel
+from game_interaction.games.game_richard.code.game.enemy import Enemy, ENEMY_SPAWN_DATA
+from game_interaction.games.game_richard.code.game.datastructures.patrol_path import PatrolPath
+from game_interaction.games.game_richard.code.game.weapon import Weapon as WeaponSprite
 import sys
 
 class Level:

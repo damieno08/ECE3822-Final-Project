@@ -321,5 +321,5 @@ if __name__ == '__main__':
     print("="*50)
     print()
     
-    game = Game(args.name, args.server, args.port, args.serializer)
+    game = game_paul(args.name, args.server, args.port, args.serializer)
     game.run()

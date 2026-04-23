@@ -14,7 +14,7 @@ works regardless of which backing store is used.
 Lab: Lab 6 - Sparse World Map
 """
 
-from support import import_csv_layout
+from game_interaction.games.game_richard.code.game.support import import_csv_layout
 
 
 def load_layer(path):
@@ -39,7 +39,7 @@ def load_layer(path):
             print(row, col, tile_id)
     """
     try:
-        from datastructures.sparse_matrix import SparseMatrix
+        from game_interaction.games.game_richard.code.game.datastructures.sparse_matrix import SparseMatrix
         matrix = SparseMatrix(default=-1)
         layout = import_csv_layout(path)
         for row_idx, row in enumerate(layout):

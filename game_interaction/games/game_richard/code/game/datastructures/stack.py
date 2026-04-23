@@ -8,7 +8,7 @@ Author: Richard Lin
 Date: 2/20/25
 Lab: Lab 4 - Time Travel with Stacks
 """
-from datastructures.array import ArrayList
+from game_interaction.games.game_richard.code.game.datastructures.array import ArrayList
 
 class Stack:
     """

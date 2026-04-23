@@ -64,6 +64,18 @@ class ArcadeClient:
             pady=5
         )
         self.paul_btn.pack(pady=10)
+        self.rich_btn = tk.Button(
+            self.root, 
+            text="LAUNCH Richard", 
+            command=lambda: self.run_game_thread(3), # Calls the threader
+            bg="#333",
+            fg="#00FF00",
+            font=("Courier", 12, "bold"),
+            activebackground="#00FF00",
+            padx=10,
+            pady=5
+        )
+        self.rich_btn.pack(pady=10)
 
         # --- Networking Setup ---
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

@@ -6,7 +6,7 @@ Different character types that players can choose from
 """
 
 import pygame
-from character import Character
+from game_interaction.games.game_richard.code.game.character import Character
 
 class SpiritSwordCultivator(Character):
     """SpiritSwordCultivator"""

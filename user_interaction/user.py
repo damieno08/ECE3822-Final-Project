@@ -40,7 +40,7 @@ class user:
         Generate user ID using ASCII weighted sum"""
         total = 0
         for i in name:
-            total += ord(c)
+            total += ord(i)
         return total
 
     def update_history(self, history_type, session):
