@@ -27,7 +27,7 @@ def set_all_users(file, users):
     
     # open file and dump array
     with open(file, "wb") as f:
-        pickle.dump(users, file)
+        pickle.dump(users, f)
 
 class UserStorage(BST):
 
