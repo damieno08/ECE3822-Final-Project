@@ -5,6 +5,7 @@ Revision History:
     (DO) 04/10/2026 Create initial program
     (ALL) 04/13/2026 Revise user class to gave all attributes
     (RL) 04/22/2026  Create some methods
+    (RL) 04/23/2026 Create some methods
 """
 
 # import all datastructures
@@ -23,6 +24,9 @@ class user:
 
         # give them an id based on hash function of name
         self.__id = self._generate_id(name)
+
+        # g
+        self.sprite_path = "sprite path{name.Lower().replace(' ', '_')}.png"
 
         # id is bucket index
 
@@ -78,3 +82,27 @@ class user:
         # if random history is tried, raise error
         else:
             raise TypeError("Only chat or game histories are available for indexing.")
+
+    def get_total_games(self):
+        """
+        Return total games played
+        """
+        return self.play_history.size()
+
+    def get_total_playtime(self):
+        """
+        Return total play time in seconds
+        """
+        return self.play_history.get_total_time()
+
+    def get_profile(self):
+        """
+        Return user profile
+        """
+        return {
+            "name": self.name,
+            "id": self.id,
+            "sprite_path": self.sprite_path,
+            "games_played": self.get_total_games(),
+            "total_playtime_seconds": self.get_total_playtime()
+        }
