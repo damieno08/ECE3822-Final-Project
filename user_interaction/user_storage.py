@@ -5,7 +5,28 @@ Author: Santiago Troya
 """
 
 from datastructures.bst import BST
+from datastructures.array import ArrayList
+import pickle
 
+# function to get all users from disk
+def get_all_users(file):
+
+    # try to get users from file
+    try:
+        with open(file, "rb") as f:
+            users = pickle.load()
+    except:
+        # make new list if one does not exist
+        users = ArrayList()
+
+    return users
+
+# write user data to disk
+def set_all_users(file, users):
+    
+    # open file and dump array
+    with open(file, "wb") as f:
+        pickle.dump(users, file)
 
 class UserStorage(BST):
 

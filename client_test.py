@@ -59,6 +59,7 @@ class ArcadeClient:
     def attempt_login(self):
         # Basic logic: Check if fields aren't empty (Replace with server-side check if needed)
         username = self.user_entry.get()
+        password = self.pass_entry.get()
         if username:
             self.show_game_menu()
 
