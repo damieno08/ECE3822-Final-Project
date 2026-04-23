@@ -3,7 +3,7 @@ import sys
 import pygame
 
 from .game_session import GameSession
-from user_interaction.user import user
+from user_interaction.user import User
 from game_interaction.games.game_damien.code.game.settings import WIDTH, HEIGTH
 
 start_path = str(sys.path[0])
@@ -92,4 +92,4 @@ class Richard(Game_Handler):
         self._game_session.end_session()
         return self._game_session.get_time_played(), self.score
     
-games = [Damien(user("Damien")), Santiago(user("Santi")), Paul(user("Paul")), Richard(user("Richard"))]
+games = [Damien(User("Damien")), Santiago(User("Santi")), Paul(User("Paul")), Richard(User("Richard"))]

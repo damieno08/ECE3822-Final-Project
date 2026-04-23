@@ -1,67 +1,75 @@
 import socket
 import threading
-from game_interaction.game_handler import games
+from user_interaction.user_storage import get_all_users, set_all_users, UserStorage
+from user_interaction.user import User 
+from datastructures.array import ArrayList 
 
 class ArcadeServer:
-    def __init__(self, host='0.0.0.0', port=65432):
+    def __init__(self, host='0.0.0.0', port=65432, db_file="users.dat"):
         self.host = host
         self.port = port
-        self.games = games # Access to game logic for validation
-        self.clients = []
-
-        # Initialize the Socket
+        self.db_file = db_file
+        self.users_bst = UserStorage()
+        self.main_array = ArrayList()
+        
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server.bind((self.host, self.port))
 
     def start(self):
-        self.server.listen()
-        print(f"[*] Arcade Server listening on {self.host}:{self.port}")
+        data = get_all_users(self.db_file)
+        if isinstance(data, ArrayList):
+            self.main_array = data
         
-        while True:
-            conn, addr = self.server.accept()
-            # Start a new thread for every client that connects
-            thread = threading.Thread(target=self.handle_client, args=(conn, addr))
-            thread.start()
-            print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")
+        for i in range(len(self.main_array)):
+            self.users_bst.insert(self.main_array[i].name)
+            
+        self.server.listen()
+        print(f"[*] Server Online at {self.host}:{self.port}")
+        
+        try:
+            while True:
+                conn, addr = self.server.accept()
+                threading.Thread(target=self.handle_client, args=(conn, addr), daemon=True).start()
+        except KeyboardInterrupt:
+            print("\n[*] Shutting down...")
+        finally:
+            set_all_users(self.db_file, self.main_array)
+            self.server.close()
 
     def handle_client(self, conn, addr):
-        print(f"[NEW CONNECTION] {addr} connected.")
-        conn.sendall(b"Connected to Arcade Server. Ready for commands.")
-
-        connected = True
-        while connected:
+        while True:
             try:
-                # Receive message from client
-                message = conn.recv(1024).decode()
-                
-                if not message:
-                    break
+                data = conn.recv(1024).decode()
+                if not data: break
 
-                print(f"[{addr}] says: {message}")
-
-                # LOGIC: Handle the "CLIENT_RUNNING_GAME_0" signal
-                if message == "CLIENT_RUNNING_GAME_0":
-                    # The server can now run its own logic for Game 0
-                    # For example: verify if the player has permission
-                    response = "SERVER: Game 0 verified. Track started."
-                    conn.sendall(response.encode())
+                if data.startswith("LOGIN_REQUEST:"):
+                    parts = data.split(":")
+                    username = parts[1].strip()
                     
-                    # You can call server-side logic here:
-                    # self.games[0].handle_game() 
+                    existing_name = self.users_bst.search(username)
+                    if not existing_name:
+                        new_user = User(username)
+                        self.main_array.append(new_user)
+                        self.users_bst.insert(new_user.name)
+                        # Client looks for "SUCCESS" to trigger dashboard
+                        conn.sendall(f"SUCCESS: {new_user.name}".encode())
+                    else:
+                        conn.sendall(f"SUCCESS: {existing_name}".encode())
 
-                else:
-                    conn.sendall(b"Command received.")
+                elif data.startswith("QUERY_USER:"):
+                    search_val = data.split(":")[1].strip().lower()
+                    results = []
+                    for i in range(len(self.main_array)):
+                        u = self.main_array[i]
+                        if search_val in u.name.lower():
+                            results.append(f"IDX:{i} | ID:{u.get_id()} | NAME:{u.name}")
+                    
+                    resp = "USER_RESULTS:" + ("\n".join(results) if results else "No users found")
+                    conn.sendall(resp.encode())
 
-            except ConnectionResetError:
-                break
-            except Exception as e:
-                print(f"[ERROR] {e}")
-                break
-
-        print(f"[DISCONNECTED] {addr} closed connection.")
+            except: break
         conn.close()
 
 if __name__ == "__main__":
-    # Create and start the server
-    arcade_backend = ArcadeServer()
-    arcade_backend.start()
+    ArcadeServer().start()

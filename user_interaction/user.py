@@ -17,7 +17,7 @@ from datetime import datetime
 
 
 # class storing user information
-class user:
+class User:
     def __init__(self, name):
 
         # set username for user so others can find them
@@ -96,6 +96,9 @@ class user:
         Return total play time in seconds
         """
         return self.play_history.get_total_time()
+
+    def get_id(self):
+        return self.__id
 
     def get_profile(self):
         """
