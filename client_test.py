@@ -100,10 +100,12 @@ class ArcadeClient:
     # ==========================================
     def connect_to_server(self):
         try:
-            self.s.connect(('localhost', 65432))
+            # Using '127.0.0.1' is often more reliable than 'localhost' on Linux
+            self.s.connect(('127.0.0.1', 65432))
             Thread(target=self.receive_data, daemon=True).start()
         except Exception as e:
-            print(f"Initial Connection Failed: {e}")
+            print(f"Connection failed: {e}")
+            # Don't crash! Just let the user know via console or a popup later
 
     def run_game_thread(self, game_type):
         Thread(target=self.execute_game_logic, args=(game_type,), daemon=True).start()
