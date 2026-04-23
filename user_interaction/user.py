@@ -4,7 +4,7 @@ This program will define the user class for the arcade project of ECE3822
 Revision History:
     (DO) 04/10/2026 Create initial program
     (ALL) 04/13/2026 Revise user class to gave all attributes
-
+    (RL) 04/22/2026  Create some methods
 """
 
 # import all datastructures
@@ -22,7 +22,7 @@ class user:
         self.name = name
 
         # give them an id based on hash function of name
-        self.__id = None
+        self.__id = self._generate_id(name)
 
         # id is bucket index
 
@@ -34,6 +34,14 @@ class user:
 
         # store sparse matrix to get recommendations
         self.__game_recommendation = GameRecommendation()
+
+    def _generate_id(self, name):
+        """
+        Generate user ID using ASCII weighted sum"""
+        total = 0
+        for i in name:
+            total += ord(c)
+        return total
 
     def update_history(self, history_type, session):
 
