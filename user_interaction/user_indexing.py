@@ -11,12 +11,14 @@ class UserIndexing(HashTable):
 
     def __init__(self):
         super().__init__()
+        self._data = HashTable()
 
+    # function will map user_id to storage location in user array
     def map_user(self, user_id, storage_index):
-        pass
+        self._data.set(user_id, storage_index)
 
     def get_index(self, user_id):
-        pass
+        self._data.get(user_id)
 
     def remove_user(self, user_id):
-        pass
+        self._data.delete(user_id)
