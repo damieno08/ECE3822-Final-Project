@@ -17,10 +17,12 @@ class ArcadeServer:
         self.server.bind((self.host, self.port))
 
     def start(self):
+        # Load existing ArrayList from disk
         data = get_all_users(self.db_file)
         if isinstance(data, ArrayList):
             self.main_array = data
         
+        # Populate BST for lookup
         for i in range(len(self.main_array)):
             self.users_bst.insert(self.main_array[i].name)
             
@@ -38,24 +40,49 @@ class ArcadeServer:
             self.server.close()
 
     def handle_client(self, conn, addr):
+        print(f"[+] New connection: {addr}")
         while True:
             try:
-                data = conn.recv(1024).decode()
+                data = conn.recv(2048).decode()
                 if not data: break
 
                 if data.startswith("LOGIN_REQUEST:"):
+                    # Protocol: LOGIN_REQUEST:username:password
                     parts = data.split(":")
-                    username = parts[1].strip()
+                    if len(parts) < 3: continue
                     
-                    existing_name = self.users_bst.search(username)
-                    if not existing_name:
-                        new_user = User(username)
-                        self.main_array.append(new_user)
-                        self.users_bst.insert(new_user.name)
-                        # Client looks for "SUCCESS" to trigger dashboard
-                        conn.sendall(f"SUCCESS: {new_user.name}".encode())
+                    username = parts[1].strip()
+                    password_attempt = parts[2].strip()
+                    
+                    # 1. Find user in the ArrayList
+                    user_found = None
+                    for i in range(len(self.main_array)):
+                        if self.main_array[i].name == username:
+                            user_found = self.main_array[i]
+                            break
+                    
+                    if user_found:
+                        # 2. Use the User's internal method to hash the login attempt
+                        attempt_hash = user_found._generate_id(password_attempt)
+                        
+                        # 3. Use the PUBLIC getter you added to get the stored hash
+                        # This avoids the '_User__password' attribute error entirely
+                        stored_hash = user_found.get_pass_hashed()
+                        
+                        if attempt_hash == stored_hash:
+                            conn.sendall(f"SUCCESS:{username}".encode())
+                        else:
+                            conn.sendall("ERROR:Incorrect password.".encode())
                     else:
-                        conn.sendall(f"SUCCESS: {existing_name}".encode())
+                        # 4. Handle new registration
+                        # Check BST to see if name is taken (though not in main_array)
+                        if self.users_bst.search(username):
+                             conn.sendall("ERROR:Username already exists.".encode())
+                        else:
+                            new_user = User(username, password_attempt)
+                            self.main_array.append(new_user)
+                            self.users_bst.insert(new_user.name)
+                            conn.sendall(f"SUCCESS:{username}".encode())
 
                 elif data.startswith("QUERY_USER:"):
                     search_val = data.split(":")[1].strip().lower()
@@ -68,7 +95,10 @@ class ArcadeServer:
                     resp = "USER_RESULTS:" + ("\n".join(results) if results else "No users found")
                     conn.sendall(resp.encode())
 
-            except: break
+            except Exception as e:
+                # This will now catch and print errors without crashing the whole thread
+                print(f"[!] Thread Error with {addr}: {e}")
+                break
         conn.close()
 
 if __name__ == "__main__":

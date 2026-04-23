@@ -92,4 +92,3 @@ class Richard(Game_Handler):
         self._game_session.end_session()
         return self._game_session.get_time_played(), self.score
     
-games = [Damien(User("Damien")), Santiago(User("Santi")), Paul(User("Paul")), Richard(User("Richard"))]

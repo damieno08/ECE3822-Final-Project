@@ -18,7 +18,7 @@ from datetime import datetime
 
 # class storing user information
 class User:
-    def __init__(self, name):
+    def __init__(self, name, password):
 
         # set username for user so others can find them
         self.name = name
@@ -26,7 +26,10 @@ class User:
         # give them an id based on hash function of name
         self.__id = self._generate_id(name)
 
-        # g
+        # store and send hashed passwords
+        self.__password = self._generate_id(password)
+
+        # set sprite path for user profile
         self.sprite_path = "sprite path{name.Lower().replace(' ', '_')}.png"
 
         # id is bucket index
@@ -99,6 +102,9 @@ class User:
 
     def get_id(self):
         return self.__id
+    
+    def get_pass_hashed(self):
+        return self.__password
 
     def get_profile(self):
         """
