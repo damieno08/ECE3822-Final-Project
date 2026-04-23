@@ -1,9 +1,10 @@
 """
 user_storage.py - User Storage ordered by ASCII-weighted username sum.
 
-Author: Santiago Troya
+Revision History:
+    (ST) 04/20/2026 Create initial program
+    (RL) 04/23/2026 Create some methods
 """
-
 from datastructures.bst import BST
 
 
