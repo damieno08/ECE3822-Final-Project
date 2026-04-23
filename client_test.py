@@ -1,159 +1,140 @@
 import socket
 import tkinter as tk
 from threading import Thread
-
 from game_interaction.game_handler import games
 
 class ArcadeClient:
     def __init__(self, games_list):
-        # This stores your list so the button can find it
         self.games = games_list 
         
         # --- GUI Setup ---
         self.root = tk.Tk()
         self.root.title("Python Networked Arcade")
-        self.root.geometry("400x500")
+        self.root.geometry("400x600")
         self.root.configure(bg="#1a1a1a")
 
-        # Terminal Display
-        self.display = tk.Text(
-            self.root, 
-            state='disabled', 
-            height=15, 
-            width=45, 
-            bg="#000", 
-            fg="#00FF00", # Classic Matrix Green
-            insertbackground="white"
-        )
-        self.display.pack(padx=20, pady=20)
-
-        # game buttons
-        self.damien_btn = tk.Button(
-            self.root, 
-            text="LAUNCH Luainid", 
-            command=lambda: self.run_game_thread(0), # Calls the threader
-            bg="#333",
-            fg="#00FF00",
-            font=("Courier", 12, "bold"),
-            activebackground="#00FF00",
-            padx=10,
-            pady=5
-        )
-        self.damien_btn.pack(pady=10)
-        self.santi_btn = tk.Button(
-            self.root, 
-            text="LAUNCH Santiago", 
-            command=lambda: self.run_game_thread(1), # Calls the threader
-            bg="#333",
-            fg="#00FF00",
-            font=("Courier", 12, "bold"),
-            activebackground="#00FF00",
-            padx=10,
-            pady=5
-        )
-        self.santi_btn.pack(pady=10)
-        self.paul_btn = tk.Button(
-            self.root, 
-            text="LAUNCH Vermis", 
-            command=lambda: self.run_game_thread(2), # Calls the threader
-            bg="#333",
-            fg="#00FF00",
-            font=("Courier", 12, "bold"),
-            activebackground="#00FF00",
-            padx=10,
-            pady=5
-        )
-        self.paul_btn.pack(pady=10)
-        self.rich_btn = tk.Button(
-            self.root, 
-            text="LAUNCH Richard", 
-            command=lambda: self.run_game_thread(3), # Calls the threader
-            bg="#333",
-            fg="#00FF00",
-            font=("Courier", 12, "bold"),
-            activebackground="#00FF00",
-            padx=10,
-            pady=5
-        )
-        self.rich_btn.pack(pady=10)
-
-        # --- Networking Setup ---
+        # Networking initialization (moved here so it connects immediately)
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            # Change 'localhost' to the Server's IP if playing on different PCs
-            self.s.connect(('localhost', 65432))
-            self.update_display("SYSTEM: Connected to Arcade Server.")
-            
-            # Background thread to listen for server messages
-            Thread(target=self.receive_data, daemon=True).start()
-        except Exception as e:
-            self.update_display(f"SYSTEM ERROR: Connection failed.\n{e}")
+        self.connect_to_server()
 
+        # Start with the Login Screen
+        self.show_login_screen()
         self.root.mainloop()
 
+    def clear_screen(self):
+        """Removes all widgets from the current window."""
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
     # ==========================================
-    # GAME EXECUTION LOGIC
+    # SCREEN 1: LOGIN
     # ==========================================
+    def show_login_screen(self):
+        self.clear_screen()
+
+        # Logo Placeholder
+        try:
+            self.logo_img = tk.PhotoImage(file="") # Add path here
+            logo_label = tk.Label(self.root, image=self.logo_img, bg="#1a1a1a")
+            logo_label.pack(pady=20)
+        except:
+            tk.Label(self.root, text="ARCADE LOGIN", fg="#00FF00", bg="#1a1a1a", 
+                     font=("Courier", 20, "bold")).pack(pady=20)
+
+        tk.Label(self.root, text="Username:", fg="#00FF00", bg="#1a1a1a", font=("Courier", 12)).pack(pady=5)
+        self.user_entry = tk.Entry(self.root, bg="#000", fg="#00FF00", insertbackground="white")
+        self.user_entry.pack(pady=5)
+
+        tk.Label(self.root, text="Password:", fg="#00FF00", bg="#1a1a1a", font=("Courier", 12)).pack(pady=5)
+        self.pass_entry = tk.Entry(self.root, show="*", bg="#000", fg="#00FF00", insertbackground="white")
+        self.pass_entry.pack(pady=5)
+
+        login_btn = tk.Button(
+            self.root, text="ENTER", command=self.attempt_login,
+            bg="#333", fg="#00FF00", font=("Courier", 12, "bold"),
+            activebackground="#00FF00", width=15
+        )
+        login_btn.pack(pady=20)
+
+    def attempt_login(self):
+        # Basic logic: Check if fields aren't empty (Replace with server-side check if needed)
+        username = self.user_entry.get()
+        if username:
+            self.show_game_menu()
+
+    # ==========================================
+    # SCREEN 2: GAME MENU
+    # ==========================================
+    def show_game_menu(self):
+        self.clear_screen()
+
+        # Menu Logo
+        try:
+            self.menu_logo = tk.PhotoImage(file="") # Add path here
+            tk.Label(self.root, image=self.menu_logo, bg="#1a1a1a").pack(pady=10)
+        except:
+            tk.Label(self.root, text="SELECT A GAME", fg="#00FF00", bg="#1a1a1a", 
+                     font=("Courier", 18, "bold")).pack(pady=10)
+
+        # Terminal Display (Integrated into menu)
+        self.display = tk.Text(
+            self.root, state='disabled', height=8, width=40, 
+            bg="#000", fg="#00FF00"
+        )
+        self.display.pack(padx=20, pady=10)
+
+        # Game Launch Buttons
+        game_names = [("Luainid", 0), ("Santiago", 1), ("Vermis", 2), ("Richard", 3)]
+        
+        for name, idx in game_names:
+            btn = tk.Button(
+                self.root, text=f"LAUNCH {name}", 
+                command=lambda i=idx: self.run_game_thread(i),
+                bg="#333", fg="#00FF00", font=("Courier", 10, "bold"),
+                activebackground="#00FF00", width=25, pady=5
+            )
+            btn.pack(pady=5)
+
+    # ==========================================
+    # CORE LOGIC & NETWORKING
+    # ==========================================
+    def connect_to_server(self):
+        try:
+            self.s.connect(('localhost', 65432))
+            Thread(target=self.receive_data, daemon=True).start()
+        except Exception as e:
+            print(f"Initial Connection Failed: {e}")
+
     def run_game_thread(self, game_type):
-        """Starts the game in a separate thread to keep GUI alive."""
-        game_thread = Thread(target=self.execute_game_logic, args=(game_type,), daemon=True)
-        game_thread.start()
+        Thread(target=self.execute_game_logic, args=(game_type,), daemon=True).start()
 
     def execute_game_logic(self, game_type):
-        """The actual logic for calling your function."""
         try:
-            self.update_display(">>> Requesting Game 0...")
+            self.root.after(0, lambda: self.update_display(f">>> Launching Game {game_type}..."))
+            self.s.sendall(f"NOTIFY: Starting Game {game_type}".encode())
             
-            # 1. Notify the server you are starting
-            self.s.sendall(b"NOTIFY: Starting Game ")
+            played, score = self.games[game_type].start_game()
             
-            # 2. CALL YOUR FUNCTION
-            # This is exactly what you requested:
-            played,score = self.games[game_type].start_game()
             self.s.sendall(b"DISCONNECT")
-            self.root.after(0, lambda: self.update_display(">>> Game session ended."))
-            self.root.after(0, lambda: self.update_display(f"The game lasted {played}"))
-            self.root.after(0, lambda: self.update_display(f"The game score was {score}"))
-
-        except IndexError:
-            self.update_display("ERROR: Game index 0 not found.")
-        """
+            self.root.after(0, lambda: self.update_display(f">>> Session Ended. Score: {score}"))
         except Exception as e:
-            self.update_display(f"GAME ERROR: {e}")
-        """
+            self.root.after(0, lambda err=e: self.update_display(f"GAME ERROR: {err}"))
 
-    # ==========================================
-    # HELPER METHODS
-    # ==========================================
     def receive_data(self):
-        """Listens for data from the server."""
         while True:
             try:
                 message = self.s.recv(1024).decode()
                 if message:
-                    self.update_display(f"SERVER: {message}")
+                    self.root.after(0, lambda m=message: self.update_display(f"SERVER: {m}"))
             except:
-                self.update_display("SYSTEM: Connection to server lost.")
                 break
 
     def update_display(self, text):
-        """Safely updates the text area."""
-        self.display.config(state='normal')
-        self.display.insert(tk.END, text + "\n")
-        self.display.config(state='disabled')
-        self.display.see(tk.END)
+        if hasattr(self, 'display'):
+            self.display.config(state='normal')
+            self.display.insert(tk.END, text + "\n")
+            self.display.config(state='disabled')
+            self.display.see(tk.END)
 
-# ==========================================
-# HOW TO RUN THIS
-# ==========================================
 if __name__ == "__main__":
-    # 1. This represents your existing game setup
-    class MyGame:
-        def handle_game(self):
-            # Your custom logic goes here!
-            print("Game is running...") 
-
-    # 2. Create your list of game objects 
-
-    # 3. Start the client and pass the list in
     ArcadeClient(games)

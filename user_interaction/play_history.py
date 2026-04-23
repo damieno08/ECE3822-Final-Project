@@ -10,13 +10,10 @@ from game_interaction.game_session import GameSession
 from user_interaction.history import History
 
 class Play_history(History):
-    def __init__(self, time):
+    def __init__(self):
 
         # Inheret the history class
         super().__init__()
-
-        # Save time the message was sent
-        self.time = time
 
     def get_total_time(self):
         """

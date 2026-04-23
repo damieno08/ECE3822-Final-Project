@@ -27,10 +27,10 @@ class user:
         # id is bucket index
 
         # store their individual play history
-        self.play_history = Play_history(datetime.now())
+        self.play_history = Play_history()
 
         # store chat history
-        self.chat_history = Chat_history(datetime.now())
+        self.chat_history = Chat_history()
 
         # store sparse matrix to get recommendations
         self.__game_recommendation = GameRecommendation()
