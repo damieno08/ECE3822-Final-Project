@@ -36,6 +36,7 @@ class Damien(Game_Handler):
         self.game.run()
         self.score = self.game.level.player.exp
         self._game_session.end_session()
+        self.user.play_history.push(self)
         return self._game_session.get_time_played(), self.score
     
 # Santiago game
@@ -54,6 +55,7 @@ class Santiago(Game_Handler):
         self.game.run()
         self.score = self.game.level.player.exp
         self._game_session.end_session()
+        self.user.play_history.push(self)
         return self._game_session.get_time_played(), self.score
     
 # Paul game
@@ -72,6 +74,7 @@ class Paul(Game_Handler):
         self.game.run()
         self.score = self.game.level.player.exp
         self._game_session.end_session()
+        self.user.play_history.push(self)
         return self._game_session.get_time_played(), self.score
     
 # richard's game
@@ -90,5 +93,6 @@ class Richard(Game_Handler):
         self.game.run()
         self.score = self.game.level.player.exp
         self._game_session.end_session()
+        self.user.play_history.push(self)
         return self._game_session.get_time_played(), self.score
     

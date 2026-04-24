@@ -184,7 +184,7 @@ class ArcadeClient:
             time_played, score = game_instance.start_game()
             self.root.after(0, lambda: self.update_display(f"SESSION COMPLETE\nTIME: {time_played}s\nSCORE: {score}", clear=True))
         except Exception as e:
-            self.root.after(0, lambda: self.update_display(f"CRITICAL ERROR: {e}", clear=True))
+            self.root.after(0, lambda err=e: self.update_display(f"CRITICAL ERROR: {e}", clear=True))
 
 if __name__ == "__main__":
     ArcadeClient()
