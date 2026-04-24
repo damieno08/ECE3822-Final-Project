@@ -27,11 +27,15 @@ class ArcadeServer:
             self.users_bst.insert(self.main_array[i].name)
             
         self.server.listen()
+        self.server.settimeout(1.0)
         print(f"[*] Server Online at {self.host}:{self.port}")
-        
+
         try:
             while True:
-                conn, addr = self.server.accept()
+                try:
+                    conn, addr = self.server.accept()
+                except OSError:
+                    continue
                 threading.Thread(target=self.handle_client, args=(conn, addr), daemon=True).start()
         except KeyboardInterrupt:
             print("\n[*] Shutting down...")
@@ -82,6 +86,7 @@ class ArcadeServer:
                             new_user = User(username, password_attempt)
                             self.main_array.append(new_user)
                             self.users_bst.insert(new_user.name)
+                            set_all_users(self.db_file, self.main_array)
                             conn.sendall(f"SUCCESS:{username}".encode())
 
                 elif data.startswith("QUERY_USER:"):
