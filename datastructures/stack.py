@@ -84,7 +84,7 @@ class Stack:
         
         # Return any value besides end
         else:
-            data = self.get_array
+            data = self.get_array()
             return data[index]
     
     def is_empty(self):

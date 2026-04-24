@@ -27,3 +27,5 @@ class GameSession:
         return self.end_time == None
 
 
+    def __str__(self):
+        return (f"{self.user.name} played {self.game_name} for {self.get_time_played()} and scored {self.score}")

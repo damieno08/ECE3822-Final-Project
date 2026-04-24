@@ -30,8 +30,7 @@ class User:
         self.__password = self._generate_id(password)
 
         # set sprite path for user profile
-        self.sprite_path = "sprite path{name.Lower().replace(' ', '_')}.png"
-
+        self.sprite_path = f"sprite_path_{name.lower().replace(' ', '_')}.png"
         # id is bucket index
 
         # store their individual play history
@@ -78,11 +77,11 @@ class User:
         
         # check if chat and get history
         if history_type == "chat":
-            self.chat_history.get_history(idx)
+            return self.chat_history.get_history(idx)
 
         # if not a chat history, get game history
         elif history_type == "game":
-            self.play_history.get_history(idx)
+            return self.play_history.get_history(idx)
 
         # if random history is tried, raise error
         else:
@@ -112,7 +111,7 @@ class User:
         """
         return {
             "name": self.name,
-            "id": self.id,
+            "id": self.get_id(),
             "sprite_path": self.sprite_path,
             "games_played": self.get_total_games(),
             "total_playtime_seconds": self.get_total_playtime()

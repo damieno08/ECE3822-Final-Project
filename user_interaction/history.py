@@ -16,9 +16,6 @@ class History:
         # history is a Stack
         self._history = Stack()
 
-    def push(self, object):
-        self._history.push(object)
-
     def get_history(self, idx = -1):
         """
         Return a history entry at a given index 
