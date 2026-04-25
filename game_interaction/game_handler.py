@@ -11,8 +11,9 @@ start_path = str(sys.path[0])
 class Game_Handler:
     
     # basic initialization for making name of game and user
-    def __init__(self,user, name):
+    def __init__(self,user, name, genre):
         self.name = name
+        self.genre = genre
         self.user = user
         self._game_session = None
 
@@ -30,7 +31,7 @@ class Damien(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
-        super().__init__(user, "Luaianid")
+        super().__init__(user, "Luaianid", "RPG")
         
 
     # run the game and handle game session recording
@@ -45,7 +46,7 @@ class Santiago(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
-        super().__init__(user, "JAG")
+        super().__init__(user, "JAG", "Action")
 
 
     # run the game and handle game session recording
@@ -58,7 +59,7 @@ class Paul(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
-        super().__init__(user, "Paul")
+        super().__init__(user, "Paul", "Adventure")
         
 
     # run the game and handle game session recording
@@ -71,7 +72,7 @@ class Richard(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
-        super().__init__(user, "Richard")
+        super().__init__(user, "Richard", "Puzzle")
         
 
     # run the game and handle game session recording
