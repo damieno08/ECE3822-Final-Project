@@ -43,8 +43,8 @@ class Santiago(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
-        super().__init__(user, "Santiago")
-        
+        super().__init__(user, "JAG")
+
 
     # run the game and handle game session recording
     def start_game(self):

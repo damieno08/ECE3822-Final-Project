@@ -2,7 +2,8 @@
 game_recommendation.py - Game Recommendation system
 Tracks genres played per user as a sparse matrix (mostly zeros).
 
-Author: Santiago Troya
+Revision History:
+    (ST) 04/19/2026 Create initial class
 """
 
 from datastructures.sparse_matrix import SparseMatrix
