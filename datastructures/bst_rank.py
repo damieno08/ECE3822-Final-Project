@@ -1,15 +1,16 @@
 """
 bst.py - Self-Balancing Binary Search Tree (AVL)
-Author: Damien Ortiz
+Author: Paul Garrison
 """
 
 class Node:
     def __init__(self, value):
-        self.value = value
+        self.value = value      # score
+        self.users = set()     # all users with this score
         self.left = None
         self.right = None
-        self.height = 1  # For balancing
-        self.size = 1    # For rank queries (count of nodes in subtree)
+        self.height = 1
+        self.size = 0          # total USERS, not nodes
 
 class BST:
     def __init__(self):
@@ -29,10 +30,10 @@ class BST:
 
     def _update(self, node):
         """
-        Updates height and size after changes.
+        Updates height and size after changes. 
         """
         node.height = 1 + max(self._get_height(node.left), self._get_height(node.right))
-        node.size = 1 + self._get_size(node.left) + self._get_size(node.right)
+        node.size = len(node.users) + self._get_size(node.left) + self._get_size(node.right)
 
     def _rotate_right(self, y):
         """

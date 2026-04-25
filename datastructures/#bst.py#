@@ -1,6 +1,6 @@
 """
 bst.py - Self-Balancing Binary Search Tree (AVL)
-Author: Damien Ortiz
+Author
 """
 
 class Node:
