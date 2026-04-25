@@ -215,7 +215,7 @@ class ArcadeClient:
             )
 
         except Exception as e:
-            self.root.after(0, lambda: self.update_display(f"ERROR: {e}", clear=True))
+            self.root.after(0, lambda err=e: self.update_display(f"ERROR: {err}", clear=True))
 
 
 if __name__ == "__main__":
