@@ -1,5 +1,5 @@
 """
-bst.py - Self-Balancing Binary Search Tree (AVL)
+bst_rank.py - Self-Balancing Binary Search Tree (AVL). With Rank included
 Author: Paul Garrison
 """
 
@@ -65,23 +65,33 @@ class BST:
 
     def _insert_recursive(self, node, value):
         """
-        Function recursively calls until we find where the new node should be added
+        Inserts (score, user) into AVL tree.
+        Supports true ties by grouping users with same score.
         """
+        
+        score, user = value
+        
         # if there is no root, make it root
         if not node:
-            return Node(value)
+            new_node = Node(score)
+            new_node.users.add(user)  # store user in tie group
+            self._update(new_node)
+            return new_node
+
         
         # make left if less
-        if value < node.value:
+        if score < node.value:
             node.left = self._insert_recursive(node.left, value)
 
         # make right if greater
-        elif value > node.value:
+        elif score > node.value:
             node.right = self._insert_recursive(node.right, value)
         
-        # return a duplicate if the same
+        # Tie case: same score goes into same node
         else:
-            return node 
+            node.users.add(user)
+            self._update(node)
+            return node
 
         # change height counts and children count
         self._update(node)
@@ -90,20 +100,20 @@ class BST:
         balance = self._get_balance(node)
 
         # if heavy left side, shift right
-        if balance > 1 and value < node.left.value:
+        if balance > 1 and score < node.left.value:
             return self._rotate_right(node)
         
         # if heavy right side, shift left
-        if balance < -1 and value > node.right.value:
+        if balance < -1 and score > node.right.value:
             return self._rotate_left(node)
             
         # left side heavy right
-        if balance > 1 and value > node.left.value:
+        if balance > 1 and score > node.left.value:
             node.left = self._rotate_left(node.left)
             return self._rotate_right(node)
         
         # right side heavy left
-        if balance < -1 and value < node.right.value:
+        if balance < -1 and score < node.right.value:
             node.right = self._rotate_right(node.right)
             return self._rotate_left(node)
 
