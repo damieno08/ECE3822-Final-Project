@@ -1,0 +1,123 @@
+"""
+bst_rank tests
+Author: Paul Garrison
+Date: 4/25/26
+"""
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+from datastructures.bst_rank import BST
+
+
+def print_state(tree, label):
+    print("\n" + "=" * 40)
+    print(label)
+    print("Inorder (scores):", tree.inorder())
+    print("Total users:", len(tree))
+    print("=" * 40)
+
+
+def test_insert_and_ties():
+    print("TEST 1: Insert + Ties")
+
+    t = BST()
+
+    t.insert((50, "Alice"))
+    t.insert((30, "Bob"))
+    t.insert((50, "Charlie"))   # tie
+    t.insert((70, "Dave"))
+    t.insert((50, "Eve"))       # tie
+
+    print_state(t, "After Inserts")
+
+    # Check root tie handling indirectly
+    print("Rank Alice:", t.find_rank((50, "Alice")))
+    print("Rank Charlie:", t.find_rank((50, "Charlie")))
+    print("Rank Dave:", t.find_rank((70, "Dave")))
+
+
+def test_kth():
+    print("\nTEST 2: kth queries")
+
+    t = BST()
+
+    data = [
+        (100, "A"),
+        (90, "B"),
+        (90, "C"),
+        (80, "D"),
+        (70, "E"),
+    ]
+
+    for x in data:
+        t.insert(x)
+
+    print_state(t, "After Inserts")
+
+    for k in range(1, len(t) + 1):
+        print(f"{k}th smallest:", t.kth_smallest(k))
+
+
+def test_rank():
+    print("\nTEST 3: Rank correctness")
+
+    t = BST()
+
+    t.insert((100, "A"))
+    t.insert((90, "B"))
+    t.insert((90, "C"))
+    t.insert((80, "D"))
+
+    print("A rank:", t.find_rank((100, "A")))  # should be 1
+    print("B rank:", t.find_rank((90, "B")))   # should be 2
+    print("C rank:", t.find_rank((90, "C")))   # should be 2 (tie)
+    print("D rank:", t.find_rank((80, "D")))   # should be 4
+
+
+def test_delete():
+    print("\nTEST 4: Delete + tie removal")
+
+    t = BST()
+
+    t.insert((50, "A"))
+    t.insert((50, "B"))
+    t.insert((50, "C"))
+
+    print_state(t, "Before delete")
+
+    t.delete((50, "B"))
+    print_state(t, "After deleting B")
+
+    t.delete((50, "A"))
+    print_state(t, "After deleting A")
+
+    t.delete((50, "C"))
+    print_state(t, "After deleting C (node should disappear)")
+
+
+def test_mixed_operations():
+    print("\nTEST 5: Mixed operations stress test")
+
+    t = BST()
+
+    import random
+
+    users = ["U" + str(i) for i in range(10)]
+
+    # insert random scores
+    for u in users:
+        t.insert((random.randint(1, 5), u))
+
+    print_state(t, "After random inserts")
+
+    # test ranking
+    for u in users[:5]:
+        print(u, "rank:", t.find_rank((1, u)))  # may or may not exist score
+
+
+if __name__ == "__main__":
+    test_insert_and_ties()
+    test_kth()
+    test_rank()
+    test_delete()
+    test_mixed_operations()
