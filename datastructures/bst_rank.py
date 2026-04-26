@@ -138,25 +138,50 @@ class BST:
 
     def _delete_recursive(self, node, key):
         """
-        Function returns new root after deleting key
+        Deletes (score, user) from AVL tree.
+        Handles ties by removing user from node.users first.
         """
         # if not found, root stays the same
-        if not node: return node
-
+        if not node: return None
+        score, user = key  # key = (score, user)
         # traverse tree until we find the node
-        if key < node.value:
+        # Compare ONLY by score
+        if score < node.value:
             node.left = self._delete_recursive(node.left, key)
-        elif key > node.value:
+        elif score > node.value:
             node.right = self._delete_recursive(node.right, key)
         else:
+            """
+            Found the node with matching score. remove the user from this node first.
+            """
+            # Remove user from tie group
+            node.users.discard(user)
+
+            # If other users still share this score, keep node
+            if len(node.users) > 0:
+                self._update(node)
+                return node
+
+            """
+            No users remain → delete node normally
+            """
             # find if we have one or no children
-            if not node.left: return node.right
-            elif not node.right: return node.left
+            if not node.left:
+                return node.right
+
+            if not node.right:
+                return node.left
             
-            # if two children, find the smallest node on the right to replace
+            # if two children, find the smallest node on the right to replace. replace with inorder successor
             temp = self._get_min_node(node.right)
+
             node.value = temp.value
-            node.right = self._delete_recursive(node.right, temp.value)
+            node.users = temp.users.copy()
+            # Remove one user from successor node
+            node.right = self._delete_recursive(
+                node.right,
+                (temp.value, next(iter(temp.users)))
+            )
 
         # update height of tree
         self._update(node)
@@ -220,29 +245,38 @@ class BST:
         # return entire tree list
         return res
 
-    def find_rank(self, key):
-        """
-        Returns the rank by value
-        """
-        def _rank(node, val):
-            # if not found, return 0
-            if not node: 
-                return 0 
-            
-            # traverse left tree
-            if val < node.value:
-                return _rank(node.left, val)
-            
-            # traverse right tree
-            elif val > node.value:
-                # add up left side and current node then go right
-                return 1 + self._get_size(node.left) + _rank(node.right, val)
-            else:
-                # return the index because we found the key
-                return self._get_size(node.left) + 1
-                
-        # return the rank
-        return _rank(self._root, key)
+     def find_rank(self, key):
+         """
+         Returns rank of a (score, user).
+
+         Rank is based on number of users with higher scores.
+         All users with same score share the same rank.
+         """
+
+         score, user = key
+
+         def _rank(node, score):
+             if not node:
+                 return 0
+
+             # go left if target score is smaller
+             if score < node.value:
+                 return _rank(node.left, score)
+
+             # go right if target score is larger
+             elif score > node.value:
+                 return (
+                     self._get_size(node.left) +
+                     len(node.users) +
+                     _rank(node.right, score)
+                 )
+
+             # found the score node
+             else:
+                 # rank is all users in left subtree
+                 return self._get_size(node.left)
+             # return rank
+            return _rank(self._root, score)       
 
     def kth_smallest(self, k):
         def _kth(node, k):
