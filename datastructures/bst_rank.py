@@ -245,60 +245,74 @@ class BST:
         # return entire tree list
         return res
 
-     def find_rank(self, key):
-         """
-         Returns rank of a (score, user).
+    def find_rank(self, key):
+        """
+        Returns number of users with strictly higher score.
+        Best score is rank 0.
+        """
 
-         Rank is based on number of users with higher scores.
-         All users with same score share the same rank.
-         """
+        score, user = key
 
-         score, user = key
+        def _rank(node):
+            if not node:
+                return 0
+            
+            # If current node score is LESS → all right side is higher
+            if score < node.value:
+                return (
+                    self._get_size(node.right) +
+                    len(node.users) +
+                    _rank(node.left)
+                )
 
-         def _rank(node, score):
-             if not node:
-                 return 0
+            # If current node score is GREATER → go right only
+            elif score > node.value:
+                return _rank(node.right)
 
-             # go left if target score is smaller
-             if score < node.value:
-                 return _rank(node.left, score)
-
-             # go right if target score is larger
-             elif score > node.value:
-                 return (
-                     self._get_size(node.left) +
-                     len(node.users) +
-                     _rank(node.right, score)
-                 )
-
-             # found the score node
-             else:
-                 # rank is all users in left subtree
-                 return self._get_size(node.left)
-             # return rank
-            return _rank(self._root, score)       
+            # Found score node → everything in right subtree is higher
+            else:
+                return self._get_size(node.right)
+            
+        return _rank(self._root)   
 
     def kth_smallest(self, k):
+        """
+        Returns k-th smallest USER (by score order).
+        Smallest score group starts at k = 1.
+        """
+        
         def _kth(node, k):
-            # find size of left side to see where k is
+            if not node:
+                return None
+            
+            # size of LEFT subtree (these are smaller scores)
             left_size = self._get_size(node.left)
             
-            # if k is on the left, go left
+            # Case 1: go left
             if k <= left_size:
                 return _kth(node.left, k)
-            # if k is on the right, go right and subtract left side
-            elif k > left_size + 1:
-                return _kth(node.right, k - left_size - 1)
             
-            # return node if it is k
-            return node.value
+            # Case 2: current node (tie group)
+            if k <= left_size + len(node.users):
+                return (node.value, next(iter(node.users)))
+            
+            # Case 3: go right
+            return _kth(node.right, k - left_size - len(node.users))
         
-        # return result if k is within the tree size
-        return _kth(self._root, k) if 1 <= k <= len(self) else None
-
+        return _kth(self._root, k)
+    
     def kth_largest(self, k):
-        # find the smallest from the opposite side
-        return self.kth_smallest(len(self) - k + 1)
+        """
+        Returns the k-th largest USER (by score order).
+        This is implemented using kth_smallest on reversed index,
+        since the tree is ordered ascending by score.
+        """
+
+        # Total number of users in the entire tree
+        total_users = len(self)
+
+        # Convert kth largest → kth smallest index
+        return self.kth_smallest(total_users - k + 1)
 
     def range_query(self, low, high):
         res = []
