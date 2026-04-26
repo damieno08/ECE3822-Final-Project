@@ -92,4 +92,22 @@ class Richard(Game_Handler):
         self.score = self.game.level.player.exp
         self._game_session.end_session()
         return self._game_session.get_time_played(), self.score
+
+class Tom(Game_Handler):
+
+    # intialize game with name and user
+    def __init__(self, user):
+        super().__init__(user, "Tom", "Adventure")
+        
+
+    # run the game and handle game session recording
+    def start_game(self):
+        super().start_game()
+        from game_interaction.games.game_tom.code.game.main import game_tom
+        self.game = game_tom(self.user.name)
+        self.game.run()
+        self.score = self.game.level.player.exp
+        self._game_session.end_session()
+        return self._game_session.get_time_played(), self.score
     
+

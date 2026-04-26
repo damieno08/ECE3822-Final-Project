@@ -80,7 +80,7 @@ class Character(pygame.sprite.Sprite):
 
     def import_player_assets(self, animate=True):
         """Load character animations using unified sprite system"""
-        from sprite_loader import SpriteLoader
+        from game_interaction.games.game_tom.code.game.sprite_loader import SpriteLoader
         
         # Use the unified sprite loader
         self.animations = SpriteLoader.load_character_sprites(self.character_name)

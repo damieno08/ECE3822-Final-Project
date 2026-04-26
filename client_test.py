@@ -4,7 +4,7 @@ from tkinter import ttk, messagebox
 from threading import Thread
 from PIL import Image, ImageTk
 from user_interaction.user import User
-from game_interaction.game_handler import Damien, Santiago, Paul, Richard
+from game_interaction.game_handler import Damien, Santiago, Paul, Richard, Tom
 
 class ArcadeClient:
     def __init__(self):
@@ -13,7 +13,7 @@ class ArcadeClient:
         self.root.geometry("450x700")
         self.root.configure(bg="#1a1a1a")
         self.current_user = None
-        self.handler_map = {0: Damien, 1: Santiago, 2: Paul, 3: Richard}
+        self.handler_map = {0: Damien, 1: Santiago, 2: Paul, 3: Richard, 4:Tom}
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connect_to_server()
         self.show_login_screen()
@@ -46,7 +46,8 @@ class ArcadeClient:
 
                 elif msg.startswith("HISTORY_DATA:"):
                     self.root.after(0, lambda: self.update_display(msg.split(":", 1)[1], clear=True))
-
+                elif msg.startswith("LEADERBOARD_DATA:"):
+                    self.root.after(0, lambda: self.update_display(msg.split(":", 1)[1], clear=True))
             except:
                 break
 
@@ -89,11 +90,11 @@ class ArcadeClient:
     def show_login_screen(self):
         self.clear_screen()
 
-        tk.Label(self.root, text="ARCADE ACCESS", fg="#00FF00", bg="#1a1a1a", font=("Courier", 20)).pack(pady=40)
-
+        tk.Label(self.root, text="FPGA Arcade", fg="#00FF00", bg="#1a1a1a", font=("Courier", 20)).pack(pady=40)
+        tk.Label(self.root, text="Username", fg="#00FF00", bg="#1a1a1a", font=("Courier", 12)).pack(pady=40)
         self.u_entry = tk.Entry(self.root, bg="black", fg="#00FF00")
         self.u_entry.pack(pady=5)
-
+        tk.Label(self.root, text="Password", fg="#00FF00", bg="#1a1a1a", font=("Courier", 12)).pack(pady=40)
         self.p_entry = tk.Entry(self.root, bg="black", fg="#00FF00", show="*")
         self.p_entry.pack(pady=5)
 
@@ -161,7 +162,8 @@ class ArcadeClient:
             ("Luaianid", 0, "game_interaction/games/game_damien/graphics/logo.png"),
             ("Santiago", 1, "game_interaction/games/game_santiago/graphics/logo.png"),
             ("Vermis", 2, "game_interaction/games/game_paul/graphics/logo.png"),
-            ("Richard", 3, "game_interaction/games/game_richard/graphics/logo.png")
+            ("Richard", 3, "game_interaction/games/game_richard/graphics/logo.png"),
+            ("Tom", 4, "game_interaction/games/game_tom/graphics/logo.png")
         ]
 
         for name, idx, path in games:
@@ -188,15 +190,24 @@ class ArcadeClient:
     def show_play(self, idx):
         self.clear_screen()
 
-        self.display = tk.Text(self.root, height=5, width=40, bg="black", fg="#00FF00")
+        self.display = tk.Text(self.root, height=10, width=40, bg="black", fg="#00FF00")
         self.display.pack(pady=20)
+
+        # ✅ Load leaderboard automatically
+        self.s.sendall(f"GET_LEADERBOARD:{idx}".encode())
 
         tk.Button(
             self.root,
             text="START MODULE",
             command=lambda: Thread(target=self.run_game, args=(idx,), daemon=True).start(),
             bg="#00FF00"
-        ).pack()
+        ).pack(pady=5)
+
+        tk.Button(
+            self.root,
+            text="REFRESH LEADERBOARD",
+            command=lambda: self.s.sendall(f"GET_LEADERBOARD:{idx}".encode())
+        ).pack(pady=5)
 
         tk.Button(self.root, text="BACK", command=self.show_game_search).pack()
 
