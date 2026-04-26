@@ -140,7 +140,7 @@ class CharacterCard:
         return False
 
 
-class Game:
+class game_tom:
     def __init__(self, player_name, server_host='localhost', server_port=8080, serializer='text'):
         # general setup
         pygame.init()
@@ -207,13 +207,13 @@ class Game:
                     char_select = False
                     self.running = False
                     pygame.quit()
-                    sys.exit()
+                    return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         char_select = False
                         self.running = False
                         pygame.quit()
-                        sys.exit()
+                        return
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     clicked_this_frame = True
             
@@ -291,12 +291,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.level.network.disconnect()
                     pygame.quit()
-                    sys.exit()
+                    return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.level.network.disconnect()
                         pygame.quit()
-                        sys.exit()
+                        return
 
             self.screen.fill('black')
             self.level.run(events)

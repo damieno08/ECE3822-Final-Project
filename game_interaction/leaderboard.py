@@ -20,11 +20,30 @@ class Leaderboard(BST):
         self._user_scores = {}  # {username: score}
 
     def add_score(self, user, score):
-        """Insert or update a user's score."""
+        """
+        Insert or update a user's score ONLY if it is higher than their previous best.
+
+        Returns:
+            True if leaderboard was updated
+            False if score was ignored
+        """
+
+        # If user already has a score
         if user in self._user_scores:
-            self.delete((self._user_scores[user], user))
+            old_score = self._user_scores[user]
+
+            # stop if new score is worse or equal
+            if score <= old_score:
+                return False
+
+            # remove old score from BST
+            self.delete((old_score, user))
+
+        # insert new best score
         self._user_scores[user] = score
         self.insert((score, user))
+
+        return True
 
     def top_n(self, n):
         """Return [(user, score), ...] for the top n players, highest first."""
