@@ -2,7 +2,7 @@
 binary_serializer.h - Binary serialization (packed struct)
 
 Format: Fixed 88-byte struct
-  [4 bytes: id][32 bytes: name][4 bytes: x][4 bytes: y][4 bytes: socket][40 bytes: padding]
+    [32 bytes: game name][4 bytes: id][32 bytes: name][4 bytes: x][4 bytes: y][4 bytes: socket][40 bytes: padding]
 
 Author: [Student Name]
 Date: [Date]
@@ -18,6 +18,7 @@ class BinarySerializer : public Serializer {
 private:
     // Binary format struct
     struct PlayerData {
+        char game_name[32]; // 32 bytes
         int id;              // 4 bytes
         char name[32];       // 32 bytes
         float x;             // 4 bytes
@@ -31,12 +32,12 @@ private:
     
 public:
     /**
-     * Serialize Player to binary format (88 bytes)
+     * Serialize Player to binary format (120 bytes)
      */
     std::string serialize(const Player& player) override;
     
     /**
-     * Deserialize binary data (88 bytes) to Player
+     * Deserialize binary data (120 bytes) to Player
      */
     Player deserialize(const std::string& data) override;
     

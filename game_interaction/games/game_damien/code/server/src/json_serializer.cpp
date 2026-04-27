@@ -10,6 +10,7 @@ Date: [Date]
 std::string JSONSerializer::serialize(const Player& player) {
     std::ostringstream ss;
     ss << "{"
+       << "\"game_name\":" << player.get_game_name() << ","   
        << "\"id\":" << player.get_id() << ","
        << "\"name\":\"" << player.get_name() << "\","
        << "\"x\":" << player.get_x() << ","
@@ -23,6 +24,7 @@ std::string JSONSerializer::serialize(const Player& player) {
 
 Player JSONSerializer::deserialize(const std::string& data) {
     // Extract fields using helper functions
+    std::string game_name = extractString(data,"game_name");
     int id = extractInt(data, "id");
     std::string name = extractString(data, "name");
     float x = extractFloat(data, "x");
@@ -32,7 +34,7 @@ Player JSONSerializer::deserialize(const std::string& data) {
     std::string status = extractString(data, "status");
     
     // Create player and set additional fields
-    Player player(id, name, x, y, socket);
+    Player player(game_name, id, name, x, y, socket);
     player.set_character_type(character_type);
     player.set_status(status);
     

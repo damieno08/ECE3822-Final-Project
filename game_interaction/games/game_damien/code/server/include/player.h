@@ -15,6 +15,7 @@ Lab: C++ Project 1 - Player Class & Serialization
 
 class Player {
 private:
+    std::string game_name;
     int id;
     std::string name;
     float x, y;
@@ -26,12 +27,13 @@ private:
 public:
     // Constructors
     Player();  // Default constructor
-    Player(int id, std::string name, float x, float y, int socket);
+    Player(std::string game_name, int id, std::string name, float x, float y, int socket);
     
     // Destructor
     ~Player();
     
     // Getters
+    std::string get_game_name() const;
     int get_id() const;
     std::string get_name() const;
     float get_x() const;
@@ -42,6 +44,7 @@ public:
     std::string get_status() const;
     
     // Setters
+    void set_game_name(std::string game_name);
     void set_position(float new_x, float new_y);
     void set_name(std::string new_name);
     void set_connected(bool status);

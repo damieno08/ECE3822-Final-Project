@@ -113,6 +113,10 @@ std::string BinarySerializer::serialize(const Player& player) {
     pd.y = player.get_y();
     pd.socket = player.get_socket();
     
+    // Copy game name (max 31 chars, null terminate at position 31)
+    strncpy(pd.game_name, player.get_game_name().c_str(), 31);
+    pd.game_name[31] = '\0';
+
     // Copy name (max 31 chars, null-terminate at position 31)
     strncpy(pd.name, player.get_name().c_str(), 31);
     pd.name[31] = '\0';
@@ -145,6 +149,7 @@ Player BinarySerializer::deserialize(const std::string& data) {
     const PlayerData* pd = reinterpret_cast<const PlayerData*>(decoded.data());
     
     // Extract fields
+    std::string game_name = pd->game_name;
     int id = pd->id;
     std::string name(pd->name);
     float x = pd->x;
@@ -154,7 +159,7 @@ Player BinarySerializer::deserialize(const std::string& data) {
     std::string status(pd->status);
     
     // Create player and set additional fields
-    Player player(id, name, x, y, socket);
+    Player player(game_name, id, name, x, y, socket);
     player.set_character_type(character_type);
     player.set_status(status);
     

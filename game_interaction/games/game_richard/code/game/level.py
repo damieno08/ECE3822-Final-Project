@@ -39,7 +39,7 @@ server_port=8080, serializer='text'):
         self.create_map()
 
         # Network setup with serializer
-        self.network = NetworkClient(player_name, server_host, server_port,
+        self.network = NetworkClient("RichGame", player_name, server_host, server_port,
         serializer)
         self.connected = self.network.connect()
 
@@ -334,10 +334,9 @@ server_port=8080, serializer='text'):
 
         # Get updates from server
         updates = self.network.get_updates()
+        current_player_ids = set()
         if updates:
             self.connection_status = f"Connected - {len(updates)} players online({self.network.serializer.upper()})"
-            current_player_ids = set()
-
             for player_id, data in updates.items():
                 current_player_ids.add(player_id)
                 if player_id == self.network.my_player_id:

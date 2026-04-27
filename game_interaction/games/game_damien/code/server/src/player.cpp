@@ -11,6 +11,7 @@ Date: [Date]
 
 // Default constructor
 Player::Player() {
+    game_name = "";
     id = 0;
     name = "";
     x = 400.0;
@@ -22,7 +23,8 @@ Player::Player() {
 }
 
 // Parameterized constructor
-Player::Player(int id, std::string name, float x, float y, int socket) {
+Player::Player(std::string game_name, int id, std::string name, float x, float y, int socket) {
+    this->game_name = game_name;
     this->id = id;
     this->name = name;
     this->x = x;
@@ -37,6 +39,12 @@ Player::Player(int id, std::string name, float x, float y, int socket) {
 Player::~Player() {
     // Nothing to clean up
 }
+
+std::string Player::get_game_name() const{
+    return game_name;
+
+}
+
 
 // Getters
 int Player::get_id() const {
@@ -71,10 +79,16 @@ std::string Player::get_status() const {
     return status;
 }
 
+
+
 // Setters
 void Player::set_position(float new_x, float new_y) {
     x = new_x;
     y = new_y;
+}
+
+void Player::set_game_name(std::string new_game_name) {
+    game_name = new_game_name;
 }
 
 void Player::set_name(std::string new_name) {
