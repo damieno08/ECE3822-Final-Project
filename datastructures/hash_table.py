@@ -51,6 +51,8 @@ class HashTable:
         if isinstance(key, tuple):
             # Shift row by 16 bits and XOR with column to create a unique key
             combined_key = (key[0] << 16) ^ key[1]
+        elif isinstance(key, str):
+            combined_key = hash(key)
         else:
             combined_key = key
 
