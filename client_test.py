@@ -6,18 +6,31 @@ from PIL import Image, ImageTk
 from user_interaction.user import User
 from game_interaction.game_handler import Damien, Santiago, Paul, Richard, Tom
 
+
 class ArcadeClient:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Arcade Terminal")
-        self.root.geometry("450x700")
+        self.root.geometry("500x750")
         self.root.configure(bg="#1a1a1a")
+
         self.current_user = None
-        self.handler_map = {0: Damien, 1: Santiago, 2: Paul, 3: Richard, 4:Tom}
+
+        self.handler_map = {
+            0: Damien,
+            1: Santiago,
+            2: Paul,
+            3: Richard,
+            4: Tom
+        }
+
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connect_to_server()
+
         self.show_login_screen()
         self.root.mainloop()
+
+    # ---------------- CONNECTION ----------------
 
     def connect_to_server(self):
         try:
@@ -46,10 +59,18 @@ class ArcadeClient:
 
                 elif msg.startswith("HISTORY_DATA:"):
                     self.root.after(0, lambda: self.update_display(msg.split(":", 1)[1], clear=True))
+
                 elif msg.startswith("LEADERBOARD_DATA:"):
                     self.root.after(0, lambda: self.update_display(msg.split(":", 1)[1], clear=True))
+
+                elif msg.startswith("RECENT_DATA:"):
+                    data = msg.split(":", 1)[1]
+                    self.root.after(0, lambda d=data: self.render_recent_games(d))
+
             except:
                 break
+
+    # ---------------- UI HELPERS ----------------
 
     def clear_screen(self):
         for widget in self.root.winfo_children():
@@ -87,14 +108,18 @@ class ArcadeClient:
 
         self.display.config(state='disabled')
 
+    # ---------------- SCREENS ----------------
+
     def show_login_screen(self):
         self.clear_screen()
 
-        tk.Label(self.root, text="FPGA Arcade", fg="#00FF00", bg="#1a1a1a", font=("Courier", 20)).pack(pady=40)
-        tk.Label(self.root, text="Username", fg="#00FF00", bg="#1a1a1a", font=("Courier", 12)).pack(pady=40)
+        tk.Label(self.root, text="FPGA Arcade", fg="#00FF00", bg="#1a1a1a", font=("Courier", 20)).pack(pady=30)
+
+        tk.Label(self.root, text="Username", fg="#00FF00", bg="#1a1a1a").pack()
         self.u_entry = tk.Entry(self.root, bg="black", fg="#00FF00")
         self.u_entry.pack(pady=5)
-        tk.Label(self.root, text="Password", fg="#00FF00", bg="#1a1a1a", font=("Courier", 12)).pack(pady=40)
+
+        tk.Label(self.root, text="Password", fg="#00FF00", bg="#1a1a1a").pack()
         self.p_entry = tk.Entry(self.root, bg="black", fg="#00FF00", show="*")
         self.p_entry.pack(pady=5)
 
@@ -106,7 +131,7 @@ class ArcadeClient:
             )
         ).pack(pady=20)
 
-        tk.Button(self.root, text="EXIT", bg="#440000", fg="white", command=self.root.quit).pack(pady=10)
+        tk.Button(self.root, text="EXIT", command=self.root.quit).pack()
 
     def show_dashboard(self):
         self.clear_screen()
@@ -115,7 +140,7 @@ class ArcadeClient:
 
         tk.Button(self.root, text="USER DATABASE", command=self.show_lookup, width=25).pack(pady=10)
         tk.Button(self.root, text="GAME SELECT", command=self.show_game_search, width=25).pack(pady=10)
-        tk.Button(self.root, text="LOGOUT", command=self.show_login_screen, bg="#333", fg="white").pack(side="bottom", pady=20)
+        tk.Button(self.root, text="LOGOUT", command=self.show_login_screen).pack(side="bottom", pady=20)
 
     def show_lookup(self):
         self.clear_screen()
@@ -136,27 +161,46 @@ class ArcadeClient:
 
         tk.Button(self.root, text="BACK", command=self.show_dashboard).pack()
 
+    # ---------------- GAME MENU ----------------
+
+    def create_horizontal_scroll(self, parent, games):
+        canvas = tk.Canvas(parent, bg="#1a1a1a", height=120, highlightthickness=0)
+        scrollbar = ttk.Scrollbar(parent, orient="horizontal", command=canvas.xview)
+
+        frame = tk.Frame(canvas, bg="#1a1a1a")
+
+        frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+        canvas.create_window((0, 0), window=frame, anchor="nw")
+        canvas.configure(xscrollcommand=scrollbar.set)
+
+        canvas.pack(fill="x")
+        scrollbar.pack(fill="x")
+
+        logos = []
+
+        for name, idx, path in games:
+            try:
+                img = ImageTk.PhotoImage(Image.open(path).resize((70, 70)))
+            except:
+                img = ImageTk.PhotoImage(Image.new('RGBA', (70, 70)))
+
+            logos.append(img)
+
+            tk.Button(
+                frame,
+                text=name,
+                image=img,
+                compound="top",
+                command=lambda i=idx: self.show_play(i),
+                bg="#222",
+                fg="#00FF00"
+            ).pack(side="left", padx=10, pady=5)
+
+        return logos
+
     def show_game_search(self):
         self.clear_screen()
-
-        container = tk.Frame(self.root, bg="#1a1a1a")
-        container.pack(fill="both", expand=True)
-
-        canvas = tk.Canvas(container, bg="#1a1a1a", highlightthickness=0)
-        scrollbar = ttk.Scrollbar(container, command=canvas.yview)
-
-        scroll_frame = tk.Frame(canvas, bg="#1a1a1a")
-
-        scroll_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-
-        canvas.create_window((0, 0), window=scroll_frame, anchor="nw", width=430)
-
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
-
-        self.logos = []
 
         games = [
             ("Luaianid", 0, "game_interaction/games/game_damien/graphics/logo.png"),
@@ -166,34 +210,57 @@ class ArcadeClient:
             ("Tom", 4, "game_interaction/games/game_tom/graphics/logo.png")
         ]
 
-        for name, idx, path in games:
-            try:
-                img = ImageTk.PhotoImage(Image.open(path).resize((70, 70)))
-            except:
-                img = ImageTk.PhotoImage(Image.new('RGBA', (70, 70)))
+        # -------- ALL GAMES --------
+        tk.Label(self.root, text="ALL GAMES", fg="#00FF00", bg="#1a1a1a").pack()
+        self.all_logos = self.create_horizontal_scroll(self.root, games)
 
-            self.logos.append(img)
+        # -------- RECOMMENDED --------
+        tk.Label(self.root, text="RECOMMENDED", fg="#00FF00", bg="#1a1a1a").pack()
+        self.rec_logos = self.create_horizontal_scroll(self.root, games)
 
-            tk.Button(
-                scroll_frame,
-                text=f"  {name}",
-                image=img,
-                compound="left",
-                anchor="w",
-                command=lambda i=idx: self.show_play(i),
-                bg="#222",
-                fg="#00FF00"
-            ).pack(fill="x", pady=2)
+        # -------- RECENTLY PLAYED --------
+        tk.Label(self.root, text="RECENTLY PLAYED", fg="#00FF00", bg="#1a1a1a").pack()
+
+        self.recent_container = tk.Frame(self.root, bg="#1a1a1a")
+        self.recent_container.pack(fill="x")
+
+        # request recent games
+        self.s.sendall(f"GET_RECENTLY_PLAYED:{self.current_user.name}".encode())
 
         tk.Button(self.root, text="BACK", command=self.show_dashboard).pack(pady=10)
+
+    # ---------------- RECENT RENDER ----------------
+
+    def render_recent_games(self, data):
+        for widget in self.recent_container.winfo_children():
+            widget.destroy()
+
+        if data == "EMPTY":
+            tk.Label(self.recent_container, text="No recent games", fg="#888", bg="#1a1a1a").pack()
+            return
+
+        idx_list = data.split(",")
+
+        games_lookup = {
+            "0": ("Luaianid", 0, "game_interaction/games/game_damien/graphics/logo.png"),
+            "1": ("Santiago", 1, "game_interaction/games/game_santiago/graphics/logo.png"),
+            "2": ("Vermis", 2, "game_interaction/games/game_paul/graphics/logo.png"),
+            "3": ("Richard", 3, "game_interaction/games/game_richard/graphics/logo.png"),
+            "4": ("Tom", 4, "game_interaction/games/game_tom/graphics/logo.png"),
+        }
+
+        games = [games_lookup[i] for i in idx_list if i in games_lookup]
+
+        self.recent_logos = self.create_horizontal_scroll(self.recent_container, games)
+
+    # ---------------- PLAY SCREEN ----------------
 
     def show_play(self, idx):
         self.clear_screen()
 
-        self.display = tk.Text(self.root, height=10, width=40, bg="black", fg="#00FF00")
+        self.display = tk.Text(self.root, height=12, width=45, bg="black", fg="#00FF00")
         self.display.pack(pady=20)
 
-        # ✅ Load leaderboard automatically
         self.s.sendall(f"GET_LEADERBOARD:{idx}".encode())
 
         tk.Button(
@@ -210,6 +277,8 @@ class ArcadeClient:
         ).pack(pady=5)
 
         tk.Button(self.root, text="BACK", command=self.show_game_search).pack()
+
+    # ---------------- GAME RUN ----------------
 
     def run_game(self, idx):
         try:

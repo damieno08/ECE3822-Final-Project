@@ -203,7 +203,36 @@ class ArcadeServer:
                                 history_output += f"[{i+1}] {str(session)}\n"
 
                         conn.sendall(f"HISTORY_DATA:{history_output}".encode())
+                # ---------------- RECENTLY PLAYED ----------------
+                elif raw_data.startswith("GET_RECENTLY_PLAYED:"):
+                    uname = raw_data.split(":")[1].strip()
+                    user_obj = self.find_user_by_name(uname)
 
+                    if user_obj:
+                        total = user_obj.get_total_games()
+
+                        if total == 0:
+                            conn.sendall("RECENT_DATA:EMPTY".encode())
+                            continue
+
+                        entries = []
+                        count = min(5, total)
+
+                        for i in range(total - 1, total - count - 1, -1):
+                            session = user_obj.get_history("game", i)
+                            if session:
+                                # reverse lookup index from name
+                                g_idx = None
+                                for key, val in self.game_map.items():
+                                    if val == session.game_name:
+                                        g_idx = key
+                                        break
+
+                                if g_idx is not None:
+                                    entries.append(g_idx)
+
+                        # send as CSV
+                        conn.sendall(f"RECENT_DATA:{','.join(entries)}".encode())
             except Exception as e:
                 print(f"[!] Server Error: {e}")
                 break
