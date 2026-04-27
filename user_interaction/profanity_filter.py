@@ -6,18 +6,9 @@ Revision History:
 """
 
 import re
-import os
 from datastructures.hash_table import HashTable
 
-_WORDLIST_PATH = os.path.join(os.path.dirname(__file__), "profanity_wordlist.txt")
-
-# Fallback list used only if the wordlist file is missing
-_FALLBACK_LIST = [
-    "damn", "hell", "crap", "ass", "asshole", "bastard", "bitch", "bullshit",
-    "dick", "douche", "douchebag", "dumbass", "fuck", "fucking", "jackass",
-    "motherfucker", "piss", "prick", "shit", "shithead", "slut", "twat",
-    "whore", "wanker", "cunt", "cock", "fag", "faggot", "retard",
-]
+_PROFANITY_LIST = ["anal", "anus", "arse", "ass", "ballsack", "bastard", "bdsm", "bitch", "bimbo", "blowjob", "boob", "booobs", "breasts", "boner", "bondage", "bullshit", "busty", "butthole", "cawk", "chink", "clit", "cnut", "cock", "cokmuncher", "cowgirl", "crap", "crotch", "cum", "cunt", "damn", "dick", "dildo", "dink", "deepthroat", "doosh", "douche", "duche", "ejaculate", "ejaculating", "ejaculation", "ejakulate", "erotic", "erotism", "fag", "fatass", "femdom", "fingering", "footjob", "fuck", "fcuk", "fingerfuck", "fistfuck", "fook", "fooker", "fuk", "gangbang", "gaysex", "handjob", "hentai", "hooker", "hoer", "homo", "horny", "incest", "jackoff", "jerkoff", "jizz", "masturbate", "mofo", "mothafuck", "motherfuck", "milf", "muff", "nigga", "nigger", "nipple", "nob", "numbnuts", "nutsack", "nude", "orgy", "orgasm", "panty", "panties", "penis", "playboy", "porn", "pussy", "pussies", "rape", "raping", "rapist", "rectum", "retard", "rimming", "sadist", "sadism", "scrotum", "sex", "semen", "shemale", "shit", "slut", "spunk", "stripclub", "tit", "threesome", "throating", "twat", "viagra", "vagina", "wank", "whore", "whoar", "xxx"]
 
 
 class ProfanityFilter:
@@ -37,15 +28,8 @@ class ProfanityFilter:
                 self._table.set(word.lower(), True)
 
     def _load_wordlist(self):
-        if os.path.exists(_WORDLIST_PATH):
-            with open(_WORDLIST_PATH, "r", encoding="utf-8") as f:
-                for line in f:
-                    word = line.strip().lower()
-                    if word:
-                        self._table.set(word, True)
-        else:
-            for word in _FALLBACK_LIST:
-                self._table.set(word, True)
+        for word in _PROFANITY_LIST:
+            self._table.set(word, True)
 
     def add_word(self, word):
         """Add a single word to the filter."""

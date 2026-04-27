@@ -369,6 +369,8 @@ class Level:
 
     def handle_events(self, events):
         """Handle pygame events (pass from main game loop)"""
+        if self.chat_input_active:
+            return
         for event in events:
             self.inventory_ui.handle_event(event, self.player)
 
@@ -491,6 +493,8 @@ class Level:
     def handle_time_travel_input(self, events):
         if self.connected:
             self.is_time_traveling = False
+            return
+        if self.chat_input_active:
             return
 
         for event in events:
@@ -686,6 +690,8 @@ class Level:
 
     def handle_enemy_debug_input(self, events):
         """Handle enemy debug controls (Lab 5)."""
+        if self.chat_input_active:
+            return
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_n:
