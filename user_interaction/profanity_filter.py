@@ -8,6 +8,51 @@ Revision History:
 import re
 from datastructures.hash_table import HashTable
 
+
+def _next_prime(n):
+    """Return the smallest prime >= n."""
+    def _is_prime(x):
+        if x < 2:
+            return False
+        if x < 4:
+            return True
+        if x % 2 == 0 or x % 3 == 0:
+            return False
+        i = 5
+        while i * i <= x:
+            if x % i == 0 or x % (i + 2) == 0:
+                return False
+            i += 6
+        return True
+    while not _is_prime(n):
+        n += 1
+    return n
+
+
+class PrimeHashTable(HashTable):
+    """
+    HashTable subclass that keeps capacity at a prime number.
+    This ensures quadratic probing covers ~half the table instead of
+    cycling through only a small fixed set of offsets (the power-of-2 bug).
+    """
+
+    def __init__(self, initial_capacity=251):
+        super().__init__(_next_prime(initial_capacity))
+
+    def _resize(self):
+        old_bins = self.bins
+        self.capacity = _next_prime(self.capacity * 2)
+        self.number_elements = 0
+        from datastructures.array import ArrayList
+        self.bins = ArrayList(self.capacity)
+        for _ in range(self.capacity):
+            self.bins.append(None)
+        for i in range(len(old_bins)):
+            entry = old_bins[i]
+            if entry is not None:
+                self.set(entry[0], entry[1])
+
+
 _PROFANITY_LIST = ["anal", "anus", "arse", "ass", "ballsack", "bastard", "bdsm", "bitch", "bimbo", "blowjob", "boob", "booobs", "breasts", "boner", "bondage", "bullshit", "busty", "butthole", "cawk", "chink", "clit", "cnut", "cock", "cokmuncher", "cowgirl", "crap", "crotch", "cum", "cunt", "damn", "dick", "dildo", "dink", "deepthroat", "doosh", "douche", "duche", "ejaculate", "ejaculating", "ejaculation", "ejakulate", "erotic", "erotism", "fag", "fatass", "femdom", "fingering", "footjob", "fuck", "fcuk", "fingerfuck", "fistfuck", "fook", "fooker", "fuk", "gangbang", "gaysex", "handjob", "hentai", "hooker", "hoer", "homo", "horny", "incest", "jackoff", "jerkoff", "jizz", "masturbate", "mofo", "mothafuck", "motherfuck", "milf", "muff", "nigga", "nigger", "nipple", "nob", "numbnuts", "nutsack", "nude", "orgy", "orgasm", "panty", "panties", "penis", "playboy", "porn", "pussy", "pussies", "rape", "raping", "rapist", "rectum", "retard", "rimming", "sadist", "sadism", "scrotum", "sex", "semen", "shemale", "shit", "slut", "spunk", "stripclub", "tit", "threesome", "throating", "twat", "viagra", "vagina", "wank", "whore", "whoar", "xxx"]
 
 
@@ -21,7 +66,7 @@ class ProfanityFilter:
     """
 
     def __init__(self, custom_words=None):
-        self._table = HashTable()
+        self._table = PrimeHashTable()
         self._load_wordlist()
         if custom_words:
             for word in custom_words:
