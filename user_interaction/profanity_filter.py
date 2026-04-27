@@ -52,6 +52,8 @@ class PrimeHashTable(HashTable):
             if entry is not None:
                 self.set(entry[0], entry[1])
 
+#profanities imported from the github repository: "https://github.com/arhankundu99/profanity-filter/blob/master/data/profanity_wordlist.txt"
+
 
 _PROFANITY_LIST = ["anal", "anus", "arse", "ass", "ballsack", "bastard", "bdsm", "bitch", "bimbo", "blowjob", "boob", "booobs", "breasts", "boner", "bondage", "bullshit", "busty", "butthole", "cawk", "chink", "clit", "cnut", "cock", "cokmuncher", "cowgirl", "crap", "crotch", "cum", "cunt", "damn", "dick", "dildo", "dink", "deepthroat", "doosh", "douche", "duche", "ejaculate", "ejaculating", "ejaculation", "ejakulate", "erotic", "erotism", "fag", "fatass", "femdom", "fingering", "footjob", "fuck", "fcuk", "fingerfuck", "fistfuck", "fook", "fooker", "fuk", "gangbang", "gaysex", "handjob", "hentai", "hooker", "hoer", "homo", "horny", "incest", "jackoff", "jerkoff", "jizz", "masturbate", "mofo", "mothafuck", "motherfuck", "milf", "muff", "nigga", "nigger", "nipple", "nob", "numbnuts", "nutsack", "nude", "orgy", "orgasm", "panty", "panties", "penis", "playboy", "porn", "pussy", "pussies", "rape", "raping", "rapist", "rectum", "retard", "rimming", "sadist", "sadism", "scrotum", "sex", "semen", "shemale", "shit", "slut", "spunk", "stripclub", "tit", "threesome", "throating", "twat", "viagra", "vagina", "wank", "whore", "whoar", "xxx"]
 
