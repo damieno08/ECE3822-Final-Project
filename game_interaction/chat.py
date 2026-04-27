@@ -19,6 +19,10 @@ class Chat(CircularBuffer):
         """Write a formatted message into the buffer, evicting the oldest if full."""
         self.write(f"{user}: {message}")
 
+    def send_message(self, chat_msg):
+        """Accept a ChatMessage object and write its display string into the buffer."""
+        self.write(str(chat_msg))
+
     def recent(self):
         """Return all stored messages in order from oldest to most recent."""
         result = []

@@ -1,5 +1,6 @@
 import socket
 import tkinter as tk
+import json
 from tkinter import ttk, messagebox
 from threading import Thread
 from PIL import Image, ImageTk
@@ -288,6 +289,23 @@ class ArcadeClient:
             self.s.sendall(
                 f"SAVE_SESSION|{self.current_user.name}|{score}|{duration}|{idx}".encode()
             )
+
+            # Send chat log to server so it's stored on the real server-side User object
+            level = getattr(getattr(handler, 'game', None), 'level', None)
+            chat_log = getattr(level, 'chat_log', [])
+            if chat_log:
+                batch = json.dumps([
+                    {
+                        "game_id": m.game_id,
+                        "sender": m.sender,
+                        "text":   m.text,
+                        "ts":     m.timestamp.isoformat(),
+                    }
+                    for m in chat_log
+                ])
+                self.s.sendall(
+                    f"SAVE_CHAT_BATCH|{self.current_user.name}|{batch}".encode()
+                )
 
             self.root.after(
                 0,

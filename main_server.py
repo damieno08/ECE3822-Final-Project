@@ -1,11 +1,13 @@
 import socket
 import threading
 import pickle
+import json
 import os
 from datetime import datetime, timedelta
 
 from user_interaction.user_storage import get_all_users, set_all_users, UserStorage
-from user_interaction.user import User 
+from user_interaction.user import User
+from user_interaction.chat_message import ChatMessage
 from datastructures.array import ArrayList 
 from game_interaction.game_session import GameSession
 from game_interaction.leaderboard import Leaderboard
@@ -162,6 +164,25 @@ class ArcadeServer:
                             self.save_leaderboards()  # ✅ SAVE IMMEDIATELY
 
                         print(f"[DEBUG] Session Logged: {uname} | {gname} | Score: {score_val}")
+
+                # ---------------- SAVE CHAT BATCH ----------------
+                elif raw_data.startswith("SAVE_CHAT_BATCH"):
+                    parts = raw_data.split("|", 2)
+                    if len(parts) >= 3:
+                        uname = parts[1].strip()
+                        user_obj = self.find_user_by_name(uname)
+                        if user_obj:
+                            messages = json.loads(parts[2])
+                            for m in messages:
+                                ts = datetime.fromisoformat(m["ts"]) if m.get("ts") else datetime.now()
+                                msg = ChatMessage(
+                                    sender=m["sender"],
+                                    text=m["text"],
+                                    game_id=m.get("game_id", ""),
+                                    timestamp=ts,
+                                )
+                                user_obj.update_history("chat", msg)
+                            print(f"[DEBUG] Chat saved: {uname} | {len(messages)} message(s)")
 
                 # ---------------- GET LEADERBOARD ----------------
                 elif raw_data.startswith("GET_LEADERBOARD"):

@@ -16,6 +16,8 @@ from game_interaction.games.game_santiago.code.game.time_travel import TimeTrave
 from game_interaction.games.game_santiago.code.game.enemy import Enemy, ENEMY_SPAWN_DATA
 from game_interaction.games.game_santiago.code.game.datastructures.patrol_path import PatrolPath
 from game_interaction.games.game_santiago.code.game.weapon import Weapon as WeaponSprite
+from game_interaction.chat import Chat
+from user_interaction.chat_message import ChatMessage
 import sys
 
 start_path = str(sys.path[0])
@@ -73,6 +75,14 @@ class Level:
 
         # Debug mode for showing enemy paths
         self.show_enemy_debug = False
+
+        # Chat system
+        self.chat = Chat()
+        self.chat_input_active = False
+        self.chat_input_text = ""
+        self.chat_log = []            # ChatMessage objects saved to user at game end
+        self.chat_font = pygame.font.Font(None, 22)
+        self.chat_hint_font = pygame.font.Font(None, 19)
 
     def create_map(self):
         """Create the game map and player from CSV layers using SparseMatrix.
@@ -534,19 +544,119 @@ class Level:
             self.display_surface.blit(text, (10, 100))
 
     # ------------------------------------------------------------------
+    # Chat system
+    # ------------------------------------------------------------------
+
+    def handle_chat_input(self, events):
+        """Process keyboard events for chat input; returns True while input is active."""
+        for event in events:
+            if event.type != pygame.KEYDOWN:
+                continue
+
+            if not self.chat_input_active:
+                # T opens the chat box
+                if event.key == pygame.K_t:
+                    self.chat_input_active = True
+                    self.chat_input_text = ""
+            else:
+                if event.key == pygame.K_RETURN:
+                    text = self.chat_input_text.strip()
+                    if text:
+                        msg = ChatMessage(
+                            sender=self.network.player_name,
+                            text=text,
+                            game_id="JAG",
+                        )
+                        self.chat.send_message(msg)
+                        self.chat_log.append(msg)
+                        if self.connected:
+                            self.network.send_chat(text)
+                    self.chat_input_active = False
+                    self.chat_input_text = ""
+
+                elif event.key == pygame.K_ESCAPE:
+                    self.chat_input_active = False
+                    self.chat_input_text = ""
+
+                elif event.key == pygame.K_BACKSPACE:
+                    self.chat_input_text = self.chat_input_text[:-1]
+
+                else:
+                    char = event.unicode
+                    if char and char.isprintable() and len(self.chat_input_text) < 80:
+                        self.chat_input_text += char
+
+    def update_chat(self):
+        """Pull incoming chat messages from the network and add them to the buffer."""
+        if not self.connected:
+            return
+        for entry in self.network.get_chat_messages():
+            msg = ChatMessage(
+                sender=entry['sender'],
+                text=entry['text'],
+                game_id="JAG",
+            )
+            self.chat.send_message(msg)
+            self.chat_log.append(msg)
+
+    def draw_chat_ui(self):
+        """Render the last 5 messages and, when active, the text input box."""
+        PANEL_W   = 420
+        MSG_H     = 22
+        MAX_SHOW  = 5
+        PADDING   = 6
+        panel_x   = 10
+        panel_y   = HEIGHT - 160
+
+        recent = self.chat.recent()[-MAX_SHOW:]
+
+        if recent:
+            panel_h = len(recent) * MSG_H + PADDING * 2
+            panel_surf = pygame.Surface((PANEL_W, panel_h), pygame.SRCALPHA)
+            panel_surf.fill((0, 0, 0, 140))
+            self.display_surface.blit(panel_surf, (panel_x, panel_y - panel_h))
+
+            for i, line in enumerate(recent):
+                text_surf = self.chat_font.render(line, True, (230, 230, 230))
+                self.display_surface.blit(
+                    text_surf,
+                    (panel_x + PADDING, panel_y - panel_h + PADDING + i * MSG_H)
+                )
+
+        if self.chat_input_active:
+            input_y = panel_y + 4
+            input_surf = pygame.Surface((PANEL_W, 28), pygame.SRCALPHA)
+            input_surf.fill((0, 0, 0, 180))
+            self.display_surface.blit(input_surf, (panel_x, input_y))
+            pygame.draw.rect(self.display_surface, (100, 200, 100),
+                             (panel_x, input_y, PANEL_W, 28), 1)
+            cursor = "|" if pygame.time.get_ticks() % 800 < 400 else " "
+            display_text = f"> {self.chat_input_text}{cursor}"
+            self.display_surface.blit(
+                self.chat_font.render(display_text, True, (180, 255, 180)),
+                (panel_x + PADDING, input_y + 5)
+            )
+        else:
+            hint = self.chat_hint_font.render("T: Chat", True, (150, 150, 150))
+            self.display_surface.blit(hint, (panel_x, panel_y + 4))
+
+    # ------------------------------------------------------------------
     # Main loop
     # ------------------------------------------------------------------
 
     def run(self, events):
         """Main update loop"""
         self.handle_events(events)
+        self.handle_chat_input(events)
         self.handle_time_travel_input(events)
         self.handle_enemy_debug_input(events)
 
         self.update_network()
+        self.update_chat()
 
-        # Update player and remote players
-        self.player.update()
+        # Freeze player movement while typing chat
+        if not self.chat_input_active:
+            self.player.update()
         for other_player in self.other_players.values():
             other_player.update()
 
@@ -565,6 +675,7 @@ class Level:
         self.draw_status()
         self.draw_time_travel_ui()
         self.draw_enemy_debug()
+        self.draw_chat_ui()
 
         if self.inventory_ui.active:
             self.inventory_ui.draw(self.display_surface)

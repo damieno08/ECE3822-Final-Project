@@ -53,7 +53,13 @@ class Santiago(Game_Handler):
         from game_interaction.games.game_santiago.code.game.main import game_santi
         self.game = game_santi(self.user.name)
         self.game.run()
-        self.score = self.game.level.player.exp
+        self.score = self.game.level.player.exp if self.game.level else 0
+
+        # Persist chat messages to the user's chat history
+        if self.game.level and self.game.level.chat_log:
+            for msg in self.game.level.chat_log:
+                self.user.update_history("chat", msg)
+
         self._game_session.end_session()
         return self._game_session.get_time_played(), self.score
     

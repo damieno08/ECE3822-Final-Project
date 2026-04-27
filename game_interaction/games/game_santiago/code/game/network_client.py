@@ -33,6 +33,7 @@ class NetworkClient:
         self.my_player_id = None
         
         self.update_queue = Queue()
+        self.chat_queue = Queue()
         self.receiver_thread = None
         self.running = False
         
@@ -90,6 +91,11 @@ class NetworkClient:
             self.my_player_id = int(parts[1])
             print(f"Assigned player ID: {self.my_player_id}")
             
+        elif msg.startswith("CHAT|"):
+            parts = msg.split('|', 2)
+            if len(parts) >= 3:
+                self.chat_queue.put({'sender': parts[1], 'text': parts[2]})
+
         elif msg.startswith("STATE||"):
             # Game state update
             # Format: STATE||<serialized_player1>||<serialized_player2>||...
@@ -197,6 +203,22 @@ class NetworkClient:
             print(f"Binary deserialization error: {e}")
             return None
     
+    def send_chat(self, text):
+        """Broadcast a chat message to all players on the game server."""
+        if self.connected and self.my_player_id is not None:
+            msg = f"CHAT|{self.player_name}|{text}\n"
+            try:
+                self.sock.send(msg.encode('utf-8'))
+            except Exception:
+                self.connected = False
+
+    def get_chat_messages(self):
+        """Drain and return all pending chat messages as list of {sender, text} dicts."""
+        messages = []
+        while not self.chat_queue.empty():
+            messages.append(self.chat_queue.get())
+        return messages
+
     def send_update(self, x, y, character_type="", status="down"):
         """Send our position, character type, and status to server (uses standard UPDATE format)"""
         if self.connected and self.my_player_id is not None:
