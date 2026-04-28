@@ -33,13 +33,10 @@ class Waypoint:
             y (float): Y coordinate in world space
             wait_time (float): How long NPC should wait at this waypoint (seconds)
         """
-        # TODO: Store x, y, wait_time
         self.x = x
         self.y = y
         self.wait_time = wait_time
-        # TODO: Initialize next pointer to None
         self.next = None
-        # TODO: Initialize prev pointer to None (needed for doubly linked lists)
         self.prev = None
 
     def distance_to(self, other_x, other_y):
@@ -53,10 +50,7 @@ class Waypoint:
         Returns:
             float: Euclidean distance to the other position
         """
-        # TODO: Calculate and return sqrt((x2-x1)^2 + (y2-y1)^2)
-
         return math.sqrt((other_x - self.x)**2 + (other_y - self.y)**2)
-
 
     def __str__(self):
         return f"Waypoint({self.x}, {self.y}, wait={self.wait_time})"

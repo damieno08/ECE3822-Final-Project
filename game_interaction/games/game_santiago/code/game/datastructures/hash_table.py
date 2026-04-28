@@ -1,5 +1,6 @@
 """
-hash_table.py - Hash Table implementationBBacks the DOK SparseMatrix. Uses separate chaining for collision resolution.
+hash_table.py - Hash Table implementation. Backs the DOK SparseMatrix and the
+adjacency list in Graph. Uses separate chaining for collision resolution.
 Each bucket is an ArrayList of (key, value) tuples. The hash function is a
 custom polynomial rolling hash — Python's built-in hash() is never called.
 
@@ -8,7 +9,7 @@ Date:   04/09/2026
 Lab:    Lab 6 - Sparse World Map
 """
 
-from game_interaction.games.game_santiago.code.game.datastructures.array import ArrayList
+from .array import ArrayList
 
 
 class HashTable:
@@ -39,8 +40,7 @@ class HashTable:
 
     def _hash(self, key):
         """
-        Compute a bucket index for key
-
+        Compute a bucket index for key.
 
         Args:
             key: A hashable key — (int, int) tuples are the primary use case.
@@ -58,7 +58,6 @@ class HashTable:
                 if isinstance(item, int):
                     h = h * 31 + item
                 else:
-                    # Fallback: treat other element types as strings
                     for ch in str(item):
                         h = h * 31 + ord(ch)
             return abs(h) % self.capacity
@@ -89,22 +88,17 @@ class HashTable:
         bucket = self._buckets[idx]
 
         if bucket is None:
-            # Create a new chain for this slot
             bucket = ArrayList()
             self._buckets[idx] = bucket
 
-        # Search for an existing entry with the same key
         for i in range(len(bucket)):
             if bucket[i][0] == key:
-                # replace the tuple
                 bucket[i] = (key, value)
                 return
 
-        # Append a new pair when key not present
         bucket.append((key, value))
         self._size += 1
 
-        # Resize if load factor exceeds threshold
         if self._size / self.capacity > 0.7:
             self._resize()
 
@@ -154,10 +148,7 @@ class HashTable:
         raise KeyError(key)
 
     def __contains__(self, key):
-        """
-        Return True if key is stored in the table.
-
-        """
+        """Return True if key is stored in the table."""
         idx = self._hash(key)
         bucket = self._buckets[idx]
 
@@ -175,35 +166,39 @@ class HashTable:
         return self._size
 
     def items(self):
-        """
-        Yield all (key, value) pairs stored in the table.
-
-        """
+        """Yield all (key, value) pairs stored in the table."""
         for i in range(self.capacity):
             bucket = self._buckets[i]
             if bucket is not None:
                 for j in range(len(bucket)):
                     yield bucket[j]
 
-    def _resize(self):
-        """
-        Double the bucket capacity and rehash all existing entries.
+    def keys(self):
+        """Yield all keys stored in the table."""
+        for key, _ in self.items():
+            yield key
 
-        """
+    def _resize(self):
+        """Double the bucket capacity and rehash all existing entries."""
         old_buckets = self._buckets
         old_capacity = self.capacity
 
-        # Build a table at double capacity
         self.capacity *= 2
         self._buckets = ArrayList(self.capacity)
         for _ in range(self.capacity):
             self._buckets.append(None)
-        self._size = 0  # set() will re-increment
+        self._size = 0
 
-        # Re-insert every existing entry into the new table
         for i in range(old_capacity):
             bucket = old_buckets[i]
             if bucket is not None:
                 for j in range(len(bucket)):
                     k, v = bucket[j]
                     self.set(k, v)
+
+    def __str__(self):
+        pairs = ", ".join(f"{k!r}: {v!r}" for k, v in self.items())
+        return "{" + pairs + "}"
+
+    def __repr__(self):
+        return f"HashTable({self})"

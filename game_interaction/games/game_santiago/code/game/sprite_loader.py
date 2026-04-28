@@ -12,11 +12,18 @@ Date: [Date]
 import pygame
 import os
 
+# Resolve graphics root relative to this file, not to CWD
+_GAME_DIR   = os.path.dirname(os.path.abspath(__file__))
+_CHAR_PATH  = os.path.normpath(os.path.join(_GAME_DIR, "..", "..", "graphics", "characters"))
+_ENEMY_PATH = os.path.normpath(os.path.join(_GAME_DIR, "..", "..", "graphics", "enemies"))
+
 class SpriteLoader:
     """Handles sprite loading for both characters and enemies with flexible organization."""
     
     @staticmethod
-    def load_character_sprites(character_name, base_path="../../graphics/characters"):
+    def load_character_sprites(character_name, base_path=None):
+        if base_path is None:
+            base_path = _CHAR_PATH
         """
         Load sprites for a character.
         
@@ -30,7 +37,9 @@ class SpriteLoader:
         return SpriteLoader._load_sprites(character_name, base_path, is_character=True)
     
     @staticmethod
-    def load_enemy_sprites(enemy_name, base_path="../../graphics/enemies"):
+    def load_enemy_sprites(enemy_name, base_path=None):
+        if base_path is None:
+            base_path = _ENEMY_PATH
         """
         Load sprites for an enemy.
 
@@ -44,7 +53,9 @@ class SpriteLoader:
         return SpriteLoader._load_sprites(enemy_name, base_path, is_character=False)
 
     @staticmethod
-    def load_npc_sprites(enemy_name, base_path="../../graphics/enemies"):
+    def load_npc_sprites(enemy_name, base_path=None):
+        if base_path is None:
+            base_path = _ENEMY_PATH
         """Deprecated: use load_enemy_sprites instead."""
         return SpriteLoader._load_sprites(enemy_name, base_path, is_character=False)
     

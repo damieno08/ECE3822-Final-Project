@@ -14,63 +14,64 @@ from game_interaction.games.game_santiago.code.game.datastructures.patrol_path i
 
 # Enemy spawn data
 ENEMY_SPAWN_DATA = [
-    # --- Top-Left: Forest Guard (circular) ---
     {
         "name": "Forest Guard",
-        "spawn": (9, 9),
-        "waypoints": [(9, 10), (12, 10), (12, 12), (9, 12)],
+        "spawn": (7, 6),
+        "waypoints": [(5, 6), (9, 6), (9, 10), (5, 10)],
         "patrol_type": "circular",
-        "speed": 1.0,
-        "description": "Circles the clearing south of the forest",
-        "health": 60, "exp": 30, "attack_damage": 8,
+        "speed": 1,
+        "description": "Patrols the forest perimeter",
+        "health": 60,  "exp": 30, "attack_damage": 8,
         "notice_radius": 150, "attack_radius": 60,
     },
-
-    # --- Bot-Left: Border Sentinel (back_and_forth) ---
     {
-        "name": "Border Sentinel",
-        "spawn": (55, 32),
-        "waypoints": [(55, 32), (50, 32)],
+        "name": "Village Merchant",
+        "spawn": (23, 12),
+        "waypoints": [(20, 12), (26, 12)],
         "patrol_type": "back_and_forth",
         "speed": 0.9,
-        "description": "Paces the western passage of the top-right section",
-        "health": 50, "exp": 25, "attack_damage": 7,
-        "notice_radius": 150, "attack_radius": 55,
-    },
-
-    # --- top-right: Dungeon Scout (one_way) ---
-    {
-        "name": "Dungeon Scout",
-        "spawn": (36, 3),
-        "waypoints": [(36, 5), (36, 2)],
-        "patrol_type": "one_way",
-        "speed": 1.1,
-        "description": "Sweeps down the left passage of the bottom-left section",
-        "health": 80, "exp": 40, "attack_damage": 12,
-        "notice_radius": 150, "attack_radius": 60,
-    },
-
-    # --- Bot-Right: Temple Priest (circular) ---
-    {
-        "name": "Temple Priest",
-        "spawn": (28, 50),
-        "waypoints": [(23, 45), (23, 57), (36, 57), (36, 45)],
-        "patrol_type": "circular",
-        "speed": 0.8,
-        "description": "Meditates in a slow circle in the bottom-right section",
-        "health": 40, "exp": 20, "attack_damage": 5,
+        "description": "Paces nervously in the village square",
+        "health": 40,  "exp": 20, "attack_damage": 5,
         "notice_radius": 150, "attack_radius": 50,
     },
-
-    # --- Bot-Right: Wandering Goblin (random) ---
+    {
+        "name": "Temple Priest",
+        "spawn": (14, 17),
+        "waypoints": [(13, 16), (15, 16), (15, 18), (13, 18)],
+        "patrol_type": "circular",
+        "speed": 0.8,
+        "description": "Walks meditatively around the temple",
+        "health": 40,  "exp": 20, "attack_damage": 5,
+        "notice_radius": 150, "attack_radius": 50,
+    },
+    {
+        "name": "Dungeon Scout",
+        "spawn": (25, 27),
+        "waypoints": [(24, 26), (30, 26)],
+        "patrol_type": "back_and_forth",
+        "speed": 1,
+        "description": "Patrols the dungeon corridor",
+        "health": 80,  "exp": 40, "attack_damage": 12,
+        "notice_radius": 150, "attack_radius": 60,
+    },
+    {
+        "name": "Market Vendor",
+        "spawn": (37, 7),
+        "waypoints": [(35, 7), (38, 7)],
+        "patrol_type": "back_and_forth",
+        "speed": 0.8,
+        "description": "Arranges goods in the market",
+        "health": 40,  "exp": 20, "attack_damage": 5,
+        "notice_radius": 150, "attack_radius": 50,
+    },
     {
         "name": "Wandering Goblin",
-        "spawn": (12, 50),
-        "waypoints": [],   # random type needs no waypoints
+        "spawn": (10, 20),
+        "waypoints": [],            # no waypoints needed for random movement
         "patrol_type": "random",
         "speed": 1.2,
-        "description": "Roams the bottom-right section unpredictably",
-        "health": 50, "exp": 25, "attack_damage": 10,
+        "description": "Roams the open plains unpredictably",
+        "health": 50,  "exp": 25, "attack_damage": 10,
         "notice_radius": 150, "attack_radius": 70,
     },
 ]

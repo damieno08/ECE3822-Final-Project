@@ -18,14 +18,14 @@ Choose one of three backing representations:
 
 All three options must satisfy the same interface.
 
-Implementation chosen: Option A — DOK backed by HashTable.
-
 Author: Santiago Troya
 Date:   04/10/2026
 Lab:    Lab 6 - Sparse World Map
+
+Implementation chosen: Option A — DOK backed by HashTable.
 """
 
-from game_interaction.games.game_santiago.code.game.datastructures.hash_table import HashTable
+from .hash_table import HashTable
 
 
 # =============================================================================
@@ -66,7 +66,6 @@ class SparseMatrixBase:
 class SparseMatrix(SparseMatrixBase):
     """
     Sparse matrix using the DOK (Dictionary of Keys) representation.
-
     """
 
     def __init__(self, rows=None, cols=None, default=0):
@@ -79,7 +78,6 @@ class SparseMatrix(SparseMatrixBase):
             default: Value for cells that have not been set.
         """
         super().__init__(rows, cols, default)
-        # DOK backing store: maps (row, col) -> value via HashTable
         self._data = HashTable(initial_capacity=64)
 
     def set(self, row, col, value):
@@ -93,7 +91,6 @@ class SparseMatrix(SparseMatrixBase):
         """
         key = (row, col)
         if value == self.default:
-            # Removing a stored entry keeps the matrix consistent
             if key in self._data:
                 self._data.delete(key)
         else:
@@ -113,18 +110,12 @@ class SparseMatrix(SparseMatrixBase):
         return self._data.get((row, col), self.default)
 
     def items(self):
-        """
-        Yield all explicitly stored (position, value) pairs.
-
-        """
+        """Yield all explicitly stored (position, value) pairs."""
         for key, value in self._data.items():
             yield key, value
 
     def __len__(self):
-        """
-        Return the number of non-default entries stored in the matrix.
-
-        """
+        """Return the number of non-default entries stored in the matrix."""
         return len(self._data)
 
     def multiply(self, other):
@@ -141,17 +132,14 @@ class SparseMatrix(SparseMatrixBase):
 
         for (i, j), a in self.items():
             for (r, k), b in other.items():
-                if r == j:  # inner indices must match
+                if r == j:
                     current = result.get(i, k)
                     result.set(i, k, current + a * b)
 
         return result
 
     def __str__(self):
-        """
-        Returns:
-            str: A one-line summary string.
-        """
+        """Return a one-line summary string."""
         rows_str = str(self.rows) if self.rows is not None else "?"
         cols_str = str(self.cols) if self.cols is not None else "?"
         return (

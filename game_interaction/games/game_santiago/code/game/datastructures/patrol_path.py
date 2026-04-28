@@ -11,7 +11,7 @@ Date: 04/03/2026
 Lab: Lab 5 - NPC Patrol Paths with Linked Lists
 """
 
-from game_interaction.games.game_santiago.code.game.datastructures.waypoint import Waypoint
+from .waypoint import Waypoint
 
 
 class PatrolPath:
@@ -31,18 +31,11 @@ class PatrolPath:
         Args:
             patrol_type (str): Type of patrol - "one_way", "circular", or "back_and_forth"
         """
-        # TODO: Initialize head, tail, current to None
         self.head = None
         self.tail = None
         self.current = None
-
-        # TODO: Store patrol_type
         self.patrol_type = patrol_type
-
-        # TODO: Initialize size to 0
         self.size = 0
-
-        # TODO: Initialize direction to 1 (1 = forward, -1 = backward for back_and_forth)
         self.direction = 1
 
     def add_waypoint(self, x, y, wait_time=0):
@@ -54,33 +47,24 @@ class PatrolPath:
             y (float): Y coordinate
             wait_time (float): How long to wait at this waypoint
         """
-        # TODO: Create a new Waypoint node
-        new_node = Waypoint(x , y , wait_time)
+        new_node = Waypoint(x, y, wait_time)
 
-        # TODO: If the list is empty, set head, tail, and current to the new node
-        if (self.size == 0):
+        if self.size == 0:
             self.head = new_node
             self.tail = new_node
             self.current = new_node
-            
-
-        # TODO: Otherwise, link the new node after the current tail
         else:
             self.tail.next = new_node
 
-        # TODO: For "back_and_forth" and "circular", set prev pointer on the new node
-            if self.patrol_type in ("back_and_forth" , "circular"):
+            if self.patrol_type in ("back_and_forth", "circular"):
                 new_node.prev = self.tail
 
-        # TODO: Update tail to the new node
             self.tail = new_node
 
-        # TODO: For "circular", close the loop (tail.next = head, head.prev = tail)
         if self.patrol_type == "circular":
             self.tail.next = self.head
             self.head.prev = self.tail
 
-        # TODO: Increment size
         self.size += 1
 
     def get_next_waypoint(self):
@@ -90,23 +74,15 @@ class PatrolPath:
         Returns:
             Waypoint: The next waypoint to move toward, or None if patrol is complete
         """
-        # TODO: If empty or current is None, return None
-        if self.current == None:
+        if self.current is None:
             return None
 
-        # TODO: Save current as result to return
         result = self.current
 
-        # TODO: For "one_way": advance current to current.next (becomes None at end)
         if self.patrol_type == "one_way":
             self.current = self.current.next
-
-        # TODO: For "circular": advance current to current.next (wraps around)
         elif self.patrol_type == "circular":
             self.current = self.current.next
-
-        # TODO: For "back_and_forth": advance forward or backward based on direction,
-        #       reversing direction when hitting the end or start
         elif self.patrol_type == "back_and_forth":
             if self.direction == 1:
                 if self.current == self.tail:
@@ -121,7 +97,6 @@ class PatrolPath:
                 else:
                     self.current = self.current.prev
 
-        # TODO: Return result
         return result
 
     def reset(self):

@@ -9,6 +9,9 @@ Lab: Lab 6 - Sparse World Map
 """
 
 import pygame
+import os
+
+_GAME_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class Item:
     """
@@ -39,9 +42,10 @@ class Item:
         self.max_stack = max_stack
         self.quantity = 1  # Current quantity in stack
         
-        # Load image
+        # Load image (resolve relative paths from game directory, not CWD)
         try:
-            self.image = pygame.image.load(image_path).convert_alpha()
+            abs_path = os.path.normpath(os.path.join(_GAME_DIR, image_path))
+            self.image = pygame.image.load(abs_path).convert_alpha()
             # Scale to standard size (64x64)
             self.image = pygame.transform.scale(self.image, (64, 64))
         except:
@@ -173,13 +177,73 @@ def create_example_items():
     """
     items = []
 
-    # TODO: Copy your items from Lab 3 (or create new ones).
-    #
-    # Examples:
-    #   items.append(Weapon("Iron Sword", "A basic sword.", "../../graphics/items/sword.png", attack_bonus=10, value=50))
-    #   items.append(Consumable("Health Potion", "Restores 50 HP.", "../../graphics/items/potion.png",
-    #                           effect_type="heal", effect_amount=50, value=25, max_stack=99))
-    #   items.append(Armor("Leather Armor", "Light armor.", "../../graphics/items/armor.png", defense_bonus=5, value=80))
+    items.append(Armor(
+        name="Clown's Nose",
+        description="Reduces armor",
+        image_path="../../graphics/items/clowns_nose.png",
+        defense_bonus=-1
+    ))
+
+    items.append(Consumable(
+        name="Cotton Candy",
+        description="Sweet treat",
+        image_path="../../graphics/items/cotton_candy.png",
+        effect_type="heal",
+        effect_amount=10,
+        value=2,
+        max_stack=5
+    ))
+
+    items.append(Consumable(
+        name="Custard Pie",
+        description="Cures damage",
+        image_path="../../graphics/items/custard_pie.png",
+        effect_type="heal",
+        effect_amount=25,
+        value=15,
+        max_stack=5
+    ))
+
+    items.append(Weapon(
+        name="Inflatable Balloon Baton",
+        description="Increases damage",
+        image_path="../../graphics/items/inflatable_balloon_baton.png",
+        attack_bonus=4,
+        value=200
+    ))
+
+    items.append(Armor(
+        name="Invisible Vest",
+        description="Increases armor, surprisingly.",
+        image_path="../../graphics/items/invisible_vest.png",
+        defense_bonus=4
+    ))
+
+    items.append(Weapon(
+        name="Jester's Needles",
+        description="Increases attack",
+        image_path="../../graphics/items/Jesters_Needles.png",
+        attack_bonus=2,
+        value=250
+    ))
+
+    items.append(Consumable(
+        name="Laughing Flask",
+        description="Restores armor",
+        image_path="../../graphics/items/laughing_flask.png",
+        effect_type="heal",
+        effect_amount=15,
+        value=15,
+        max_stack=5
+    ))
+
+    items.append(Weapon(
+        name="Rubber Mallet",
+        description="Increases attack",
+        image_path="../../graphics/items/rubber_baton.png",
+        attack_bonus=5,
+        value=100
+    ))
 
     print(f"Created {len(items)} example items")
     return items

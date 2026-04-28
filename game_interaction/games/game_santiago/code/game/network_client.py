@@ -19,8 +19,7 @@ import struct
 from queue import Queue
 
 class NetworkClient:
-    def __init__(self, game_name, player_name, server_host='localhost', server_port=8080, serializer='text'):
-        self.game_name = game_name
+    def __init__(self, player_name, server_host='localhost', server_port=8080, serializer='text'):
         self.player_name = player_name
         self.server_host = server_host
         self.server_port = server_port
@@ -128,11 +127,34 @@ class NetworkClient:
             print(f"[ERROR] Server might be using a different format than '{self.serializer}'")
             return None
     
+    def _deserialize_text(self, data):
+        """Deserialize TEXT format: "id|name|x|y|socket|character_type|status" """
+        parts = data.split('|')
+        if len(parts) >= 5:
+            try:
+                result = {
+                    'id': int(parts[0]),
+                    'name': parts[1],
+                    'x': float(parts[2]),
+                    'y': float(parts[3])
+                }
+                # Add character_type and status if present
+                if len(parts) >= 7:
+                    result['character_type'] = parts[5]
+                    result['status'] = parts[6]
+                else:
+                    result['character_type'] = ''
+                    result['status'] = 'down'
+                return result
+            except (ValueError, IndexError) as e:
+                print(f"Error parsing text data '{data}': {e}")
+                return None
+        return None
+    
     def _deserialize_json(self, data):
         """Deserialize JSON format: {"id":1,"name":"Alice",...}"""
         player = json.loads(data)
         return {
-            "game_name": player['game_name'],
             'id': player['id'],
             'name': player['name'],
             'x': player['x'],
@@ -141,48 +163,38 @@ class NetworkClient:
             'status': player.get('status', 'down')
         }
     
-    def _deserialize_text(self, data):
-        parts = data.split('|')
-        # Expecting at least 6 parts: Game|ID|Name|X|Y|Socket
-        if len(parts) >= 6:
-            try:
-                return {
-                    'game_name': parts[0],
-                    'id': int(parts[1]),
-                    'name': parts[2],
-                    'x': float(parts[3]),
-                    'y': float(parts[4]),
-                    # Index 5 is socket, index 6 is char_type, index 7 is status
-                    'character_type': parts[6] if len(parts) > 6 else '',
-                    'status': parts[7] if len(parts) > 7 else 'down'
-                }
-            except (ValueError, IndexError):
-                return None
-        return None
-
     def _deserialize_binary(self, data):
+        """Deserialize BINARY format: base64-encoded 88-byte struct"""
         import base64
+        
         try:
+            # Decode base64 to get raw bytes
             raw_bytes = base64.b64decode(data)
-            # Format: 32s (game), i (id), 32s (name), f (x), f (y), i (sock), 16s (char), 8s (stat), 16x (pad)
-            # Total = 120 bytes
-            struct_fmt = '32s i 32s f f i 16s 8s 16x'
-            if len(raw_bytes) < struct.calcsize(struct_fmt):
+            
+            # Struct format: int(4) + char[32] + float(4) + float(4) + int(4) + char[16] + char[8] + padding(16) = 88 bytes
+            if len(raw_bytes) < 88:
                 return None
             
-            unpacked = struct.unpack(struct_fmt, raw_bytes[:120])
+            # Unpack: i = int, 32s = 32-byte string, f = float, f = float, i = int, 16s = 16-byte string, 8s = 8-byte string, 16x = 16 bytes padding
+            unpacked = struct.unpack('i32sff i16s8s16x', raw_bytes[:88])
+            
+            player_id = unpacked[0]
+            name = unpacked[1].decode('utf-8').rstrip('\x00')  # Remove null terminator
+            x = unpacked[2]
+            y = unpacked[3]
+            character_type = unpacked[5].decode('utf-8').rstrip('\x00')  # Remove null terminator
+            status = unpacked[6].decode('utf-8').rstrip('\x00')  # Remove null terminator
             
             return {
-                'game_name': unpacked[0].decode('utf-8').rstrip('\x00'),
-                'id': unpacked[1],
-                'name': unpacked[2].decode('utf-8').rstrip('\x00'),
-                'x': unpacked[3],
-                'y': unpacked[4],
-                'character_type': unpacked[6].decode('utf-8').rstrip('\x00'),
-                'status': unpacked[7].decode('utf-8').rstrip('\x00')
+                'id': player_id,
+                'name': name,
+                'x': x,
+                'y': y,
+                'character_type': character_type,
+                'status': status
             }
         except Exception as e:
-            print(f"Binary error: {e}")
+            print(f"Binary deserialization error: {e}")
             return None
     
     def send_update(self, x, y, character_type="", status="down"):

@@ -1,129 +1,88 @@
-# Sparse Matrix Complexity Analysis
+# Graph Complexity Analysis
 
-**Name:** Santiago Troya
-**Date:** 04/10/2026
-**Implementation:** [(DOK) / COO / CSR — circle one]
-
----
-
-## Overview
-
-Describe your implementation choice and why you chose it.  For example:
-- What backing data structure does it use?
-- Why is it appropriate for the tile-map use case?
-- What trade-offs does it make compared to the other options?
-
-I chose the DOK representation. Each of the non-default entries are stored as a (row,col) tuple key mapped to its value inside of a the implemented hashtable datastructure. 
-
-it is appropiate to use this datastructure for this case becuase most of the map is not going to be occupied, which means that we can represent it as a sparse matrix. 
-
-Compared to the CSR for bulk operations, DOK is slower. But as a tradeoff for these bulk cases, the computation of the multiplication of matrices is faster.
+**Author:** Santiago Troya
+**Date:** 04/27/2026
+**Lab:** Lab 7 - NPC Dialog with Graphs
 
 ---
 
-## Time Complexity
+## 1. Implementation Overview
 
-Fill in the `?` cells after analysing your implementation.
+The Graph uses two HashTable instances as the backing store: `_adj` maps each node ID to a Python list of `(neighbor_id, weight, edge_data)` tuples, and `_data` maps each node ID to its payload dict. The graph supports both directed and undirected modes; in undirected mode `add_edge` inserts entries in both adjacency lists. The HashTable itself uses separate chaining with an ArrayList per bucket and doubles capacity when load factor exceeds 0.7.
 
-| Operation | Your SparseMatrix | scipy sparse (CSR) | numpy dense |
-|-----------|-------------------|--------------------|-------------|
-| `set(r, c, v)` | O(1) avg | O(nnz) amortised | O(1) |
-| `get(r, c)` | O(1) avg | O(log nnz) | O(1) |
-| `items()` iteration | O(nnz) | O(nnz) | O(n^2) |
-| `multiply(other)` | O(nnz^2) | O(nnz^2/n) | O(n^3) |
-
-*nnz = number of non-zero entries, n = matrix dimension side length*
-
-Explain your reasoning for each `?` in a sentence or two.
-
-For set, ammortized O(1) because it computes a bucket index in O(1) and appends or updates in the chain. It occasionally resizes, but it is O(1) ammortized.
-
-For get, O(1) The same hash lookup ends up in the same bucket. 
-
-For items() O(nnz) iterating the hashtable in only the occupied chain entries.
-
-multiply() O(nnz^2) the implementation computes all of the non zero elements.
- 
 ---
 
-## Benchmark Results
+## 2. Time Complexity Table
 
-Run `sparse_matrix_complexity.py` and paste the output here:
+| Method            | Your Big-O    | Justification                                                                 |
+|-------------------|---------------|-------------------------------------------------------------------------------|
+| `add_node`        | O(1) avg      | Single HashTable.set call; O(1) average with a good hash and low load factor. |
+| `add_edge`        | O(1) avg      | Two has_node checks plus one list.append per direction; all O(1) average.     |
+| `remove_node`     | O(V + E)      | Must iterate all V nodes and scan their adjacency lists to remove touching edges. |
+| `remove_edge`     | O(degree)     | Scans the adjacency list of from_id (length = out-degree) to find and remove the edge. |
+| `has_node`        | O(1) avg      | HashTable.__contains__ hashes the key and scans one bucket; O(1) average.    |
+| `has_edge`        | O(degree)     | Calls get_neighbors then scans the returned list linearly.                    |
+| `get_neighbors`   | O(1) avg      | Returns the stored list directly after a single HashTable.get lookup.         |
+| `bfs`             | O(V + E)      | Each node is enqueued once and each edge is examined once.                    |
+| `dfs`             | O(V + E)      | Same visit-once property as BFS; iterative with an explicit stack.            |
+| `shortest_path`   | O(V + E)      | BFS-based; stops early when the target is found but worst case visits all nodes and edges. |
+
+---
+
+## 3. Benchmark Results
 
 ```
-
-=== Build ===
-       N      DOK (ours)       scipy CSR     numpy dense
-     400        0.014887        0.001330        0.000634
-     800        0.076229        0.004350        0.002180
-    1600        0.196061        0.009850        0.006727
-    3200        0.955093        0.033019        0.023033
-    6400        3.382979        0.182041        0.140945
- 
-=== Get ===
-       N      DOK (ours)       scipy CSR     numpy dense
-     400        0.000558        0.007543        0.000106
-     800        0.000452        0.010191        0.000118
-    1600        0.001285        0.017255        0.000282
-    3200        0.001154        0.009753        0.000179
-    6400        0.001389        0.008083        0.000180
- 
-=== Iteration ===
-       N      DOK (ours)       scipy CSR     numpy dense
-     400        0.001683        0.000742        0.001022
-     800        0.005607        0.001995        0.003248
-    1600        0.028574        0.003922        0.008424
-    3200        0.062654        0.018958        0.062288
-    6400        0.335116        0.103408        0.259203
- 
-=== Multiply ===
-       N      DOK (ours)       scipy CSR     numpy dense
-      10        0.000045        0.000625        0.000060
-      20        0.000090        0.000401        0.000029
-      30        0.000204        0.000422        0.000067
-      40        0.000398        0.000447        0.000127
-      50        0.000852        0.000548        0.000188
-
+============================================================================
+Graph Performance Benchmark  (best of 3 runs)
+Edge factor: 3x  |  has_node queries: 500  |  shortest_path pairs: 20
+============================================================================
+ Nodes |          Build |       has_node |            BFS |            DFS |   ShortestPath
+-------------------------------------------------------------------------------------------
+   100 |          1.077 |          0.131 |          0.321 |          0.359 |          0.285
+   500 |          6.277 |          0.133 |          1.634 |          1.805 |          0.263
+  1000 |         13.956 |          0.137 |          3.335 |          3.678 |          0.257
+============================================================================
 ```
 
 ---
 
-## Space Complexity
+## 4. Space Complexity
 
-| Representation | Space Used |
-|----------------|-----------|
-| Dense n×n      | O(n²)     |
-| Your sparse    | O(nnz)      |
-
-At what density (percentage of non-zero entries) does your sparse matrix
-use *more* memory than a dense matrix?  Show your reasoning.
+The graph uses O(V + E) memory. V is the number of nodes, each contributes one entry in _adj and one in _data. E is the number of directed edges, each contributes one tuple in the adjacency list of its source node. The HashTable buckets hold at most O(V) entries in _adj and O(V) in _data, while the adjacency lists collectively hold O(E) tuples, giving O(V + E) total.
 
 ---
 
-## Observations
+## 5. Reflection Questions
 
-1. How does your implementation compare to scipy in terms of speed?
-2. When is a sparse representation faster than a dense one?
-3. Was the overhead per entry (your structure vs. numpy array) noticeable?
+**Q1.** BFS and DFS both visit every reachable node exactly once.
+Why might BFS be preferred for `shortest_path` even though both are O(V + E)?
 
-My implementation is 10-20x slower for build, and 3-10x slower for iteration, for get is 5-12x faster.
-
-For Build and Iteration at 1 % density, both DOK and scipy avoid touching the ~99 % empty cells, so they scale with nnz rather than n^2.
-
-Yes, it is very noticeable. At N=6400 DOK Build takes 3.38 s versus 0.18 s for scipy.
+BFS explores nodes level by level, so the first time it reaches the destination it's guaranteed to have taken the minimum number of edges. DFS may reach the destination via a long detour first, requiring backtracking or a full traversal before the true shortest path can be identified. For unweighted graphs, BFS finds the shortest path without any additional tracking.
 
 ---
 
-## Conclusions
+**Q2.** Your adjacency list uses O(V + E) space. An adjacency *matrix* uses O(V^2).
+For the NPC dialog trees in this lab (small, sparse graphs), which representation is
+more appropriate? Would your answer change for a 10,000-node social network graph?
 
-Write 2–3 sentences summarising what you learned about sparse data structures
-from this experiment.
-
-DOK is great for the implementation of sparse matrices, it has a O(1) ammortized hash table lookup. However, the results demonstrates that the overhead is significant in comparison to the python level datastructure.
+For the dialog trees in this lab, the adjacency list is more appropriate. Each NPC graph has only 5-6 nodes and little edges, so V^2 would add to a lot of overhead. For a 10,000-node social network where each user connects to dozens of others, the adjacency list is still more appropriate because social networks are sparse (E << V^2); an adjacency matrix would waste 10^8 cells to store a fraction of that many edges.
 
 ---
 
-## References
+**Q3.** Compare your `bfs` timing to networkx's (if you ran the comparison).
+What accounts for the difference? Is networkx faster or slower, and why?
 
-List any resources (textbooks, websites, papers) you used.
-https://docs.scipy.org/doc/scipy/reference/sparse.html
+The comparison against networkx was not run for this lab. Networkx would be faster at large scales. This implementation uses a custom HashTable backed by an ArrayList, which adds overhead from Python-level looping, ArrayList bounds checks, and hash computation for every operation.
+
+---
+
+## 6. Conclusions
+
+The implementation shows linear growth in BFS/DFS time as graph size increases, which is consistent with the expected O(V + E) complexity. The has_node time stays nearly constant across sizes, confirming O(1) average performance for the HashTable lookup.
+
+---
+
+## 7. References
+
+- Course lecture slides on graph algorithms and adjacency list representations.
+- AI tool usage logged in `ai_conversations.md`.

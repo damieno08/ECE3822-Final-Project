@@ -88,7 +88,7 @@ def import_csv_to_sparse(path):
             can iterate uniformly.
     """
     try:
-        from game_interaction.games.game_santiago.code.game.datastructures.sparse_matrix import SparseMatrix
+        from datastructures.sparse_matrix import SparseMatrix
         matrix = SparseMatrix(default=-1)
         layout = import_csv_layout(path)
         for row_idx, row in enumerate(layout):
