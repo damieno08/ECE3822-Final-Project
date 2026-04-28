@@ -43,7 +43,7 @@ class Level:
 
         self.create_map()
 
-        self.network   = NetworkClient(player_name, server_host, server_port, serializer)
+        self.network   = NetworkClient( "SantiGame",player_name, server_host, server_port, serializer)
         self.connected = self.network.connect()
 
         self.other_players     = {}

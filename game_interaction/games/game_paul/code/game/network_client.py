@@ -45,6 +45,11 @@ class NetworkClient:
             print(f"Connecting to {self.server_host}:{self.server_port}...")
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((self.server_host, self.server_port))
+
+            # Send JOIN handshake — server is blocking waiting for this
+            join_msg = f"JOIN|{self.game_name}|{self.player_name}\n"
+            self.sock.sendall(join_msg.encode('utf-8'))
+
             self.connected = True
             self.running = True
             
@@ -60,9 +65,10 @@ class NetworkClient:
             return False
     
     def _receive_loop(self):
-        """Background thread to receive messages from server"""
         buffer = ""
-        
+        state_buffer = []
+        in_state = False
+
         while self.running and self.connected:
             try:
                 data = self.sock.recv(4096).decode('utf-8', errors='ignore')
@@ -70,19 +76,63 @@ class NetworkClient:
                     print("Server disconnected")
                     self.connected = False
                     break
-                
+
                 buffer += data
-                
+
                 while '\n' in buffer:
                     line, buffer = buffer.split('\n', 1)
-                    self._process_message(line)
-                    
+                    line = line.strip()
+
+                    if not line:
+                        continue
+
+                    # ---- STATE START ----
+                    if line == "STATE":
+                        in_state = True
+                        state_buffer = []
+                        continue
+
+                    # ---- STATE END ----
+                    if line == "END":
+                        in_state = False
+                        self._process_state(state_buffer)
+                        state_buffer = []
+                        continue
+
+                    # ---- COLLECT STATE DATA ----
+                    if in_state:
+                        state_buffer.append(line)
+                    else:
+                        self._process_message(line)
+
             except Exception as e:
                 if self.running:
                     print(f"Receive error: {e}")
                     self.connected = False
                 break
-    
+    def _process_state(self, lines):
+        """Process full STATE block safely"""
+        print(f"[DEBUG] STATE block received: {len(lines)} players")
+        players = {}
+
+        for chunk in lines:
+            if not chunk or '|' not in chunk:
+                print(f"[SKIP] bad chunk: {chunk}")
+                continue
+
+            player = self._deserialize_player(chunk)
+            if not player:
+                continue
+
+            if player.get("game_name") != self.game_name:
+                continue
+
+            players[player['id']] = player
+
+        print(f"[DEBUG] Final players parsed: {len(players)}")
+        print(f"[DEBUG GAME CHECK] LOCAL='{self.game_name}' REMOTE='{player.get('game_name')}'")
+        self.update_queue.put(players)
+
     def _process_message(self, msg):
         """Process a message from server"""
         # First check message type (before any separator)
@@ -91,26 +141,6 @@ class NetworkClient:
             self.my_player_id = int(parts[1])
             print(f"Assigned player ID: {self.my_player_id}")
             
-        elif msg.startswith("STATE||"):
-            # Game state update
-            # Format: STATE||<serialized_player1>||<serialized_player2>||...
-            # Players are separated by || (double pipe) to avoid conflicts with serialization formats
-            parts = msg.split('||')
-            print(f"[DEBUG] Received STATE message with {len(parts)-1} player entries")
-            players = {}
-            
-            for i in range(1, len(parts)):
-                if parts[i]:
-                    print(f"[DEBUG] Parsing player {i}: '{parts[i][:50]}...'")  # First 50 chars
-                    player_data = self._deserialize_player(parts[i])
-                    if player_data:
-                        print(f"[DEBUG] Parsed player: ID={player_data['id']}, Name={player_data['name']}")
-                        players[player_data['id']] = player_data
-                    else:
-                        print(f"[DEBUG] Failed to parse player data")
-            
-            print(f"[DEBUG] Total players parsed: {len(players)}")
-            self.update_queue.put(players)
     
     def _deserialize_player(self, data):
         """Deserialize player data based on format"""
@@ -143,22 +173,24 @@ class NetworkClient:
     
     def _deserialize_text(self, data):
         parts = data.split('|')
-        # Expecting at least 6 parts: Game|ID|Name|X|Y|Socket
-        if len(parts) >= 6:
-            try:
-                return {
-                    'game_name': parts[0],
-                    'id': int(parts[1]),
-                    'name': parts[2],
-                    'x': float(parts[3]),
-                    'y': float(parts[4]),
-                    # Index 5 is socket, index 6 is char_type, index 7 is status
-                    'character_type': parts[6] if len(parts) > 6 else '',
-                    'status': parts[7] if len(parts) > 7 else 'down'
-                }
-            except (ValueError, IndexError):
-                return None
-        return None
+
+        if len(parts) < 7:
+            print(f"[BAD TEXT] Not enough fields: {parts}")
+            return None
+
+        try:
+            return {
+                'game_name': parts[0],
+                'id': int(parts[1]),
+                'name': parts[2],
+                'x': float(parts[3]),
+                'y': float(parts[4]),
+                'character_type': parts[5],
+                'status': parts[6]
+            }
+        except Exception as e:
+            print(f"[PARSE ERROR] {e}")
+            return None
 
     def _deserialize_binary(self, data):
         import base64
@@ -185,14 +217,33 @@ class NetworkClient:
             print(f"Binary error: {e}")
             return None
     
-    def send_update(self, x, y, character_type="", status="down"):
-        """Send our position, character type, and status to server (uses standard UPDATE format)"""
-        if self.connected and self.my_player_id is not None:
-            msg = f"UPDATE|{self.my_player_id}|{x}|{y}|{self.player_name}|{character_type}|{status}\n"
-            try:
-                self.sock.send(msg.encode('utf-8'))
-            except:
-                self.connected = False
+    def send_update(self, x, y, character_type="", status="down", game_name="PaulGame"):
+        """Send position + player state to server (with game isolation)"""
+
+        if not self.connected or self.my_player_id is None:
+            return
+
+        # Ensure safe string conversion
+        x = float(x)
+        y = float(y)
+
+        # Build message
+        msg = (
+            f"UPDATE|"
+            f"{self.my_player_id}|"
+            f"{x}|"
+            f"{y}|"
+            f"{self.player_name}|"
+            f"{character_type}|"
+            f"{status}|"
+            f"{game_name}\n"
+        )
+
+        try:
+            self.sock.sendall(msg.encode("utf-8"))
+        except Exception as e:
+            print(f"[NETWORK ERROR] send_update failed: {e}")
+            self.connected = False
     
     def get_updates(self):
         """Get most recent update from queue"""

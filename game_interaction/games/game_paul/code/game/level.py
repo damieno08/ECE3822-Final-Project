@@ -33,7 +33,7 @@ class Level:
         self.create_map()
 
         # Network setup with serializer
-        self.network = NetworkClient(player_name, server_host, server_port, serializer)
+        self.network = NetworkClient("PaulGame", player_name, server_host, server_port, serializer)
         self.connected = self.network.connect()
 
         # Track other players

@@ -19,7 +19,8 @@ import struct
 from queue import Queue
 
 class NetworkClient:
-    def __init__(self, player_name, server_host='localhost', server_port=8080, serializer='text'):
+    def __init__(self, game_name, player_name, server_host='localhost', server_port=8080, serializer='text'):
+        self.game_name = game_name
         self.player_name = player_name
         self.server_host = server_host
         self.server_port = server_port
@@ -44,6 +45,11 @@ class NetworkClient:
             print(f"Connecting to {self.server_host}:{self.server_port}...")
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((self.server_host, self.server_port))
+
+            # Send JOIN handshake — server is blocking waiting for this
+            join_msg = f"JOIN|{self.game_name}|{self.player_name}\n"
+            self.sock.sendall(join_msg.encode('utf-8'))
+
             self.connected = True
             self.running = True
             
@@ -59,9 +65,10 @@ class NetworkClient:
             return False
     
     def _receive_loop(self):
-        """Background thread to receive messages from server"""
         buffer = ""
-        
+        state_buffer = []
+        in_state = False
+
         while self.running and self.connected:
             try:
                 data = self.sock.recv(4096).decode('utf-8', errors='ignore')
@@ -69,19 +76,63 @@ class NetworkClient:
                     print("Server disconnected")
                     self.connected = False
                     break
-                
+
                 buffer += data
-                
+
                 while '\n' in buffer:
                     line, buffer = buffer.split('\n', 1)
-                    self._process_message(line)
-                    
+                    line = line.strip()
+
+                    if not line:
+                        continue
+
+                    # ---- STATE START ----
+                    if line == "STATE":
+                        in_state = True
+                        state_buffer = []
+                        continue
+
+                    # ---- STATE END ----
+                    if line == "END":
+                        in_state = False
+                        self._process_state(state_buffer)
+                        state_buffer = []
+                        continue
+
+                    # ---- COLLECT STATE DATA ----
+                    if in_state:
+                        state_buffer.append(line)
+                    else:
+                        self._process_message(line)
+
             except Exception as e:
                 if self.running:
                     print(f"Receive error: {e}")
                     self.connected = False
                 break
-    
+    def _process_state(self, lines):
+        """Process full STATE block safely"""
+        print(f"[DEBUG] STATE block received: {len(lines)} players")
+        players = {}
+
+        for chunk in lines:
+            if not chunk or '|' not in chunk:
+                print(f"[SKIP] bad chunk: {chunk}")
+                continue
+
+            player = self._deserialize_player(chunk)
+            if not player:
+                continue
+
+            if player.get("game_name") != self.game_name:
+                continue
+
+            players[player['id']] = player
+
+        print(f"[DEBUG] Final players parsed: {len(players)}")
+        print(f"[DEBUG GAME CHECK] LOCAL='{self.game_name}' REMOTE='{player.get('game_name')}'")
+        self.update_queue.put(players)
+
     def _process_message(self, msg):
         """Process a message from server"""
         # First check message type (before any separator)
@@ -90,26 +141,6 @@ class NetworkClient:
             self.my_player_id = int(parts[1])
             print(f"Assigned player ID: {self.my_player_id}")
             
-        elif msg.startswith("STATE||"):
-            # Game state update
-            # Format: STATE||<serialized_player1>||<serialized_player2>||...
-            # Players are separated by || (double pipe) to avoid conflicts with serialization formats
-            parts = msg.split('||')
-            print(f"[DEBUG] Received STATE message with {len(parts)-1} player entries")
-            players = {}
-            
-            for i in range(1, len(parts)):
-                if parts[i]:
-                    print(f"[DEBUG] Parsing player {i}: '{parts[i][:50]}...'")  # First 50 chars
-                    player_data = self._deserialize_player(parts[i])
-                    if player_data:
-                        print(f"[DEBUG] Parsed player: ID={player_data['id']}, Name={player_data['name']}")
-                        players[player_data['id']] = player_data
-                    else:
-                        print(f"[DEBUG] Failed to parse player data")
-            
-            print(f"[DEBUG] Total players parsed: {len(players)}")
-            self.update_queue.put(players)
     
     def _deserialize_player(self, data):
         """Deserialize player data based on format"""
@@ -127,34 +158,11 @@ class NetworkClient:
             print(f"[ERROR] Server might be using a different format than '{self.serializer}'")
             return None
     
-    def _deserialize_text(self, data):
-        """Deserialize TEXT format: "id|name|x|y|socket|character_type|status" """
-        parts = data.split('|')
-        if len(parts) >= 5:
-            try:
-                result = {
-                    'id': int(parts[0]),
-                    'name': parts[1],
-                    'x': float(parts[2]),
-                    'y': float(parts[3])
-                }
-                # Add character_type and status if present
-                if len(parts) >= 7:
-                    result['character_type'] = parts[5]
-                    result['status'] = parts[6]
-                else:
-                    result['character_type'] = ''
-                    result['status'] = 'down'
-                return result
-            except (ValueError, IndexError) as e:
-                print(f"Error parsing text data '{data}': {e}")
-                return None
-        return None
-    
     def _deserialize_json(self, data):
         """Deserialize JSON format: {"id":1,"name":"Alice",...}"""
         player = json.loads(data)
         return {
+            "game_name": player['game_name'],
             'id': player['id'],
             'name': player['name'],
             'x': player['x'],
@@ -163,48 +171,79 @@ class NetworkClient:
             'status': player.get('status', 'down')
         }
     
-    def _deserialize_binary(self, data):
-        """Deserialize BINARY format: base64-encoded 88-byte struct"""
-        import base64
-        
+    def _deserialize_text(self, data):
+        parts = data.split('|')
+
+        if len(parts) < 7:
+            print(f"[BAD TEXT] Not enough fields: {parts}")
+            return None
+
         try:
-            # Decode base64 to get raw bytes
-            raw_bytes = base64.b64decode(data)
-            
-            # Struct format: int(4) + char[32] + float(4) + float(4) + int(4) + char[16] + char[8] + padding(16) = 88 bytes
-            if len(raw_bytes) < 88:
-                return None
-            
-            # Unpack: i = int, 32s = 32-byte string, f = float, f = float, i = int, 16s = 16-byte string, 8s = 8-byte string, 16x = 16 bytes padding
-            unpacked = struct.unpack('i32sff i16s8s16x', raw_bytes[:88])
-            
-            player_id = unpacked[0]
-            name = unpacked[1].decode('utf-8').rstrip('\x00')  # Remove null terminator
-            x = unpacked[2]
-            y = unpacked[3]
-            character_type = unpacked[5].decode('utf-8').rstrip('\x00')  # Remove null terminator
-            status = unpacked[6].decode('utf-8').rstrip('\x00')  # Remove null terminator
-            
             return {
-                'id': player_id,
-                'name': name,
-                'x': x,
-                'y': y,
-                'character_type': character_type,
-                'status': status
+                'game_name': parts[0],
+                'id': int(parts[1]),
+                'name': parts[2],
+                'x': float(parts[3]),
+                'y': float(parts[4]),
+                'character_type': parts[5],
+                'status': parts[6]
             }
         except Exception as e:
-            print(f"Binary deserialization error: {e}")
+            print(f"[PARSE ERROR] {e}")
+            return None
+
+    def _deserialize_binary(self, data):
+        import base64
+        try:
+            raw_bytes = base64.b64decode(data)
+            # Format: 32s (game), i (id), 32s (name), f (x), f (y), i (sock), 16s (char), 8s (stat), 16x (pad)
+            # Total = 120 bytes
+            struct_fmt = '32s i 32s f f i 16s 8s 16x'
+            if len(raw_bytes) < struct.calcsize(struct_fmt):
+                return None
+            
+            unpacked = struct.unpack(struct_fmt, raw_bytes[:120])
+            
+            return {
+                'game_name': unpacked[0].decode('utf-8').rstrip('\x00'),
+                'id': unpacked[1],
+                'name': unpacked[2].decode('utf-8').rstrip('\x00'),
+                'x': unpacked[3],
+                'y': unpacked[4],
+                'character_type': unpacked[6].decode('utf-8').rstrip('\x00'),
+                'status': unpacked[7].decode('utf-8').rstrip('\x00')
+            }
+        except Exception as e:
+            print(f"Binary error: {e}")
             return None
     
-    def send_update(self, x, y, character_type="", status="down"):
-        """Send our position, character type, and status to server (uses standard UPDATE format)"""
-        if self.connected and self.my_player_id is not None:
-            msg = f"UPDATE|{self.my_player_id}|{x}|{y}|{self.player_name}|{character_type}|{status}\n"
-            try:
-                self.sock.send(msg.encode('utf-8'))
-            except:
-                self.connected = False
+    def send_update(self, x, y, character_type="", status="down", game_name="SantiGame"):
+        """Send position + player state to server (with game isolation)"""
+
+        if not self.connected or self.my_player_id is None:
+            return
+
+        # Ensure safe string conversion
+        x = float(x)
+        y = float(y)
+
+        # Build message
+        msg = (
+            f"UPDATE|"
+            f"{self.my_player_id}|"
+            f"{x}|"
+            f"{y}|"
+            f"{self.player_name}|"
+            f"{character_type}|"
+            f"{status}|"
+            f"{game_name}\n"
+        )
+
+        try:
+            self.sock.sendall(msg.encode("utf-8"))
+        except Exception as e:
+            print(f"[NETWORK ERROR] send_update failed: {e}")
+            self.connected = False
     
     def get_updates(self):
         """Get most recent update from queue"""
