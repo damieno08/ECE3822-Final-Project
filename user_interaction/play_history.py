@@ -23,6 +23,7 @@ class Play_history(History):
         sessions = self._history.get_array()
 
         for session in sessions:
-            total += session.get_time_played().total_seconds()
+            if session is not None:
+                total += session.get_time_played().total_seconds()
         
         return total

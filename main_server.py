@@ -111,7 +111,7 @@ class ArcadeServer:
 
         while True:
             try:
-                raw_data = conn.recv(4096).decode()
+                raw_data = conn.recv(10240).decode()
                 if not raw_data:
                     break
 
@@ -214,20 +214,19 @@ class ArcadeServer:
                     conn.sendall(resp.encode())
 
                 # ---------------- GET HISTORY ----------------
+                # ---------------- GET HISTORY (SERVER) ----------------
                 elif raw_data.startswith("GET_HISTORY:"):
                     target_name = raw_data.split(":")[1].strip()
                     user_obj = self.find_user_by_name(target_name)
 
                     if user_obj:
-                        count = user_obj.get_total_games()
-                        history_output = "" if count > 0 else "No play history found."
-
-                        for i in range(count):
-                            session = user_obj.get_history("game", i)
-                            if session:
-                                history_output += f"[{i+1}] {str(session)}\n"
-
-                        conn.sendall(f"HISTORY_DATA:{history_output}".encode())
+                        # Serialize the actual User object
+                        user_bytes = pickle.dumps(user_obj)
+                        # We use a unique prefix. Note: we send bytes, so we concat bytes.
+                        header = "USER_PICKLE:".encode()
+                        conn.sendall(header + user_bytes)
+                    else:
+                        conn.sendall("ERROR:User not found".encode())
                 # ---------------- RECENTLY PLAYED ----------------
                 elif raw_data.startswith("GET_RECENTLY_PLAYED:"):
                     uname = raw_data.split(":")[1].strip()

@@ -1,6 +1,7 @@
 import socket
 import tkinter as tk
 import json
+import pickle
 from tkinter import ttk, messagebox
 from threading import Thread
 from PIL import Image, ImageTk
@@ -40,35 +41,87 @@ class ArcadeClient:
         except:
             print("[!] Connection Error")
 
+
+    def display_user_profile(self, user_obj):
+        self.display.config(state='normal')
+        self.display.delete('1.0', tk.END)
+        
+        # Header
+        self.display.insert(tk.END, f"--- PROFILE: {user_obj.name.upper()} ---\n", "header")
+        
+        # Stats from the object
+        stats = (
+            f"Total Games: {user_obj.get_total_games()}\n"
+            f"Total Playtime: {user_obj.get_total_playtime()}s\n"
+            f"---------------------------\n\n"
+        )
+        self.display.insert(tk.END, stats)
+
+        # Detailed History
+        self.display.insert(tk.END, "PLAY HISTORY:\n")
+        count = user_obj.get_total_games()
+        if count == 0:
+            self.display.insert(tk.END, " No sessions recorded.")
+        else:
+            for i in range(count):
+                session = user_obj.get_history("game", i)
+                # Assuming session has a __str__ or attributes like game_name, score
+                self.display.insert(tk.END, f" • {session}\n")
+                
+        self.display.tag_config("header", foreground="#00FF00", font=("Courier", 12, "bold"))
+        self.display.config(state='disabled')
+
     def receive_data(self):
         while True:
             try:
-                msg = self.s.recv(4096).decode()
-                if not msg:
+                # Receive bytes initially to accommodate both text and pickle data
+                raw_data = self.s.recv(16384)  # Increased buffer for object serialization
+                if not raw_data:
+                    print("[!] Server closed connection")
                     break
 
+                # 1. Check for the Binary Pickle Prefix
+                if raw_data.startswith(b"USER_PICKLE:"):
+                    # Strip the prefix and unpickle the remaining bytes
+                    pickle_payload = raw_data[len(b"USER_PICKLE:"):]
+                    try:
+                        user_obj = pickle.loads(pickle_payload)
+                        # Use .after to ensure UI updates happen on the main thread
+                        self.root.after(0, lambda: self.display_user_profile(user_obj))
+                    except Exception as p_err:
+                        print(f"[!] Unpickling error: {p_err}")
+                    continue
+
+                # 2. Handle Standard String Messages
+                try:
+                    msg = raw_data.decode('utf-8')
+                except UnicodeDecodeError:
+                    # If it's not our pickle prefix but fails decoding, ignore or log
+                    continue
+
                 if msg.startswith("SUCCESS:"):
+                    # Note: We create a local 'verified' user shell here for the login user
                     self.current_user = User(msg.split(":")[1], "verified")
                     self.root.after(0, self.show_dashboard)
 
                 elif msg.startswith("ERROR:"):
                     err = msg.split(":", 1)[1]
-                    self.root.after(0, lambda: messagebox.showerror("Login Error", err))
+                    self.root.after(0, lambda: messagebox.showerror("Error", err))
 
                 elif msg.startswith("USER_RESULTS:"):
-                    self.root.after(0, lambda: self.display_clickable_users(msg.split(":", 1)[1]))
-
-                elif msg.startswith("HISTORY_DATA:"):
-                    self.root.after(0, lambda: self.update_display(msg.split(":", 1)[1], clear=True))
+                    data = msg.split(":", 1)[1]
+                    self.root.after(0, lambda: self.display_clickable_users(data))
 
                 elif msg.startswith("LEADERBOARD_DATA:"):
-                    self.root.after(0, lambda: self.update_display(msg.split(":", 1)[1], clear=True))
+                    data = msg.split(":", 1)[1]
+                    self.root.after(0, lambda: self.update_display(data, clear=True))
 
                 elif msg.startswith("RECENT_DATA:"):
                     data = msg.split(":", 1)[1]
                     self.root.after(0, lambda d=data: self.render_recent_games(d))
 
-            except:
+            except Exception as e:
+                print(f"[!] Receiver loop exception: {e}")
                 break
 
     # ---------------- UI HELPERS ----------------

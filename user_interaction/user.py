@@ -116,3 +116,4 @@ class User:
             "games_played": self.get_total_games(),
             "total_playtime_seconds": self.get_total_playtime()
         }
+    
