@@ -207,12 +207,14 @@ class game_tom:
                     char_select = False
                     self.running = False
                     pygame.quit()
+                    self.level.network.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         char_select = False
                         self.running = False
                         pygame.quit()
+                        self.level.network.disconnect()
                         return
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     clicked_this_frame = True
@@ -291,6 +293,7 @@ class game_tom:
                 if event.type == pygame.QUIT:
                     self.level.network.disconnect()
                     pygame.quit()
+                    self.level.network.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
