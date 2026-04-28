@@ -83,12 +83,16 @@ class ArcadeServer:
             self.users_bst.insert(self.main_array[i].name)
 
         self.server.listen()
+        self.server.settimeout(1.0)  # allow Ctrl+C to interrupt blocking accept() on Windows
         print(f"[*] Server Online at {self.host}:{self.port}")
 
         try:
             while True:
-                conn, addr = self.server.accept()
-                threading.Thread(target=self.handle_client, args=(conn, addr), daemon=True).start()
+                try:
+                    conn, addr = self.server.accept()
+                    threading.Thread(target=self.handle_client, args=(conn, addr), daemon=True).start()
+                except socket.timeout:
+                    continue
         except KeyboardInterrupt:
             print("\n[*] Shutting down...")
         finally:
