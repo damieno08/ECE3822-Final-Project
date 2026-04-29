@@ -368,7 +368,7 @@ class Level:
     def update_chat(self):
         for sender, text in self.chat_client.get_messages():
 
-            if sender == self.player_name:
+            if sender == self.network.player_name:
                 continue # skips self
 
             msg = ChatMessage(
