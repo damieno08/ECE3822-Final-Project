@@ -258,7 +258,7 @@ class ArcadeClient:
 
         games = [
             ("Luaianid", 0, "game_interaction/games/game_damien/graphics/logo.png"),
-            ("Santiago", 1, "game_interaction/games/game_santiago/graphics/logo.png"),
+            ("JAG", 1, "game_interaction/games/game_santiago/graphics/logo.png"),
             ("Vermis", 2, "game_interaction/games/game_paul/graphics/logo.png"),
             ("Richard", 3, "game_interaction/games/game_richard/graphics/logo.png"),
             ("Tom", 4, "game_interaction/games/game_tom/graphics/logo.png")
@@ -297,7 +297,7 @@ class ArcadeClient:
 
         games_lookup = {
             "0": ("Luaianid", 0, "game_interaction/games/game_damien/graphics/logo.png"),
-            "1": ("Santiago", 1, "game_interaction/games/game_santiago/graphics/logo.png"),
+            "1": ("JAG", 1, "game_interaction/games/game_santiago/graphics/logo.png"),
             "2": ("Vermis", 2, "game_interaction/games/game_paul/graphics/logo.png"),
             "3": ("Richard", 3, "game_interaction/games/game_richard/graphics/logo.png"),
             "4": ("Tom", 4, "game_interaction/games/game_tom/graphics/logo.png"),
