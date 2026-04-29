@@ -20,7 +20,10 @@ class Chat(CircularBuffer):
         self.write(f"{user}: {message}")
 
     def send_message(self, chat_msg):
-        """Accept a ChatMessage object and write its display string into the buffer."""
+        """Accept a ChatMessage object and write its display string into the buffer.
+        Silently drops the message if it was blocked by the rate limiter."""
+        if chat_msg.was_blocked:
+            return
         self.write(str(chat_msg))
 
     def recent(self):
