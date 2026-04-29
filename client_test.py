@@ -270,7 +270,17 @@ class ArcadeClient:
 
         # -------- RECOMMENDED --------
         tk.Label(self.root, text="RECOMMENDED", fg="#00FF00", bg="#1a1a1a").pack()
-        self.rec_logos = self.create_horizontal_scroll(self.root, games)
+
+        _game_info = {
+            "Luaianid": ("Luaianid", 0, "game_interaction/games/game_damien/graphics/logo.png"),
+            "JAG":      ("JAG",      1, "game_interaction/games/game_santiago/graphics/logo.png"),
+            "Paul":     ("Vermis",   2, "game_interaction/games/game_paul/graphics/logo.png"),
+            "Richard":  ("Richard",  3, "game_interaction/games/game_richard/graphics/logo.png"),
+            "Tom":      ("Tom",      4, "game_interaction/games/game_tom/graphics/logo.png"),
+        }
+        recs = self.current_user.recommend()
+        rec_games = [_game_info[name] for name, _ in recs if name in _game_info] or games
+        self.rec_logos = self.create_horizontal_scroll(self.root, rec_games)
 
         # -------- RECENTLY PLAYED --------
         tk.Label(self.root, text="RECENTLY PLAYED", fg="#00FF00", bg="#1a1a1a").pack()
@@ -338,6 +348,7 @@ class ArcadeClient:
         try:
             handler = self.handler_map[idx](self.current_user)
             duration, score = handler.start_game()
+            self.current_user.record_play(handler.genre, handler.name, duration.total_seconds())
 
             self.s.sendall(
                 f"SAVE_SESSION|{self.current_user.name}|{score}|{duration}|{idx}".encode()

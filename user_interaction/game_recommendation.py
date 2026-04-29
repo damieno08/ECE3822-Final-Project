@@ -17,6 +17,7 @@ GAMES = {
     "JAG":      1,
     "Paul":     2,
     "Richard":  3,
+    "Tom":      4,
 }
 
 # Map each genre to a column index in the sparse matrix

@@ -184,6 +184,7 @@ class ArcadeServer:
                                     text=m["text"],
                                     game_id=m.get("game_id", ""),
                                     timestamp=ts,
+                                    rate_limited=False,
                                 )
                                 user_obj.update_history("chat", msg)
                             print(f"[DEBUG] Chat saved: {uname} | {len(messages)} message(s)")
