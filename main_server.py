@@ -214,7 +214,6 @@ class ArcadeServer:
                     resp = "USER_RESULTS:" + ("\n".join(results) if results else "No users found")
                     conn.sendall(resp.encode())
 
-                # ---------------- GET HISTORY ----------------
                 # ---------------- GET HISTORY (SERVER) ----------------
                 elif raw_data.startswith("GET_HISTORY:"):
                     target_name = raw_data.split(":")[1].strip()
