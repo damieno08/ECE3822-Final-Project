@@ -105,6 +105,12 @@ class User:
     def get_pass_hashed(self):
         return self.__password
 
+    def record_play(self, genre, game_name, time_seconds):
+        self.__game_recommendation.record_play(genre, game_name, time_seconds)
+
+    def recommend(self):
+        return self.__game_recommendation.recommend()
+
     def get_profile(self):
         """
         Return user profile
