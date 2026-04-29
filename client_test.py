@@ -28,7 +28,7 @@ class ArcadeClient:
 
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connect_to_server()
-
+        
         self.show_login_screen()
         self.root.mainloop()
 

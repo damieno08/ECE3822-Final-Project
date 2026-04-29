@@ -33,10 +33,15 @@ class ArcadeServer:
 
         # ✅ Load or create leaderboards
         self.leaderboards = self.load_leaderboards()
+        self.chat_clients = []
+        self.chat_lock = threading.Lock()
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server.bind((self.host, self.port))
+
+        self.chat_clients = []
+        self.chat_lock = threading.Lock()
 
     # --------------------------------------------------
     # LEADERBOARD PERSISTENCE
@@ -227,6 +232,32 @@ class ArcadeServer:
                         conn.sendall(header + user_bytes)
                     else:
                         conn.sendall("ERROR:User not found".encode())
+                # ---------------- LIVE CHAT JOIN----------------
+                elif raw_data.startswith("CHAT_JOIN"):
+                    username = raw_data.split("|")[1]
+
+                    with self.chat_lock:
+                        self.chat_clients.append((conn, username))
+
+                    print(f"[CHAT] {username} joined chat")
+                                
+                # ---------------- LIVE CHAT HANDLING----------------
+                elif raw_data.startswith("CHAT_MSG"):
+                    parts = raw_data.split("|", 2)
+                    if len(parts) < 3:
+                        continue
+
+                    sender = parts[1]
+                    text = parts[2]
+
+                    message = f"CHAT_BROADCAST|{sender}|{text}"
+
+                    with self.chat_lock:
+                        for client, _ in self.chat_clients:
+                            try:
+                                client.sendall((message + "\n").encode())
+                            except:
+                                pass
                 # ---------------- RECENTLY PLAYED ----------------
                 elif raw_data.startswith("GET_RECENTLY_PLAYED:"):
                     uname = raw_data.split(":")[1].strip()
@@ -254,7 +285,6 @@ class ArcadeServer:
 
                                 if g_idx is not None:
                                     entries.append(g_idx)
-
                         # send as CSV
                         conn.sendall(f"RECENT_DATA:{','.join(entries)}".encode())
             except Exception as e:
@@ -262,6 +292,10 @@ class ArcadeServer:
                 break
 
         conn.close()
+        with self.chat_lock:
+            self.chat_clients = [
+            (c, u) for (c, u) in self.chat_clients if c != conn
+            ]
 
 
 if __name__ == "__main__":
