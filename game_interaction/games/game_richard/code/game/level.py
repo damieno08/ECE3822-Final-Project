@@ -15,6 +15,9 @@ from game_interaction.games.game_richard.code.game.time_travel import TimeTravel
 from game_interaction.games.game_richard.code.game.enemy import Enemy, ENEMY_SPAWN_DATA
 from game_interaction.games.game_richard.code.game.datastructures.patrol_path import PatrolPath
 from game_interaction.games.game_richard.code.game.weapon import Weapon as WeaponSprite
+from game_interaction.chat import Chat
+from game_interaction.games.game_richard.code.game.ChatClient import ChatClient
+from user_interaction.chat_message import ChatMessage
 import sys
 
 class Level:
@@ -42,6 +45,19 @@ server_port=8080, serializer='text'):
         self.network = NetworkClient("RichGame", player_name, server_host, server_port,
         serializer)
         self.connected = self.network.connect()
+
+        # NEW CHAT CLIENT
+        self.chat_client = ChatClient(player_name, server_host, 65432)
+        if self.connected:
+            self.chat_client.connect()
+
+        # Chat system
+        self.chat              = Chat()
+        self.chat_input_active = False
+        self.chat_input_text   = ""
+        self.chat_log          = []   # ChatMessage objects persisted to user at game end
+        self.chat_font         = pygame.font.Font(None, 22)
+        self.chat_hint_font    = pygame.font.Font(None, 19)
 
         # Track other players
         self.other_players = {} # player_id -> Character sprite
@@ -208,6 +224,7 @@ server_port=8080, serializer='text'):
                     )
                     self.player.create_attack_callback = self.create_attack
                     self.player.destroy_attack_callback = self.destroy_attack
+
     def add_starting_items(self):
         """Add items defined in item.py's create_example_items() to the player's
         inventory."""
@@ -228,6 +245,99 @@ server_port=8080, serializer='text'):
                     print(f"Auto-equipped: {item.name}")
                     break
             print("Press 'I' to open inventory and switch weapons. SPACE to attack!")
+
+    # ------------------------------------------------------------------
+    # Chat system
+    # ------------------------------------------------------------------
+
+    def handle_chat_input(self, events):
+        """Enter opens chat when no dialog is active and no NPC is nearby."""
+        for event in events:
+            if event.type != pygame.KEYDOWN:
+                continue
+
+            if not self.chat_input_active:
+                if event.key == pygame.K_RETURN:
+                    self.chat_input_active = True
+                    self.chat_input_text = ""
+            else:
+                if event.key == pygame.K_RETURN:
+                    text = self.chat_input_text.strip()
+                    if text:
+                        msg = ChatMessage(
+                            sender=self.network.player_name,
+                            text=text,
+                            game_id="Luainid",
+                        )
+                        self.chat.send_message(msg)
+                        self.chat_log.append(msg)
+                        if self.connected:
+                            self.chat_client.send(text)
+                    self.chat_input_active = False
+                    self.chat_input_text = ""
+                elif event.key == pygame.K_ESCAPE:
+                    self.chat_input_active = False
+                    self.chat_input_text = ""
+                elif event.key == pygame.K_BACKSPACE:
+                    self.chat_input_text = self.chat_input_text[:-1]
+                else:
+                    char = event.unicode
+                    if char and char.isprintable() and len(self.chat_input_text) < 80:
+                        self.chat_input_text += char
+
+    def update_chat(self):
+        for sender, text in self.chat_client.get_messages():
+
+            if sender == self.network.player_name:
+                continue # skips self
+
+            msg = ChatMessage(
+                sender=sender,
+                text=text,
+                game_id="JAG",
+            )
+            self.chat.send_message(msg)
+            self.chat_log.append(msg)
+
+    def draw_chat_ui(self):
+        """Render the last 5 chat messages and, when active, the text input box."""
+        PANEL_W  = 420
+        MSG_H    = 22
+        MAX_SHOW = 5
+        PADDING  = 6
+        panel_x  = 10
+        panel_y  = HEIGHT - 160
+
+        recent = self.chat.recent()[-MAX_SHOW:]
+
+        if recent:
+            panel_h    = len(recent) * MSG_H + PADDING * 2
+            panel_surf = pygame.Surface((PANEL_W, panel_h), pygame.SRCALPHA)
+            panel_surf.fill((0, 0, 0, 140))
+            self.display_surface.blit(panel_surf, (panel_x, panel_y - panel_h))
+            for i, line in enumerate(recent):
+                text_surf = self.chat_font.render(line, True, (230, 230, 230))
+                self.display_surface.blit(
+                    text_surf,
+                    (panel_x + PADDING, panel_y - panel_h + PADDING + i * MSG_H)
+                )
+
+        if self.chat_input_active:
+            input_y    = panel_y + 4
+            input_surf = pygame.Surface((PANEL_W, 28), pygame.SRCALPHA)
+            input_surf.fill((0, 0, 0, 180))
+            self.display_surface.blit(input_surf, (panel_x, input_y))
+            pygame.draw.rect(self.display_surface, (100, 200, 100),
+                             (panel_x, input_y, PANEL_W, 28), 1)
+            cursor       = "|" if pygame.time.get_ticks() % 800 < 400 else " "
+            display_text = f"> {self.chat_input_text}{cursor}"
+            self.display_surface.blit(
+                self.chat_font.render(display_text, True, (180, 255, 180)),
+                (panel_x + PADDING, input_y + 5)
+            )
+        else:
+            hint = self.chat_hint_font.render("Enter: Chat", True, (150, 150, 150))
+            self.display_surface.blit(hint, (panel_x, panel_y + 4))
 
     def create_enemies(self):
         """Create enemies — patrol types use linked list paths (Lab 5), random type
@@ -380,6 +490,8 @@ server_port=8080, serializer='text'):
             self.player.other_players = list(self.other_players.values())
     def handle_events(self, events):
         """Handle pygame events (pass from main game loop)"""
+        if self.chat_input_active:
+            return
         for event in events:
             self.inventory_ui.handle_event(event, self.player)
 
@@ -503,7 +615,8 @@ server_port=8080, serializer='text'):
         if self.connected:
             self.is_time_traveling = False
             return
-    
+        if self.chat_input_active:
+            return
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r and self.time_travel.can_rewind():
@@ -555,10 +668,12 @@ server_port=8080, serializer='text'):
     def run(self, events):
         """Main update loop"""
         self.handle_events(events)
+        self.handle_chat_input(events)
         self.handle_time_travel_input(events)
         self.handle_enemy_debug_input(events)
 
         self.update_network()
+        self.update_chat()
 
         # Update player and remote players
         self.player.update()
@@ -581,6 +696,7 @@ server_port=8080, serializer='text'):
         self.draw_status()
         self.draw_time_travel_ui()
         self.draw_enemy_debug()
+        self.draw_chat_ui()
 
         if self.inventory_ui.active:
             self.inventory_ui.draw(self.display_surface)
@@ -590,6 +706,8 @@ server_port=8080, serializer='text'):
         # ------------------------------------------------------------------
     def handle_enemy_debug_input(self, events):
         """Handle enemy debug controls (Lab 5)."""
+        if self.chat_input_active:
+            return
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_n:

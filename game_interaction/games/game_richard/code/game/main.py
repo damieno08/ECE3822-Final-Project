@@ -203,12 +203,14 @@ class game_richard:
                     char_select = False
                     self.running = False
                     pygame.quit()
+                    self.level.chat_client.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         char_select = False
                         self.running = False
                         pygame.quit()
+                        self.level.chat_client.disconnect()
                         return
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     clicked_this_frame = True
@@ -287,10 +289,12 @@ class game_richard:
                 if event.type == pygame.QUIT:
                     self.level.network.disconnect()
                     pygame.quit()
+                    self.level.chat_client.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.level.network.disconnect()
+                        self.level.chat_client.disconnect()
                         pygame.quit()
                         return
 

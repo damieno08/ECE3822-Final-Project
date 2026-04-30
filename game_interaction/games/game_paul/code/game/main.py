@@ -203,6 +203,7 @@ class game_paul:
                     char_select = False
                     self.running = False
                     pygame.quit()
+                    self.level.chat_client.disconnect()
                     self.level.network.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
@@ -210,6 +211,7 @@ class game_paul:
                         char_select = False
                         self.running = False
                         pygame.quit()
+                        self.level.chat_client.disconnect()
                         self.level.network.disconnect()
                         return
                 elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -288,11 +290,13 @@ class game_paul:
                 events.append(event)
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                    self.level.chat_client.disconnect()
                     self.level.network.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
+                        self.level.chat_client.disconnect()
                         self.level.network.disconnect()
 
                         return
