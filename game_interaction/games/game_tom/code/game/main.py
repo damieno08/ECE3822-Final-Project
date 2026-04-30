@@ -207,16 +207,18 @@ class game_tom:
                     char_select = False
                     self.running = False
                     pygame.quit()
-                    self.level.chat_client.disconnect()
-                    self.level.network.disconnect()
+                    if self.level.connected:
+                        self.level.chat_client.disconnect()
+                        self.level.network.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         char_select = False
                         self.running = False
                         pygame.quit()
-                        self.level.chat_client.disconnect()
-                        self.level.network.disconnect()
+                        if self.level.connected:
+                            self.level.chat_client.disconnect()
+                            self.level.network.disconnect()
                         return
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     clicked_this_frame = True
@@ -270,7 +272,7 @@ class game_tom:
             self.clock.tick(FPS)
             pygame.display.update()
     
-    def run(self):
+    def run(self, is_multiplayer):
         """Main game loop"""
         # Character selection
         self.character_select()
@@ -284,7 +286,8 @@ class game_tom:
             self.selected_character, 
             self.server_host, 
             self.server_port, 
-            self.serializer
+            self.serializer,
+            is_multiplayer
         )
         
         # Game loop
@@ -293,15 +296,17 @@ class game_tom:
             for event in pygame.event.get():
                 events.append(event)
                 if event.type == pygame.QUIT:
-                    self.level.network.disconnect()
-                    self.level.chat_client.disconnect()
+                    if self.level.connected:
+                        self.level.network.disconnect()
+                        self.level.chat_client.disconnect()
 
                     pygame.quit()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.level.network.disconnect()
-                        self.level.chat_client.disconnect()
+                        if self.level.connected:
+                            self.level.network.disconnect()
+                            self.level.chat_client.disconnect()
                         pygame.quit()
                         return
 

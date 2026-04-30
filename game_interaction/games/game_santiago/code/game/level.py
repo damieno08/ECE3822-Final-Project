@@ -31,7 +31,7 @@ from user_interaction.chat_message import ChatMessage
 
 class Level:
     def __init__(self, player_name, character_class,
-                 server_host='localhost', server_port=8080, serializer='text', chat_port=9090):
+                 server_host='localhost', server_port=8080, serializer='text', is_multiplayer=True):
         self.display_surface = pygame.display.get_surface()
 
         self.floor_sprites      = pygame.sprite.Group()
@@ -41,17 +41,22 @@ class Level:
         self.attack_sprites     = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
 
+        self.network = None
+        self.connected = False
+        self.chat_client = None
+
         self.character_class = character_class
 
         self.create_map()
 
-        self.network = NetworkClient("SantiGame", player_name, server_host, server_port, serializer)
-        self.connected = self.network.connect()
+        if is_multiplayer:
+            self.network = NetworkClient("SantiGame", player_name, server_host, server_port, serializer)
+            self.connected = self.network.connect()
 
-        # NEW CHAT CLIENT
-        self.chat_client = ChatClient(player_name, server_host, 65432)
-        if self.connected:
-            self.chat_client.connect()
+            # NEW CHAT CLIENT
+            self.chat_client = ChatClient(player_name, server_host, 65432)
+            if self.connected:
+                self.chat_client.connect()
 
 
         self.other_players     = {}
@@ -366,6 +371,8 @@ class Level:
                         self.chat_input_text += char
 
     def update_chat(self):
+        if not self.connected:
+            return
         for sender, text in self.chat_client.get_messages():
 
             if sender == self.network.player_name:
@@ -430,13 +437,14 @@ class Level:
             self.inventory_ui.handle_event(event, self.player)
 
     def draw_names(self):
-        if self.network.my_player_id is not None:
-            name_text = f"{self.network.player_name} ({self.player.character_name})"
-            surf = self.font.render(name_text, True, (0, 255, 0))
-            rect = surf.get_rect(center=(self.player.rect.centerx,
-                                         self.player.rect.top - 10))
-            self.display_surface.blit(
-                surf, self.visible_sprites.offset_from_world(rect.topleft))
+        if self.connected:
+            if self.network.my_player_id is not None:
+                name_text = f"{self.network.player_name} ({self.player.character_name})"
+                surf = self.font.render(name_text, True, (0, 255, 0))
+                rect = surf.get_rect(center=(self.player.rect.centerx,
+                                            self.player.rect.top - 10))
+                self.display_surface.blit(
+                    surf, self.visible_sprites.offset_from_world(rect.topleft))
         for op in self.other_players.values():
             surf = self.font.render(op.name, True, (100, 100, 255))
             rect = surf.get_rect(center=(op.rect.centerx, op.rect.top - 10))
@@ -620,13 +628,16 @@ class Level:
             self.handle_chat_input(events)
             self.handle_time_travel_input(events)
             self.handle_enemy_debug_input(events)
+
+            self.player.update()
+
+        # Only do networking stuff if connected
+        if self.connected:
             self.update_network()
             self.update_chat()
 
-            if not self.chat_input_active:
-                self.player.update()
-            for op in self.other_players.values():
-                op.update()
+            for other_player in self.other_players.values():
+                other_player.update()
 
             if not self.is_time_traveling:
                 for enemy in list(self.enemies):

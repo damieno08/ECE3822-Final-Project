@@ -23,13 +23,17 @@ from user_interaction.chat_message import ChatMessage
 import sys
 
 class Level:
-    def __init__(self, player_name, character_class, server_host='localhost', server_port=8080, serializer='text',chat_port=9090):
+    def __init__(self, player_name, character_class, server_host='localhost', server_port=8080, serializer='text',is_multiplayer=True):
         # Get the display surface
         self.display_surface = pygame.display.get_surface()
 
         # Sprite group setup
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
+
+        self.network = None
+        self.connected = False
+        self.chat_client = None
 
         # Combat sprite groups
         self.current_attack = None
@@ -42,14 +46,15 @@ class Level:
         # Sprite setup
         self.create_map()
 
-        # Network setup with serializer
-        self.network = NetworkClient("TomGame", player_name, server_host, server_port, serializer)
-        self.connected = self.network.connect()
+        if is_multiplayer:
+            # Network setup with serializer
+            self.network = NetworkClient("TomGame", player_name, server_host, server_port, serializer)
+            self.connected = self.network.connect()
 
-        self.chat_client = ChatClient(player_name, server_host, 65432)
+            self.chat_client = ChatClient(player_name, server_host, 65432)
 
-        if self.connected:
-            self.chat_client.connect()
+            if self.connected:
+                self.chat_client.connect()
 
         # Chat system
         self.chat              = Chat()
@@ -317,6 +322,9 @@ class Level:
                         self.chat_input_text += char
 
     def update_chat(self):
+        if not self.connected:
+            return
+
         for sender, text in self.chat_client.get_messages():
 
             if sender == self.network.player_name:
@@ -542,14 +550,15 @@ class Level:
 
     def draw_names(self):
         """Draw player names above their heads"""
-        if self.network.my_player_id is not None:
-            name_text = f"{self.network.player_name} ({self.player.character_name})"
-            name_surface = self.font.render(name_text, True, (0, 255, 0))
-            name_rect = name_surface.get_rect(
-                center=(self.player.rect.centerx, self.player.rect.top - 10)
-            )
-            offset_pos = self.visible_sprites.offset_from_world(name_rect.topleft)
-            self.display_surface.blit(name_surface, offset_pos)
+        if self.connected:
+            if self.network.my_player_id is not None:
+                name_text = f"{self.network.player_name} ({self.player.character_name})"
+                name_surface = self.font.render(name_text, True, (0, 255, 0))
+                name_rect = name_surface.get_rect(
+                    center=(self.player.rect.centerx, self.player.rect.top - 10)
+                )
+                offset_pos = self.visible_sprites.offset_from_world(name_rect.topleft)
+                self.display_surface.blit(name_surface, offset_pos)
 
         for other_player in self.other_players.values():
             name_surface = self.font.render(other_player.name, True, (100, 100, 255))
@@ -724,14 +733,17 @@ class Level:
         self.handle_time_travel_input(events)
         self.handle_enemy_debug_input(events)
 
-        self.update_network()
-        self.update_chat()
-
-
         # Update player and remote players
+        # Always update local player
         self.player.update()
-        for other_player in self.other_players.values():
-            other_player.update()
+
+        # Only do networking stuff if connected
+        if self.connected:
+            self.update_network()
+            self.update_chat()
+
+            for other_player in self.other_players.values():
+                other_player.update()
 
         # Update enemies; freeze them while time-traveling
         if not self.is_time_traveling:

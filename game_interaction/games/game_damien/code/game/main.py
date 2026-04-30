@@ -211,15 +211,17 @@ class game_damien:
                     char_select = False
                     self.running = False
                     pygame.quit()
-                    self.level.network.disconnect()
-                    self.level.chat_client.disconnect()
+                    if self.level.connected:
+                        self.level.network.disconnect()
+                        self.level.chat_client.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         char_select = False
                         self.running = False
                         self.running = False
-                        self.level.network.disconnect()
+                        if self.level.connected:
+                            self.level.network.disconnect()
                         return
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -249,8 +251,9 @@ class game_damien:
                 self.running = False
                 char_select = False
                 pygame.quit()
-                self.level.chat_client.disconnect()
-                self.level.network.disconnect()
+                if self.level.connected:
+                    self.level.chat_client.disconnect()
+                    self.level.network.disconnect()
                 return
 
             # Reset click flag
@@ -293,14 +296,16 @@ class game_damien:
             self.clock.tick(FPS)
             pygame.display.update()
     
-    def run(self):
+    def run(self, is_multiplayer):
         """Main game loop"""
         # Character selection
         self.character_select()
+
         if not self.running or self.selected_character is None:
             pygame.quit()
-            self.level.chat_client.disconnect()
-            self.level.network.disconnect()
+            if self.level.connected:
+                self.level.chat_client.disconnect()
+                self.level.network.disconnect()
             return
         
         pygame.mixer.init()
@@ -314,7 +319,8 @@ class game_damien:
             self.selected_character, 
             self.server_host, 
             self.server_port, 
-            self.serializer
+            self.serializer,
+            is_multiplayer
         )
         
         # Game loop
@@ -346,8 +352,9 @@ class game_damien:
                         if event.type == pygame.QUIT:
                             pygame.mixer.music.stop()
                             pygame.quit()
-                            self.level.chat_client.disconnect()
-                            self.level.network.disconnect()
+                            if self.level.connected:
+                                self.level.chat_client.disconnect()
+                                self.level.network.disconnect()
                             return
 
                     self.screen.blit(self.death_image, (0, 0))
@@ -356,8 +363,9 @@ class game_damien:
 
                 # exit
                 pygame.quit()
-                self.level.chat_client.disconnect()
-                self.level.network.disconnect()
+                if self.level.connected:
+                    self.level.chat_client.disconnect()
+                    self.level.network.disconnect()
                 return
             
             events = []
@@ -366,8 +374,9 @@ class game_damien:
 
                 if event.type == pygame.QUIT:
                     self.running = False
-                    self.level.network.disconnect()
-                    self.level.chat_client.disconnect()
+                    if self.level.connected:
+                        self.level.network.disconnect()
+                        self.level.chat_client.disconnect()
                     pygame.quit()
                     return
 
@@ -375,7 +384,8 @@ class game_damien:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
                         self.character_select()
-                        self.level.network.disconnect()
+                        if self.level.connected:
+                            self.level.network.disconnect()
                         return
                         
 
@@ -405,5 +415,5 @@ if __name__ == '__main__':
     print("="*50)
     print()
     
-    game = Game(args.name, args.server, args.port, args.serializer)
+    game = game_damien(args.name, args.server, args.port, args.serializer)
     game.run()
