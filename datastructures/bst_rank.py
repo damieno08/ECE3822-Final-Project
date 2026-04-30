@@ -120,17 +120,41 @@ class BST:
         # return new node location
         return node
 
-    def search(self, key):
+    def search(self, score):
         # search through tree until we find the key
         curr = self._root
 
         # loop and break if we find it
         while curr:
-            if key == curr.value: return curr.value
-            curr = curr.left if key < curr.value else curr.right
-
+            if score == curr.value:
+                return curr.users          # returns the tie group
+            curr = curr.left if score < curr.value else curr.right
         # return none if not found
         return None
+
+    
+    def find_user(self, username):
+        """
+        Returns the score of a user if they exist, else None.
+        """
+        def _walk(node):
+            if not node:
+                return None
+            
+            # check this node's tie group
+            if username in node.users:
+                return node.value
+            
+            # search left subtree
+            left_result = _walk(node.left)
+            if left_result is not None:
+                return left_result
+            
+            # search right subtree
+            return _walk(node.right)
+        
+        return _walk(self._root)
+
 
     def delete(self, key):
         # return new root
@@ -257,7 +281,7 @@ class BST:
             if not node:
                 return 0
             
-            # If current node score is LESS → all right side is higher
+            # If current node score is less then all right side is higher
             if score < node.value:
                 return (
                     self._get_size(node.right) +
@@ -265,11 +289,11 @@ class BST:
                     _rank(node.left)
                 )
 
-            # If current node score is GREATER → go right only
+            # If current node score is greater then go right only
             elif score > node.value:
                 return _rank(node.right)
 
-            # Found score node → everything in right subtree is higher
+            # found score node then everything in right subtree is higher
             else:
                 return self._get_size(node.right)
             
@@ -285,7 +309,7 @@ class BST:
             if not node:
                 return None
             
-            # size of LEFT subtree (these are smaller scores)
+            # size of left subtree (these are smaller scores)
             left_size = self._get_size(node.left)
             
             # Case 1: go left

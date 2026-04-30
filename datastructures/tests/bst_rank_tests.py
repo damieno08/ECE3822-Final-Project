@@ -38,8 +38,21 @@ def test_insert_and_ties():
                 "50 score node missing")
 
     print("PASS: Insert + ties")
+    players = t.search(50)
+    if players:
+        print("Players with score 50:")
+        for user in players:
+            print(user)
+        else:
+            print("No players with score 50")
 
+    score = t.find_user("Bob")
+    if score is not None:
+        print("Bob has score:", score)
+    else:
+        print("User not found")
 
+        
 def test_rank():
     print("TEST 2: Rank correctness")
 
