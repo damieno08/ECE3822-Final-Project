@@ -11,6 +11,7 @@ _GAME_DIR = os.path.dirname(os.path.abspath(__file__))
 
 from game_interaction.games.game_santiago.code.game.settings import *
 from game_interaction.games.game_santiago.code.game.tile import Tile
+from datastructures.array import ArrayList
 from game_interaction.games.game_santiago.code.game.map_loader import load_layer
 from game_interaction.games.game_santiago.code.game.character import Character
 from game_interaction.games.game_santiago.code.game.subcharacter import get_all_character_classes
@@ -24,12 +25,13 @@ from game_interaction.games.game_santiago.code.game.weapon import Weapon as Weap
 from game_interaction.games.game_santiago.code.game.npc import NPC
 from game_interaction.games.game_santiago.code.game.dialog_ui import DialogUI
 from game_interaction.chat import Chat
+from game_interaction.games.game_santiago.code.game.ChatClient import ChatClient
 from user_interaction.chat_message import ChatMessage
 
 
 class Level:
     def __init__(self, player_name, character_class,
-                 server_host='localhost', server_port=8080, serializer='text'):
+                 server_host='localhost', server_port=8080, serializer='text', chat_port=9090):
         self.display_surface = pygame.display.get_surface()
 
         self.floor_sprites      = pygame.sprite.Group()
@@ -43,8 +45,14 @@ class Level:
 
         self.create_map()
 
-        self.network   = NetworkClient( "SantiGame",player_name, server_host, server_port, serializer)
+        self.network = NetworkClient("SantiGame", player_name, server_host, server_port, serializer)
         self.connected = self.network.connect()
+
+        # NEW CHAT CLIENT
+        self.chat_client = ChatClient(player_name, server_host, 65432)
+        if self.connected:
+            self.chat_client.connect()
+
 
         self.other_players     = {}
         self.font              = pygame.font.Font(None, 24)
@@ -73,7 +81,7 @@ class Level:
         self.chat              = Chat()
         self.chat_input_active = False
         self.chat_input_text   = ""
-        self.chat_log          = []   # ChatMessage objects persisted to user at game end
+        self.chat_log          = ArrayList(1)   # ChatMessage objects persisted to user at game end
         self.chat_font         = pygame.font.Font(None, 22)
         self.chat_hint_font    = pygame.font.Font(None, 19)
 
@@ -344,7 +352,7 @@ class Level:
                         self.chat.send_message(msg)
                         self.chat_log.append(msg)
                         if self.connected:
-                            self.network.send_chat(text)
+                            self.chat_client.send(text)
                     self.chat_input_active = False
                     self.chat_input_text = ""
                 elif event.key == pygame.K_ESCAPE:
@@ -358,13 +366,14 @@ class Level:
                         self.chat_input_text += char
 
     def update_chat(self):
-        """Pull incoming chat messages from the network."""
-        if not self.connected:
-            return
-        for entry in self.network.get_chat_messages():
+        for sender, text in self.chat_client.get_messages():
+
+            if sender == self.network.player_name:
+                continue # skips self
+
             msg = ChatMessage(
-                sender=entry['sender'],
-                text=entry['text'],
+                sender=sender,
+                text=text,
                 game_id="JAG",
             )
             self.chat.send_message(msg)
