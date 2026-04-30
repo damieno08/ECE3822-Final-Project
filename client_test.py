@@ -205,10 +205,51 @@ class ArcadeClient:
         self.s.sendall(f"GET_LEADERBOARD:{idx}|{self.current_user.name}".encode())
         
         tk.Button(self.root, text="RUN MODULE", bg=self.colors["fg"], fg="#000", font=("Courier", 12, "bold"),
-                  command=lambda: Thread(target=self.run_game, args=(idx,), daemon=True).start()).pack(pady=5)
+          command=lambda i=idx: self.show_start_mode(i)).pack(pady=5)
         tk.Button(self.root, text="REFRESH", bg="#111", fg=self.colors["fg"], font=("Courier", 10, "bold"),
                   command=lambda: self.s.sendall(f"GET_LEADERBOARD:{idx}|{self.current_user.name}".encode())).pack(pady=5)
         tk.Button(self.root, text="CANCEL", bg="#222", fg=self.colors["fg"], command=self.show_game_search).pack(pady=5)
+
+    def show_start_mode(self, idx):
+        self.clear()
+
+        game_name = self.game_metadata[str(idx)][0]
+
+        tk.Label(self.root, text=f"START MODE: {game_name}", 
+                fg=self.colors["fg"], bg=self.colors["bg"], 
+                font=("Courier", 16, "bold")).pack(pady=40)
+
+        tk.Button(
+            self.root,
+            text="START LOCAL",
+            bg="#111",
+            fg=self.colors["fg"],
+            font=("Courier", 12, "bold"),
+            width=20,
+            command=lambda: Thread(
+                target=self.run_game, args=(idx, False), daemon=True
+            ).start()
+        ).pack(pady=20)
+
+        tk.Button(
+            self.root,
+            text="START MULTIPLAYER",
+            bg="#111",
+            fg=self.colors["fg"],
+            font=("Courier", 12, "bold"),
+            width=20,
+            command=lambda: Thread(
+                target=self.run_game, args=(idx, True), daemon=True
+            ).start()
+        ).pack(pady=20)
+
+        tk.Button(
+            self.root,
+            text="CANCEL",
+            bg="#222",
+            fg=self.colors["fg"],
+            command=lambda: self.show_play(idx)
+        ).pack(pady=20)
 
     def render_leaderboard(self, data):
         self.lb_display.config(state="normal")
@@ -371,10 +412,10 @@ class ArcadeClient:
         self.display.tag_bind("back_c", "<Button-1>", lambda e: self.load_chat_history(user_obj))
         self.display.config(state='disabled')
 
-    def run_game(self, idx):
+    def run_game(self, idx, is_multiplayer):
         try:
             handler = self.handler_map[idx](self.current_user)
-            duration, score, chat_log = handler.start_game()
+            duration, score, chat_log = handler.start_game(is_multiplayer)
             self.current_user.record_play(handler.genre, handler.name, duration.total_seconds())
             self.s.sendall(f"SAVE_SESSION|{self.current_user.name}|{score}|{duration}|{idx}\n".encode())
             if chat_log:
