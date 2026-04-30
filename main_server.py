@@ -260,15 +260,32 @@ class ArcadeServer:
                     resp = "USER_RESULTS:" + ("\n".join(results) if results else "No users found")
                     conn.sendall(resp.encode())
 
-                # ---------------- GET HISTORY (SERVER) ----------------
+                # ---------------- GET_HISTORY (SERVER) ----------------
                 elif raw_data.startswith("GET_HISTORY:"):
                     target_name = raw_data.split(":")[1].strip()
                     user_obj = self.find_user_by_name(target_name)
 
                     if user_obj:
-                        # Serialize the actual User object
-                        user_bytes = pickle.dumps(user_obj)
-                        # We use a unique prefix. Note: we send bytes, so we concat bytes.
+                        # Calculate ranks for all games using the existing sorted leaderboards
+                        user_ranks = {}
+                        for g_idx in self.game_map.keys():
+                            rank = "N/A"
+                            if g_idx in self.leaderboards:
+                                # top_n is already sorted, so the index + 1 is the rank
+                                sorted_lb = self.leaderboards[g_idx].top_n(1000) 
+                                for i, (name, score) in enumerate(sorted_lb, start=1):
+                                    if name == target_name:
+                                        rank = str(i)
+                                        break
+                            user_ranks[g_idx] = rank
+
+                        # Bundle everything into one payload
+                        payload = {
+                            "user_obj": user_obj,
+                            "ranks": user_ranks
+                        }
+                        
+                        user_bytes = pickle.dumps(payload)
                         header = "USER_PICKLE:".encode()
                         conn.sendall(header + user_bytes)
                     else:
