@@ -3,9 +3,14 @@ leaderboard.py - Leaderboard ordered by score (BST).
 
 Revision History:
     (ST) 04/19/2026 Create initial class
+         04/30/2026 Update to support bst_rank.py
+Author: Paul Garrison
 """
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-from datastructures.bst import BST
+from datastructures.bst_rank import BST
 
 
 class Leaderboard(BST):
@@ -58,6 +63,15 @@ class Leaderboard(BST):
         """Return 1-based rank of user (1 = highest score), or None if not found."""
         if user not in self._user_scores:
             return None
+        
         score = self._user_scores[user]
-        rank_from_bottom = self.find_rank((score, user))
-        return len(self) - rank_from_bottom + 1
+        return self.find_rank((score, user)) + 1
+    
+    def score_of(self, user):
+        # return users best score or none
+        return self._user_scores.get(user)
+    
+    def players_with_score(self, score):
+        # return sorted list of users with this score
+        users = self.search(score)
+        return sorted(users) if users else []
