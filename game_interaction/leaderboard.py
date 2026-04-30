@@ -60,12 +60,19 @@ class Leaderboard(BST):
         return result
 
     def rank_of(self, user):
-        """Return 1-based rank of user (1 = highest score), or None if not found."""
+        """Return competition rank (ties share rank)."""
         if user not in self._user_scores:
             return None
         
         score = self._user_scores[user]
-        return self.find_rank((score, user)) + 1
+        distinct_scores = self._distinct_scores_desc()
+
+        # rank = index in distinct score list + 1
+        return distinct_scores.index(score) + 1
+
+    def _distinct_scores_desc(self):
+        """Return sorted list of unique scores (high → low)."""
+        return sorted(set(self._user_scores.values()), reverse=True)
     
     def score_of(self, user):
         # return users best score or none

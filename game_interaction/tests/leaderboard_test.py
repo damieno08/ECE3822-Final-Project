@@ -165,8 +165,10 @@ def test_display_full_leaderboard_with_ties():
     # ---- Print Top 5 ----
     print("\nTop 5 Players:")
     top5 = lb.top_n(5)
-    for i, (user, score) in enumerate(top5, start=1):
-        print(f"{i}. {user} - {score}")
+    
+    for user, score in top5:
+        rank = lb.rank_of(user)
+        print(f"{rank}. {user} - {score}")
 
     # Ensure both tied players are inside top 5
     top5_users = [u for u, _ in top5]
@@ -175,10 +177,10 @@ def test_display_full_leaderboard_with_ties():
 
     # ---- Print Remaining Leaderboard ----
     print("\nRest of Leaderboard:")
-    total_players = len(lb)
+    all_players = lb.top_n(len(lb))
 
-    for rank in range(6, total_players + 1):
-        score, user = lb.kth_largest(rank)
+    for user, score in all_players[5:]:
+        rank = lb.rank_of(user)
         print(f"{rank}. {user} - {score}")
     
 # ---------------------------------------------------------
