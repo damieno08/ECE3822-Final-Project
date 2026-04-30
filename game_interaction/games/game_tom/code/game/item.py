@@ -11,6 +11,8 @@ Lab: Lab 6 - Sparse World Map
 import pygame
 import sys
 
+start_path = str(sys.path[0])
+
 class Item:
     """
     Base class for all items in the game.
@@ -187,7 +189,7 @@ def create_example_items():
     items.append(Weapon(
         name="Sword",
         description="Regular sword. Deals average damage..",
-        image_path="../../graphics/items/sword.png",
+        image_path="game_interaction/games/game_tom/graphics/items/sword.png",
         attack_bonus=10,
         value=200
     ))
@@ -195,7 +197,7 @@ def create_example_items():
     items.append(Weapon(
         name="Staff",
         description="A large staff, wieldy and slow but deals a large amoung of damage.",
-        image_path="../../graphics/items/staff.png",
+        image_path="game_interaction/games/game_tom/graphics/items/staff.png",
         attack_bonus=20,
         value=300
     ))
@@ -204,7 +206,7 @@ def create_example_items():
     items.append(Weapon(
         name="Flail",
         description="In between bulkiness of sword and staff, deals medium damage. ",
-        image_path="../../graphics/items/flail.png",
+        image_path="game_interaction/games/game_tom/graphics/items/flail.png",
         attack_bonus=15,
         value=1000
     ))
@@ -213,7 +215,7 @@ def create_example_items():
     items.append(Weapon(
         name="Bow and Arrow",
         description="Lighter and less bulky than other weapons. Deals average damage.",
-        image_path="../../graphics/items/bow_arrow.png",
+        image_path="game_interaction/games/game_tom/graphics/items/bow_arrow.png",
         attack_bonus=15,
         value=1000
     ))
@@ -222,7 +224,7 @@ def create_example_items():
     items.append(Consumable(
         name="Potion",
         description="Basic potion, which estores health. ",
-        image_path="../../graphics/items/potion.png",
+        image_path="game_interaction/games/game_tom/graphics/items/potion.png",
         effect_type="cure",
         effect_amount=0,
         value=15,
@@ -232,7 +234,7 @@ def create_example_items():
     items.append(Consumable(
         name="Gemstones",
         description="Basic gemstones which, boost elemental abilities",
-        image_path="../../graphics/items/gemstones.png",
+        image_path="game_interaction/games/game_tom/graphics/items/gemstones.png",
         effect_type="full_restore",
         effect_amount=999,
         value=500,
@@ -243,7 +245,7 @@ def create_example_items():
     items.append(Armor(
         name="Wooden Shield",
         description="Light shield. Provides average defense. ",
-        image_path="../../graphics/items/wooden_shield.png",
+        image_path="game_interaction/games/game_tom/graphics/items/wooden_shield.png",
         defense_bonus=5,
         value=80
     ))
@@ -251,7 +253,7 @@ def create_example_items():
     items.append(Armor(
         name="Iron Shield",
         description="Stronger and heavier than wood. Provides more defense as well.",
-        image_path="../../graphics/items/iron_shield.png",
+        image_path="game_interaction/games/game_tom/graphics/items/iron_shield.png",
         defense_bonus=12,
         value=250
     ))
