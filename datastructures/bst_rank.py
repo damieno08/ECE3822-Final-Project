@@ -311,17 +311,21 @@ class BST:
             
             # size of left subtree (these are smaller scores)
             left_size = self._get_size(node.left)
+            group_size = len(node.users)
             
             # Case 1: go left
             if k <= left_size:
                 return _kth(node.left, k)
             
-            # Case 2: current node (tie group)
-            if k <= left_size + len(node.users):
-                return (node.value, next(iter(node.users)))
-            
+            # Case 2: inside this node's tie group
+            if k <= left_size + group_size:
+                # pick the correct user inside the tie group
+                user_index = k - left_size - 1
+                user = sorted(node.users)[user_index]
+                return (node.value, user)
+
             # Case 3: go right
-            return _kth(node.right, k - left_size - len(node.users))
+            return _kth(node.right, k - left_size - group_size)
         
         return _kth(self._root, k)
     
