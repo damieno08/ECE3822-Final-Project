@@ -345,11 +345,6 @@ class ArcadeClient:
         self.display.tag_bind("back_p", "<Button-1>", lambda e: self.display_user_profile(user_obj))
         self.display.config(state='disabled')
 
-    def toggle_chat_sort_mode(self, user_obj, game_idx):
-        """Switches chat sort mode and refreshes chat view."""
-        self.current_sort_mode = "score" if self.current_sort_mode == "time" else "time"
-        self.show_filtered_chat(user_obj, game_idx)
-
     def toggle_sort_mode(self, user_obj, game_idx):
         """Switches between 'time' and 'score' and refreshes the view."""
         self.current_sort_mode = "score" if self.current_sort_mode == "time" else "time"
@@ -363,13 +358,9 @@ class ArcadeClient:
         
         # Header and Toggle (Matching Game UI)
         self.display.insert(tk.END, f"[{game_name} CHAT LOGS]\n", "header")
-        mode_label = "CHRONOLOGICAL" if self.current_sort_mode == "time" else "IMPORTANCE/SCORE"
+        mode_label = "CHRONOLOGICAL" 
         self.display.insert(tk.END, f"SORT_MODE: [ {mode_label} ]\n", "toggle")
         self.display.insert(tk.END, f"{'='*30}\n\n")
-
-        self.display.tag_config("toggle", foreground="#ffff00", font=("Courier", 10, "bold"))
-        self.display.tag_bind("toggle", "<Button-1>", lambda e: self.toggle_chat_sort_mode(user_obj, game_idx))
-
         # 1. Collect and Sort
         chat_list = []
         for i in range(user_obj.chat_history.size()):
@@ -386,7 +377,7 @@ class ArcadeClient:
         else:
             for i, msg in enumerate(sorted_chats):
                 tag = f"msg_{i}"
-                ts = msg.timestamp.strftime('%H:%M:%S') if msg.timestamp else "00:00:00"
+                ts = msg.timestamp
                 self.display.insert(tk.END, f"[{ts}] {msg.sender}: {msg.text[:25]}...\n", tag)
                 self.display.tag_config(tag, foreground=self.colors["fg"])
                 self.display.tag_bind(tag, "<Button-1>", lambda e, m=msg: messagebox.showinfo("DECRYPTED MESSAGE", str(m)))
