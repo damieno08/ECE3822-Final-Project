@@ -11,6 +11,7 @@ _GAME_DIR = os.path.dirname(os.path.abspath(__file__))
 
 from game_interaction.games.game_santiago.code.game.settings import *
 from game_interaction.games.game_santiago.code.game.tile import Tile
+from datastructures.array import ArrayList
 from game_interaction.games.game_santiago.code.game.map_loader import load_layer
 from game_interaction.games.game_santiago.code.game.character import Character
 from game_interaction.games.game_santiago.code.game.subcharacter import get_all_character_classes
@@ -80,7 +81,7 @@ class Level:
         self.chat              = Chat()
         self.chat_input_active = False
         self.chat_input_text   = ""
-        self.chat_log          = []   # ChatMessage objects persisted to user at game end
+        self.chat_log          = ArrayList(1)   # ChatMessage objects persisted to user at game end
         self.chat_font         = pygame.font.Font(None, 22)
         self.chat_hint_font    = pygame.font.Font(None, 19)
 
