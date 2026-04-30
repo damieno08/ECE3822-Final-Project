@@ -1,0 +1,86 @@
+name: GitHub Classroom Autograding
+
+on: [push]
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+
+    steps:
+      - name: Checkout student code
+        uses: actions/checkout@v4
+        with:
+          path: student
+
+      # Clone the private grading repo (test files are not in the student repo)
+      - name: Checkout grading tests
+        uses: actions/checkout@v4
+        with:
+          repository: ece-3822/lab06-grading-tests
+          token: ${{ secrets.GRADING_TOKEN }}
+          path: grading
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install pytest
+        run: pip install pytest
+
+      # -----------------------------------------------------------------------
+      # SparseMatrix — Basic Operations  (8 pts)
+      # -----------------------------------------------------------------------
+      - name: "SparseMatrix: Basic Operations (8 pts)"
+        id: sparse_basic
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: SparseMatrix Basic
+          setup-command: ""
+          command: python -m pytest grading/test_grading.py::TestSparseMatrixBasic -v --tb=short
+          timeout: 15
+          max-score: 8
+
+      # -----------------------------------------------------------------------
+      # SparseMatrix — Edge Cases  (5 pts)
+      # -----------------------------------------------------------------------
+      - name: "SparseMatrix: Edge Cases (5 pts)"
+        id: sparse_edge
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: SparseMatrix Edge Cases
+          setup-command: ""
+          command: python -m pytest grading/test_grading.py::TestSparseMatrixEdge -v --tb=short
+          timeout: 15
+          max-score: 5
+
+      # -----------------------------------------------------------------------
+      # Matrix Multiplication  (7 pts)
+      # -----------------------------------------------------------------------
+      - name: "Matrix Multiplication (7 pts)"
+        id: matrix_multiply
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: Matrix Multiply
+          setup-command: ""
+          command: python -m pytest grading/test_grading.py::TestMatrixMultiply -v --tb=short
+          timeout: 15
+          max-score: 7
+
+      # -----------------------------------------------------------------------
+      # Report results to GitHub Classroom
+      # -----------------------------------------------------------------------
+      - name: Autograding Reporter
+        uses: education/autograding-grading-reporter@v1
+        env:
+          SPARSE_BASIC_RESULTS:    "${{steps.sparse_basic.outputs.result}}"
+          SPARSE_EDGE_RESULTS:     "${{steps.sparse_edge.outputs.result}}"
+          MATRIX_MULTIPLY_RESULTS: "${{steps.matrix_multiply.outputs.result}}"
+        with:
+          runners: sparse_basic,sparse_edge,matrix_multiply

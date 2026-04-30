@@ -10,14 +10,14 @@ Lab: Lab 6 - Sparse World Map
 import pygame
 import math
 import random
-from game_interaction.games.game_richard.code.game.datastructures.patrol_path import PatrolPath
+from datastructures.patrol_path import PatrolPath
 
 # Enemy spawn data
 ENEMY_SPAWN_DATA = [
     {
         "name": "Forest Guard",
-        "spawn": (7, 6),
-        "waypoints": [(5, 6), (9, 6), (9, 10), (5, 10)],
+        "spawn": (3, 3),
+        "waypoints": [(1, 3), (4, 3), (4, 5), (5, 10)],
         "patrol_type": "circular",
         "speed": 1,
         "description": "Patrols the forest perimeter",
@@ -26,8 +26,8 @@ ENEMY_SPAWN_DATA = [
     },
     {
         "name": "Village Merchant",
-        "spawn": (23, 12),
-        "waypoints": [(20, 12), (26, 12)],
+        "spawn": (23, 10),
+        "waypoints": [(23, 10), (27, 13)],
         "patrol_type": "back_and_forth",
         "speed": 0.9,
         "description": "Paces nervously in the village square",
@@ -36,8 +36,8 @@ ENEMY_SPAWN_DATA = [
     },
     {
         "name": "Temple Priest",
-        "spawn": (14, 17),
-        "waypoints": [(13, 16), (15, 16), (15, 18), (13, 18)],
+        "spawn": (10, 10),
+        "waypoints": [(13, 13), (18, 12), (15, 15), (13, 18)],
         "patrol_type": "circular",
         "speed": 0.8,
         "description": "Walks meditatively around the temple",
@@ -47,7 +47,7 @@ ENEMY_SPAWN_DATA = [
     {
         "name": "Dungeon Scout",
         "spawn": (25, 27),
-        "waypoints": [(24, 26), (30, 26)],
+        "waypoints": [(24, 26), (26, 28)],
         "patrol_type": "back_and_forth",
         "speed": 1,
         "description": "Patrols the dungeon corridor",
@@ -56,8 +56,8 @@ ENEMY_SPAWN_DATA = [
     },
     {
         "name": "Market Vendor",
-        "spawn": (37, 7),
-        "waypoints": [(35, 7), (38, 7)],
+        "spawn": (28, 7),
+        "waypoints": [(27, 5), (25, 7)],
         "patrol_type": "back_and_forth",
         "speed": 0.8,
         "description": "Arranges goods in the market",
@@ -169,7 +169,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def load_sprites(self):
         """Load directional sprite animations using the unified sprite system."""
-        from game_interaction.games.game_richard.code.game.sprite_loader import SpriteLoader
+        from sprite_loader import SpriteLoader
         self.animations = SpriteLoader.load_enemy_sprites(self.sprite_name)
         sprite_info = SpriteLoader.get_sprite_info(self.sprite_name, "../../graphics/enemies")
         print(f"  Loaded {sprite_info['type']} sprites for {self.name}: {sprite_info}")

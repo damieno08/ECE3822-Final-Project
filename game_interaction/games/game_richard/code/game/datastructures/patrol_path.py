@@ -11,7 +11,7 @@ Date: 4/4/2026
 Lab: Lab 5 - NPC Patrol Paths with Linked Lists
 """
 
-from game_interaction.games.game_richard.code.game.datastructures.waypoint import Waypoint
+from .waypoint import Waypoint
 
 
 class PatrolPath:

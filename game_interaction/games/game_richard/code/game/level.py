@@ -2,27 +2,29 @@
 level.py - Game level with character classes and networking
 Integrated version combining lab-03 and project-01
 """
+"""
+level.py - Game level with character classes and networking
+
+Integrated version combining lab-03 and project-01
+"""
+
 import pygame
-from game_interaction.games.game_richard.code.game.settings import *
-from game_interaction.games.game_richard.code.game.tile import Tile
-from game_interaction.games.game_richard.code.game.map_loader import load_layer
-from game_interaction.games.game_richard.code.game.character import Character
-from game_interaction.games.game_richard.code.game.subcharacter import get_all_character_classes
-from game_interaction.games.game_richard.code.game.network_client import NetworkClient
-from game_interaction.games.game_richard.code.game.inventory_ui import InventoryUI
-from game_interaction.games.game_richard.code.game.item import create_example_items
-from game_interaction.games.game_richard.code.game.time_travel import TimeTravel
-from game_interaction.games.game_richard.code.game.enemy import Enemy, ENEMY_SPAWN_DATA
-from game_interaction.games.game_richard.code.game.datastructures.patrol_path import PatrolPath
-from game_interaction.games.game_richard.code.game.weapon import Weapon as WeaponSprite
-from game_interaction.chat import Chat
-from game_interaction.games.game_richard.code.game.ChatClient import ChatClient
-from user_interaction.chat_message import ChatMessage
+from settings import *
+from tile import Tile
+from map_loader import load_layer
+from character import Character
+from subcharacter import get_all_character_classes
+from network_client import NetworkClient
+from inventory_ui import InventoryUI
+from item import create_example_items
+from time_travel import TimeTravel
+from enemy import Enemy, ENEMY_SPAWN_DATA
+from datastructures.patrol_path import PatrolPath
+from weapon import Weapon as WeaponSprite
 import sys
 
 class Level:
-    def __init__(self, player_name, character_class, server_host='localhost',
-server_port=8080, serializer='text'):
+    def __init__(self, player_name, character_class, server_host='localhost', server_port=8080, serializer='text'):
         # Get the display surface
         self.display_surface = pygame.display.get_surface()
 
@@ -42,25 +44,11 @@ server_port=8080, serializer='text'):
         self.create_map()
 
         # Network setup with serializer
-        self.network = NetworkClient("RichGame", player_name, server_host, server_port,
-        serializer)
+        self.network = NetworkClient(player_name, server_host, server_port, serializer)
         self.connected = self.network.connect()
 
-        # NEW CHAT CLIENT
-        self.chat_client = ChatClient(player_name, server_host, 65432)
-        if self.connected:
-            self.chat_client.connect()
-
-        # Chat system
-        self.chat              = Chat()
-        self.chat_input_active = False
-        self.chat_input_text   = ""
-        self.chat_log          = []   # ChatMessage objects persisted to user at game end
-        self.chat_font         = pygame.font.Font(None, 22)
-        self.chat_hint_font    = pygame.font.Font(None, 19)
-
         # Track other players
-        self.other_players = {} # player_id -> Character sprite
+        self.other_players = {}  # player_id -> Character sprite
 
         # Font for displaying names
         self.font = pygame.font.Font(None, 24)
@@ -70,7 +58,7 @@ server_port=8080, serializer='text'):
 
         # Inventory UI
         self.inventory_ui = InventoryUI(self.player.inventory)
-        self.inventory_ui.character = self.player # equip-button needs this
+        self.inventory_ui.character = self.player   # equip-button needs this
 
         # Add starting items for testing
         self.add_starting_items()
@@ -78,8 +66,8 @@ server_port=8080, serializer='text'):
         # Time travel system (Lab 4)
         self.time_travel = TimeTravel(max_history=180)
         self.is_time_traveling = False
-        self.enemy_history = [] # parallel enemy state snapshots
-        self.enemy_future = [] # enemy future states for replay
+        self.enemy_history = []   # parallel enemy state snapshots
+        self.enemy_future  = []   # enemy future states for replay
 
         # Enemy system (Lab 5)
         self.enemies = pygame.sprite.Group()
@@ -88,262 +76,93 @@ server_port=8080, serializer='text'):
         # Debug mode for showing enemy paths
         self.show_enemy_debug = False
 
-    def _load_gid_map(self, tmx_path):
-        """Parse a Tiled .tmx file and return a global GID -> Surface dict.
-        Each tileset listed in the TMX has a firstgid and references a .tsx
-        file. The .tsx file names the image source. We ignore the source
-        path (which is usually an absolute path on the designer's machine) and
-        instead look for an image with the same filename in the same directory
-        as the TMX file. Tiles are sliced at the tilewidth/tileheight
-        declared in each TSX.
-        Returns an empty dict if the TMX cannot be read.
+    def _load_tileset(self, path):
+        """Load a tileset image and return a dict mapping tile_id -> Surface.
+
+        Assumes tiles are arranged left-to-right, top-to-bottom in a grid of
+        TILESIZE x TILESIZE cells.  Returns an empty dict if the file is
+        missing or unreadable.
         """
-        import xml.etree.ElementTree as ET
-        import os
-
-        gid_map = {}
-        tmx_dir = os.path.dirname(os.path.abspath(tmx_path))
-
         try:
-            tree = ET.parse(tmx_path)
-        except Exception:
-            return gid_map
-
-        for ts_elem in tree.getroot().findall('tileset'):
-            firstgid = int(ts_elem.get('firstgid', 1))
-            tsx_source = ts_elem.get('source', '')
-
-            # Load the TSX to get image info
-            tsx_path = os.path.join(tmx_dir, tsx_source)
-
-            try:
-                tsx_tree = ET.parse(tsx_path)
-            except Exception:
-                continue
-
-            tsx_root = tsx_tree.getroot()
-            tw = int(tsx_root.get('tilewidth', TILESIZE))
-            th = int(tsx_root.get('tileheight', TILESIZE))
-            cols_declared = int(tsx_root.get('columns', 0))
-            img_elem = tsx_root.find('image')
-            
-            if img_elem is None:
-                continue
-        
-            # The source path in the TSX may point to the designer's machine.
-            # Fall back to matching just the filename in the TMX directory.
-            img_src = img_elem.get('source', '')
-            img_name = os.path.basename(img_src)
-            img_path = os.path.join(tmx_dir, img_name)
-
-            try:
-                sheet = pygame.image.load(img_path).convert_alpha()
-            except Exception:
-                continue
-            
-            cols = cols_declared if cols_declared > 0 else sheet.get_width() // tw
-            rows = sheet.get_height() // th
-
+            sheet = pygame.image.load(path).convert_alpha()
+            cols = sheet.get_width()  // TILESIZE
+            rows = sheet.get_height() // TILESIZE
+            tiles = {}
             for r in range(rows):
                 for c in range(cols):
-                    local_id = r * cols + c
-                    gid = firstgid + local_id
-                    rect = pygame.Rect(c * tw, r * th, tw, th)
-                    try:
-                        surf = sheet.subsurface(rect)
-                        # Scale to game TILESIZE if the tileset uses a different size
-                        if tw != TILESIZE or th != TILESIZE:
-                            surf = pygame.transform.scale(surf, (TILESIZE,TILESIZE))
-                        gid_map[gid] = surf
-                    except Exception:
-                        pass
-        return gid_map
+                    tile_id = r * cols + c
+                    surf = sheet.subsurface(pygame.Rect(c * TILESIZE, r * TILESIZE, TILESIZE, TILESIZE))
+                    tiles[tile_id] = surf
+            return tiles
+        except Exception:
+            return {}
 
     def create_map(self):
-        """Create the game map and player.
-        Loads three CSV layers via load_layer() (which uses the student's
-        SparseMatrix when implemented, plain dict otherwise):
-        - map_FloorBlocks.csv → invisible boundary / collision tiles
-        - map_Grass.csv → visible floor/ground tiles
-        - map_Objects.csv → visible tall objects (also collision)
-        Falls back to the WORLD_MAP string grid for boundary tiles if
-        map_FloorBlocks.csv is empty (i.e. the student hasn't designed a
-        Tiled map yet). Player spawn is always read from WORLD_MAP.
-        """
-        # Build a global GID -> Surface map from the Tiled project.
-        # Students place their .tmx and tileset images in graphics/tilemap/.
-        # Falls back to empty dict (tiles render as blank) if not found.
-        gid_map = self._load_gid_map('graphics/tilemap/Map.tmx')
-        print(f"[Map] Loaded {len(gid_map)} GID surfaces from Map.tmx")
-        
-        # --- Layer definitions ---
-        # (csv_path, sprite_type, groups)
-        LAYERS = [
-        ('map/map_FloorBlocks.csv', 'boundary',
-        [self.visible_sprites, self.obstacle_sprites]),
-        ('map/map_Grass.csv', 'grass',
-        [self.visible_sprites]),
-        ('map/map_Objects.csv', 'object',
-        [self.visible_sprites, self.obstacle_sprites]),
-        ]
+        from support import import_csv_to_sparse
+
+        # add starting path to files
+        start_path = str(sys.path[0])
+        # 1. Load Sparse Layouts
+        layouts = {
+            'boundary': import_csv_to_sparse(start_path + '/map/map_FloorBlocks.csv'),
+            'grass':    import_csv_to_sparse(start_path + '/map/map_Grass.csv'),
+            'object':   import_csv_to_sparse(start_path + '/map/map_Objects.csv'),
+        }
 
         floor_blocks_loaded = False
-        for csv_path, sprite_type, groups in LAYERS:
-            try:
-                layer = load_layer(csv_path)
-                entries = list(layer.items())
-                if not entries:
-                    continue
-                print(f"[Map] {csv_path}: {len(entries)} tiles")
-                for (row, col), tile_id in entries:
-                    x = col * TILESIZE
-                    y = row * TILESIZE
-                    surf = gid_map.get(tile_id)
-                    if surf is not None:
-                        Tile((x, y), groups, sprite_type, surf)
-                    else:
-                        Tile((x, y), groups, sprite_type)
-                if sprite_type == 'boundary':
-                    floor_blocks_loaded = True
-            except Exception as e:
-                print(f"[Map] {csv_path} failed: {e}")
 
-        # --- WORLD_MAP fallback for boundaries (and always for player spawn) ---
+        for style, layout in layouts.items():
+            for (row, col), area_id in layout.items():
+                x, y = col * TILESIZE, row * TILESIZE
+                
+                if style == 'boundary':
+                    Tile((x, y), [self.obstacle_sprites], 'boundary')
+                    floor_blocks_loaded = True
+                elif style == 'grass':
+                    # Pass the area_id so the Tile knows which image to load
+                    Tile((x, y), [self.visible_sprites], 'grass', area_id=area_id)
+                elif style == 'object':
+                    Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', area_id=area_id)
+
+        # 2. Player Spawn
         for row_index, row in enumerate(WORLD_MAP):
             for col_index, col in enumerate(row):
-                x = col_index * TILESIZE
-                y = row_index * TILESIZE
-                if col == 'x' and not floor_blocks_loaded:
-                    Tile((x, y), [self.visible_sprites, self.obstacle_sprites],'boundary')
+                x, y = col_index * TILESIZE, row_index * TILESIZE
                 if col == 'p':
                     self.player = self.character_class(
-                        (x, y),
-                        [self.visible_sprites],
-                        self.obstacle_sprites,
-                        is_local=True
-                    )
-                    self.player.create_attack_callback = self.create_attack
+                        (x, y), [self.visible_sprites], self.obstacle_sprites, is_local=True)
+                    self.player.create_attack_callback  = self.create_attack
                     self.player.destroy_attack_callback = self.destroy_attack
-
+                if col == 'x' and not floor_blocks_loaded:
+                    Tile((x, y), [self.obstacle_sprites], 'boundary')
+                    
     def add_starting_items(self):
-        """Add items defined in item.py's create_example_items() to the player's
-        inventory."""
+        """Add items defined in item.py's create_example_items() to the player's inventory."""
         print("Adding starting items to inventory...")
 
         for item in create_example_items():
             success = self.player.inventory.add_item(item)
             if success:
-                print(f" Added: {item.name}")
+                print(f"  Added: {item.name}")
             else:
-                print(f" Inventory full! Couldn't add: {item.name}")
-            
-            print(f"Total items: {len(self.player.inventory.items)}")
-            # Auto-equip the first weapon so combat works immediately on startup
-            for item in self.player.inventory.items:
-                if item.item_type == 'weapon':
-                    self.player.equipped_weapon = item
-                    print(f"Auto-equipped: {item.name}")
-                    break
-            print("Press 'I' to open inventory and switch weapons. SPACE to attack!")
+                print(f"  Inventory full! Couldn't add: {item.name}")
 
-    # ------------------------------------------------------------------
-    # Chat system
-    # ------------------------------------------------------------------
+        print(f"Total items: {len(self.player.inventory.items)}")
 
-    def handle_chat_input(self, events):
-        """Enter opens chat when no dialog is active and no NPC is nearby."""
-        for event in events:
-            if event.type != pygame.KEYDOWN:
-                continue
+        # Auto-equip the first weapon so combat works immediately on startup
+        for item in self.player.inventory.items:
+            if item.item_type == 'weapon':
+                self.player.equipped_weapon = item
+                print(f"Auto-equipped: {item.name}")
+                break
 
-            if not self.chat_input_active:
-                if event.key == pygame.K_RETURN:
-                    self.chat_input_active = True
-                    self.chat_input_text = ""
-            else:
-                if event.key == pygame.K_RETURN:
-                    text = self.chat_input_text.strip()
-                    if text:
-                        msg = ChatMessage(
-                            sender=self.network.player_name,
-                            text=text,
-                            game_id="Luainid",
-                        )
-                        self.chat.send_message(msg)
-                        self.chat_log.append(msg)
-                        if self.connected:
-                            self.chat_client.send(text)
-                    self.chat_input_active = False
-                    self.chat_input_text = ""
-                elif event.key == pygame.K_ESCAPE:
-                    self.chat_input_active = False
-                    self.chat_input_text = ""
-                elif event.key == pygame.K_BACKSPACE:
-                    self.chat_input_text = self.chat_input_text[:-1]
-                else:
-                    char = event.unicode
-                    if char and char.isprintable() and len(self.chat_input_text) < 80:
-                        self.chat_input_text += char
-
-    def update_chat(self):
-        for sender, text in self.chat_client.get_messages():
-
-            if sender == self.network.player_name:
-                continue # skips self
-
-            msg = ChatMessage(
-                sender=sender,
-                text=text,
-                game_id="JAG",
-            )
-            self.chat.send_message(msg)
-            self.chat_log.append(msg)
-
-    def draw_chat_ui(self):
-        """Render the last 5 chat messages and, when active, the text input box."""
-        PANEL_W  = 420
-        MSG_H    = 22
-        MAX_SHOW = 5
-        PADDING  = 6
-        panel_x  = 10
-        panel_y  = HEIGHT - 160
-
-        recent = self.chat.recent()[-MAX_SHOW:]
-
-        if recent:
-            panel_h    = len(recent) * MSG_H + PADDING * 2
-            panel_surf = pygame.Surface((PANEL_W, panel_h), pygame.SRCALPHA)
-            panel_surf.fill((0, 0, 0, 140))
-            self.display_surface.blit(panel_surf, (panel_x, panel_y - panel_h))
-            for i, line in enumerate(recent):
-                text_surf = self.chat_font.render(line, True, (230, 230, 230))
-                self.display_surface.blit(
-                    text_surf,
-                    (panel_x + PADDING, panel_y - panel_h + PADDING + i * MSG_H)
-                )
-
-        if self.chat_input_active:
-            input_y    = panel_y + 4
-            input_surf = pygame.Surface((PANEL_W, 28), pygame.SRCALPHA)
-            input_surf.fill((0, 0, 0, 180))
-            self.display_surface.blit(input_surf, (panel_x, input_y))
-            pygame.draw.rect(self.display_surface, (100, 200, 100),
-                             (panel_x, input_y, PANEL_W, 28), 1)
-            cursor       = "|" if pygame.time.get_ticks() % 800 < 400 else " "
-            display_text = f"> {self.chat_input_text}{cursor}"
-            self.display_surface.blit(
-                self.chat_font.render(display_text, True, (180, 255, 180)),
-                (panel_x + PADDING, input_y + 5)
-            )
-        else:
-            hint = self.chat_hint_font.render("Enter: Chat", True, (150, 150, 150))
-            self.display_surface.blit(hint, (panel_x, panel_y + 4))
+        print("Press 'I' to open inventory and switch weapons. SPACE to attack!")
 
     def create_enemies(self):
-        """Create enemies — patrol types use linked list paths (Lab 5), random type
-        wanders freely."""
+        """Create enemies — patrol types use linked list paths (Lab 5), random type wanders freely."""
         try:
             print("Creating enemies...")
+
             for data in ENEMY_SPAWN_DATA:
                 try:
                     combat_kwargs = dict(
@@ -354,8 +173,9 @@ server_port=8080, serializer='text'):
                         attack_radius=data.get("attack_radius", 60),
                         damage_player=self.damage_player,
                     )
+
                     if data["patrol_type"] == "random":
-                    # Random enemy: no patrol path needed
+                        # Random enemy: no patrol path needed
                         enemy = Enemy(
                             name=data["name"],
                             start_x=data["spawn"][0],
@@ -373,6 +193,7 @@ server_port=8080, serializer='text'):
                         for waypoint in data["waypoints"]:
                             x, y = waypoint
                             patrol_path.add_waypoint(x, y, wait_time=1.0)
+
                         enemy = Enemy(
                             name=data["name"],
                             start_x=data["spawn"][0],
@@ -383,29 +204,33 @@ server_port=8080, serializer='text'):
                             sprite_name=data["name"].lower().replace(' ', '_'),
                             **combat_kwargs
                         )
+
                     self.enemies.add(enemy)
                     self.visible_sprites.add(enemy)
                     self.obstacle_sprites.add(enemy)
                     self.attackable_sprites.add(enemy)
-                    print(f" Created: {data['name']} ({data['patrol_type']})")
 
+                    print(f"  Created: {data['name']} ({data['patrol_type']})")
                 except Exception as e:
-                    print(f" Failed to create enemy {data['name']}: {e}")
+                    print(f"  Failed to create enemy {data['name']}: {e}")
+
             print(f"Total enemies created: {len(self.enemies)}")
             if len(self.enemies) > 0:
                 print("Press 'N' to toggle enemy debug view!")
             else:
-                print("No patrol enemies created - implement Waypoint andPatrolPath to see them!")
+                print("No patrol enemies created - implement Waypoint and PatrolPath to see them!")
+
         except ImportError as e:
             print(f"Enemies not available yet: {e}")
-            print("Complete the linked list implementation in datastructures/ toenable patrol enemies!")
+            print("Complete the linked list implementation in datastructures/ to enable patrol enemies!")
         except Exception as e:
             print(f"Error setting up enemies: {e}")
             print("Check your Waypoint and PatrolPath implementations!")
 
-        # ------------------------------------------------------------------
-        # Combat
-        # ------------------------------------------------------------------
+    # ------------------------------------------------------------------
+    # Combat
+    # ------------------------------------------------------------------
+
     def create_attack(self):
         """Spawn a weapon sprite in front of the player (called on SPACE)."""
         self.current_attack = WeaponSprite(self.player, [self.visible_sprites, self.attack_sprites])
@@ -414,7 +239,7 @@ server_port=8080, serializer='text'):
         """Remove the weapon sprite when the attack cooldown ends."""
         if self.current_attack:
             self.current_attack.kill()
-            self.current_attack = None
+        self.current_attack = None
 
     def player_attack_logic(self):
         """Check weapon sprite vs every enemy each frame."""
@@ -423,12 +248,12 @@ server_port=8080, serializer='text'):
                 was_alive = enemy.health > 0
                 enemy.get_damage(self.player)
                 if was_alive and enemy.health <= 0:
-                    self.player.exp += enemy.exp # award XP exactly once on kill
+                    self.player.exp += enemy.exp   # award XP exactly once on kill
 
     def damage_player(self, amount):
         """Called by enemies when they land an attack."""
         self.player.take_damage(amount)
-        
+
     # ------------------------------------------------------------------
 
     def update_network(self):
@@ -444,14 +269,18 @@ server_port=8080, serializer='text'):
 
         # Get updates from server
         updates = self.network.get_updates()
-        current_player_ids = set()
+
         if updates:
-            self.connection_status = f"Connected - {len(updates)} players online({self.network.serializer.upper()})"
+            self.connection_status = f"Connected - {len(updates)} players online ({self.network.serializer.upper()})"
+
+            current_player_ids = set()
+
             for player_id, data in updates.items():
                 current_player_ids.add(player_id)
+
                 if player_id == self.network.my_player_id:
                     continue
-                    
+
                 if player_id not in self.other_players:
                     character_type = data.get('character_type', '').lower()
                     if not character_type:
@@ -463,9 +292,11 @@ server_port=8080, serializer='text'):
                         if cls.get_display_name().lower() == character_type:
                             CharClass = cls
                             break
+
                     if CharClass is None:
                         CharClass = Character
-                        print(f"[WARNING] Unknown character type'{character_type}', using default")
+                        print(f"[WARNING] Unknown character type '{character_type}', using default")
+
                     other_player = CharClass(
                         (data['x'], data['y']),
                         [self.visible_sprites],
@@ -482,29 +313,30 @@ server_port=8080, serializer='text'):
                     other_player.name = data['name']
                     if 'status' in data:
                         other_player.status = data['status']
-        
-        disconnected = set(self.other_players.keys()) - current_player_ids
-        for player_id in disconnected:
-            self.other_players[player_id].kill()
-            del self.other_players[player_id]
+
+            disconnected = set(self.other_players.keys()) - current_player_ids
+            for player_id in disconnected:
+                self.other_players[player_id].kill()
+                del self.other_players[player_id]
+
             self.player.other_players = list(self.other_players.values())
+
     def handle_events(self, events):
         """Handle pygame events (pass from main game loop)"""
-        if self.chat_input_active:
-            return
         for event in events:
             self.inventory_ui.handle_event(event, self.player)
 
     def draw_names(self):
         """Draw player names above their heads"""
         if self.network.my_player_id is not None:
-            name_text = f"{self.network.player_name}({self.player.character_name})"
+            name_text = f"{self.network.player_name} ({self.player.character_name})"
             name_surface = self.font.render(name_text, True, (0, 255, 0))
             name_rect = name_surface.get_rect(
                 center=(self.player.rect.centerx, self.player.rect.top - 10)
             )
             offset_pos = self.visible_sprites.offset_from_world(name_rect.topleft)
             self.display_surface.blit(name_surface, offset_pos)
+
         for other_player in self.other_players.values():
             name_surface = self.font.render(other_player.name, True, (100, 100, 255))
             name_rect = name_surface.get_rect(
@@ -517,42 +349,43 @@ server_port=8080, serializer='text'):
         """Draw HUD: connection, hints, health bar, XP, equipped weapon."""
         # Connection status
         status_color = (0, 255, 0) if self.connected else (255, 100, 100)
-        self.display_surface.blit(self.font.render(self.connection_status, True, status_color), (10, 10))
         self.display_surface.blit(
-            self.font.render("I: Inventory | SPACE: Attack", True, (255, 255,255)), (10, 40))
-        
+            self.font.render(self.connection_status, True, status_color), (10, 10))
+
+        self.display_surface.blit(
+            self.font.render("I: Inventory | SPACE: Attack", True, (255, 255, 255)), (10, 40))
+
         # Health bar
-        bar_rect = pygame.Rect(10, 70, HEALTH_BAR_WIDTH, BAR_HEIGHT)
-        ratio = max(0.0, self.player.hp / max(1, self.player.max_hp))
+        bar_rect  = pygame.Rect(10, 70, HEALTH_BAR_WIDTH, BAR_HEIGHT)
+        ratio     = max(0.0, self.player.hp / max(1, self.player.max_hp))
         fill_rect = pygame.Rect(10, 70, int(HEALTH_BAR_WIDTH * ratio), BAR_HEIGHT)
-        pygame.draw.rect(self.display_surface, UI_BG_COLOR, bar_rect)
-        pygame.draw.rect(self.display_surface, HEALTH_COLOR, fill_rect)
+        pygame.draw.rect(self.display_surface, UI_BG_COLOR,     bar_rect)
+        pygame.draw.rect(self.display_surface, HEALTH_COLOR,    fill_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bar_rect, 2)
         self.display_surface.blit(
-            self.font.render(f"HP {self.player.hp}/{self.player.max_hp}", True,
-            (255, 255, 255)),
+            self.font.render(f"HP {self.player.hp}/{self.player.max_hp}", True, (255, 255, 255)),
             (10 + HEALTH_BAR_WIDTH + 8, 70))
-        
+
         # XP
         self.display_surface.blit(
             self.font.render(f"XP: {self.player.exp}", True, (255, 215, 0)), (10, 100))
-        
+
         # Equipped weapon
         if self.player.equipped_weapon:
             w = self.player.equipped_weapon
-            msg = f"Weapon: {w.name} (+{w.attack_bonus} atk)"
+            msg = f"Weapon: {w.name}  (+{w.attack_bonus} atk)"
             color = (255, 200, 100)
         else:
-            msg = "Weapon: none (open I → select weapon → Equip)"
+            msg   = "Weapon: none  (open I → select weapon → Equip)"
             color = (150, 150, 150)
         self.display_surface.blit(self.font.render(msg, True, color), (10, 125))
 
-        # ------------------------------------------------------------------
-        # Time travel + enemy state snapshots
-        # ------------------------------------------------------------------
+    # ------------------------------------------------------------------
+    # Time travel + enemy state snapshots
+    # ------------------------------------------------------------------
+
     def _snapshot_enemies(self):
-        """Capture full enemy state (position, patrol cursor, combat) for time-
-        travel."""
+        """Capture full enemy state (position, patrol cursor, combat) for time-travel."""
         enemies = []
         for enemy in self.enemies:
             enemies.append({
@@ -562,10 +395,8 @@ server_port=8080, serializer='text'):
                 'patrol_active': enemy.patrol_active,
                 'is_waiting': enemy.is_waiting,
                 'wait_timer': enemy.wait_timer,
-                'patrol_current': enemy.patrol_path.current if
-                enemy.patrol_path else None,
-                'patrol_direction': enemy.patrol_path.direction if
-                enemy.patrol_path else None,
+                'patrol_current':   enemy.patrol_path.current   if enemy.patrol_path else None,
+                'patrol_direction': enemy.patrol_path.direction if enemy.patrol_path else None,
                 'wander_target': getattr(enemy, 'wander_target', None),
                 'health': enemy.health,
                 'combat_status': enemy.combat_status,
@@ -586,16 +417,16 @@ server_port=8080, serializer='text'):
             enemy.is_waiting = state['is_waiting']
             enemy.wait_timer = state['wait_timer']
             if enemy.patrol_path is not None:
-                enemy.patrol_path.current = state['patrol_current']
+                enemy.patrol_path.current   = state['patrol_current']
                 enemy.patrol_path.direction = state['patrol_direction']
             if hasattr(enemy, 'wander_target'):
                 enemy.wander_target = state['wander_target']
-                enemy.health = state.get('health', enemy.health)
-                enemy.combat_status = state.get('combat_status', 'patrol')
-            
-            if isinstance(snapshot, dict):
-                self.player.hp = snapshot.get('player_hp', self.player.hp)
-                self.player.vulnerable = True # reset after rewind
+            enemy.health        = state.get('health', enemy.health)
+            enemy.combat_status = state.get('combat_status', 'patrol')
+
+        if isinstance(snapshot, dict):
+            self.player.hp = snapshot.get('player_hp', self.player.hp)
+            self.player.vulnerable = True   # reset after rewind
 
     def record_player_state(self):
         if not self.is_time_traveling and not self.connected:
@@ -615,8 +446,7 @@ server_port=8080, serializer='text'):
         if self.connected:
             self.is_time_traveling = False
             return
-        if self.chat_input_active:
-            return
+
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r and self.time_travel.can_rewind():
@@ -630,6 +460,7 @@ server_port=8080, serializer='text'):
                             self.enemy_future.append(self.enemy_history.pop())
                             if self.enemy_history:
                                 self._restore_enemies(self.enemy_history[-1])
+
                 elif event.key == pygame.K_f and self.time_travel.can_replay():
                     state = self.time_travel.replay()
                     if state:
@@ -641,20 +472,26 @@ server_port=8080, serializer='text'):
                             snapshot = self.enemy_future.pop()
                             self.enemy_history.append(snapshot)
                             self._restore_enemies(snapshot)
+                elif event.key == pygame.K_SPACE:
+                    self.destroy_attack()
+                    self.create_attack()
                 else:
                     self.is_time_traveling = False
 
     def draw_time_travel_ui(self):
         font_small = pygame.font.Font(None, 24)
+
         if not self.connected:
             if self.is_time_traveling:
                 font_large = pygame.font.Font(None, 48)
                 text = font_large.render("⏪ TIME TRAVELING", True, (255, 100, 100))
                 rect = text.get_rect(center=(WIDTH // 2, 50))
                 self.display_surface.blit(text, rect)
-            info = f"History: {self.time_travel.get_history_size()} | Future:{self.time_travel.get_future_size()}"
+
+            info = f"History: {self.time_travel.get_history_size()} | Future: {self.time_travel.get_future_size()}"
             text = font_small.render(info, True, (255, 255, 255))
             self.display_surface.blit(text, (10, 100))
+
             hint = "R: Rewind | F: Replay"
             text = font_small.render(hint, True, (200, 200, 200))
             self.display_surface.blit(text, (10, 130))
@@ -662,18 +499,17 @@ server_port=8080, serializer='text'):
             text = font_small.render("Time travel disabled (multiplayer)", True, (150, 150, 150))
             self.display_surface.blit(text, (10, 100))
 
-        # ------------------------------------------------------------------
-        # Main loop
-        # ------------------------------------------------------------------
+    # ------------------------------------------------------------------
+    # Main loop
+    # ------------------------------------------------------------------
+
     def run(self, events):
         """Main update loop"""
         self.handle_events(events)
-        self.handle_chat_input(events)
         self.handle_time_travel_input(events)
         self.handle_enemy_debug_input(events)
 
         self.update_network()
-        self.update_chat()
 
         # Update player and remote players
         self.player.update()
@@ -683,9 +519,9 @@ server_port=8080, serializer='text'):
         # Update enemies; freeze them while time-traveling
         if not self.is_time_traveling:
             for enemy in list(self.enemies):
-                enemy.enemy_update(self.player) # set combat AI state first
-            self.enemies.update() # then move/animate/check death
-            self.player_attack_logic() # weapon collisions
+                enemy.enemy_update(self.player)   # set combat AI state first
+            self.enemies.update()                  # then move/animate/check death
+            self.player_attack_logic()             # weapon collisions
 
         # Draw (Y-sorted; custom_draw does NOT call update())
         self.visible_sprites.custom_draw(self.player)
@@ -696,18 +532,16 @@ server_port=8080, serializer='text'):
         self.draw_status()
         self.draw_time_travel_ui()
         self.draw_enemy_debug()
-        self.draw_chat_ui()
 
         if self.inventory_ui.active:
             self.inventory_ui.draw(self.display_surface)
 
-        # ------------------------------------------------------------------
-        # Enemy debug
-        # ------------------------------------------------------------------
+    # ------------------------------------------------------------------
+    # Enemy debug
+    # ------------------------------------------------------------------
+
     def handle_enemy_debug_input(self, events):
         """Handle enemy debug controls (Lab 5)."""
-        if self.chat_input_active:
-            return
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_n:
@@ -715,6 +549,7 @@ server_port=8080, serializer='text'):
                     status = "ON" if self.show_enemy_debug else "OFF"
                     count = len(self.enemies)
                     print(f"Enemy debug view: {status} ({count} enemies active)")
+
                 elif event.key == pygame.K_m:
                     reset_count = 0
                     for enemy in self.enemies:
@@ -741,7 +576,9 @@ server_port=8080, serializer='text'):
             self.display_surface.blit(text, (10, y_offset))
             y_offset += 25
 
-            enemy.draw_debug_info(self.display_surface,(self.visible_sprites.offset.x, self.visible_sprites.offset.y))
+            enemy.draw_debug_info(self.display_surface,
+                                  (self.visible_sprites.offset.x, self.visible_sprites.offset.y))
+
         instructions = [
             "Enemy Debug Controls:",
             "N: Toggle debug view",
@@ -753,8 +590,10 @@ server_port=8080, serializer='text'):
             text = font.render(instruction, True, color)
             self.display_surface.blit(text, (WIDTH - 200, 10 + i * 20))
 
+
 class YSortCameraGroup(pygame.sprite.Group):
     """Camera that follows player and sorts sprites by Y position"""
+
     def __init__(self):
         super().__init__()
         self.display_surface = pygame.display.get_surface()
@@ -763,11 +602,29 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
 
     def custom_draw(self, player):
-        """Draw sprites sorted by Y position"""
+        """Draw sprites: floor first, then others sorted by Y position"""
+        # 1. Update camera offset
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 
-        for sprite in sorted(self.sprites(), key=lambda sprite:sprite.rect.centery):
+        # 2. Draw Floor/Ground first
+        # We MUST use the sprite's own .image attribute. 
+        # If this is rendering only Area 1, it means the Tile object 
+        # was created with the wrong image in create_map.
+        for sprite in self.sprites():
+            if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'grass':
+                offset_pos = sprite.rect.topleft - self.offset
+                self.display_surface.blit(sprite.image, offset_pos)
+
+        # 3. Draw sorted sprites (Players, Enemies, Objects)
+        # We skip 'grass' because it was drawn in step 2.
+        # We skip 'boundary' because it's usually invisible (unless you want to see hitboxes)
+        y_sorted_sprites = [
+            s for s in self.sprites() 
+            if not hasattr(s, 'sprite_type') or s.sprite_type not in ['grass', 'boundary']
+        ]
+
+        for sprite in sorted(y_sorted_sprites, key=lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)
 

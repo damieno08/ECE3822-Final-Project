@@ -18,8 +18,8 @@ Choose one of three backing representations:
 
 All three options must satisfy the same interface.
 
-Author: [Your Name]
-Date:   [Date]
+Author: Richard Lin
+Date:   4/12/26
 Lab:    Lab 6 - Sparse World Map
 """
 
@@ -59,33 +59,70 @@ class SparseMatrixBase:
 # Your implementation goes here.
 # =============================================================================
 
+from datastructures.array import ArrayList
+
 class SparseMatrix(SparseMatrixBase):
 
     def __init__(self, rows=None, cols=None, default=0):
         super().__init__(rows, cols, default)
         # TODO: initialize your backing data structure
-        raise NotImplementedError
+        self.data = ArrayList()
 
     def set(self, row, col, value):
         # TODO
-        raise NotImplementedError
+        i = 0
+        while i < len(self.data):
+            r, c, v = self.data[i]
+
+            if r == row and c == col:
+                if value == self.default:
+                    self.data.pop(i)
+                    return
+                else:
+                    self.data[i] = (row, col, value)
+                    return
+
+            i += 1
+
+        if value != self.default:
+            self.data.append((row, col, value))
+
 
     def get(self, row, col):
         # TODO
-        raise NotImplementedError
+        for i in range(len(self.data)):
+            r, c, v = self.data[i]
+            if r == row and c == col:
+                return v
+            
+        return self.default
 
     def items(self):
         # TODO
-        raise NotImplementedError
+        for i in range(len(self.data)):
+            r, c, v = self.data[i]
+            yield ((r, c), v)
 
     def __len__(self):
         # TODO
-        raise NotImplementedError
+        return len(self.data)
 
     def multiply(self, other):
         # TODO
-        raise NotImplementedError
+        result = SparseMatrix(self.rows, other.cols, self.default)
+
+        for i in range(len(self.data)):
+            r1, c1, v1 = self.data[i]
+
+            for j in range(len(other.data)):
+                r2, c2, v2 = other.data[j]
+
+                if c1 == r2:
+                    current = result.get(r1, c2)
+                    result.set(r1, c2, current + (v1 * v2))
+
+        return result
 
     def __str__(self):
         # TODO
-        raise NotImplementedError
+        return f"SparseMatrix(nnz={len(self)}, default={self.default})"

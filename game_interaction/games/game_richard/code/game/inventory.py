@@ -5,8 +5,8 @@ Implement an inventory system using their custom ArrayList.
 This replaces using Python's built-in list.
 """
 
-from game_interaction.games.game_richard.code.game.datastructures.array import ArrayList
-from game_interaction.games.game_richard.code.game.item import Item
+from datastructures.array import ArrayList
+from item import Item
 
 class Inventory:
     """
@@ -279,7 +279,7 @@ class Inventory:
 # ============================================
 
 if __name__ == "__main__":
-    from game_interaction.games.game_richard.code.game.item import Weapon, Armor, Consumable
+    from item import Weapon, Armor, Consumable
     
     print("Testing Inventory system...\n")
     

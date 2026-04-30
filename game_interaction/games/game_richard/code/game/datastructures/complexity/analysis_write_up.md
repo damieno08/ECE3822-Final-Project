@@ -1,17 +1,23 @@
 # Sparse Matrix Complexity Analysis
 
-**Name:** [Your Name]
-**Date:** [Date]
-**Implementation:** [DOK / COO / CSR — circle one]
+**Name:** Richard Lin
+**Date:** 4/15/26
+**Implementation:** COO
 
 ---
 
 ## Overview
 
-Describe your implementation choice and why you chose it.  For example:
-- What backing data structure does it use?
-- Why is it appropriate for the tile-map use case?
-- What trade-offs does it make compared to the other options?
+I implemented the sparse matrix using the COO (Coordinate List) representation backed by the ArrayList
+
+Each non-default entry is stored as (row, col, value)
+
+This design was chosen because:
+- It was simple and works nicely with the ArrayList Class
+- It stores only non-default values, saving a lot of memory compared to a dense matrix
+- It doesn't require to implement a hash table or CSR pointer
+
+The tradeoff is that all the operation rely on linear scanning of the internal list, making operations slower than optimized.
 
 ---
 
@@ -21,14 +27,17 @@ Fill in the `?` cells after analysing your implementation.
 
 | Operation | Your SparseMatrix | scipy sparse (CSR) | numpy dense |
 |-----------|-------------------|--------------------|-------------|
-| `set(r, c, v)` | O(?) | O(nnz) amortised | O(1) |
-| `get(r, c)` | O(?) | O(log nnz) | O(1) |
-| `items()` iteration | O(?) | O(nnz) | O(n²) |
-| `multiply(other)` | O(?) | O(nnz²/n) | O(n³) |
+| `set(r, c, v)` | O(nnz) | O(nnz) amortised | O(1) |
+| `get(r, c)` | O(nnz) | O(log nnz) | O(1) |
+| `items()` iteration | O(nnz) | O(nnz) | O(n²) |
+| `multiply(other)` | O(nnz²) | O(nnz²/n) | O(n³) |
 
 *nnz = number of non-zero entries, n = matrix dimension side length*
 
-Explain your reasoning for each `?` in a sentence or two.
+- set: must scan ArrayList to find exisiting entry
+- get: linear search through stored entries
+- item: loops through all stored values
+- multiply: nested loop over both sparse list
 
 ---
 
@@ -37,7 +46,24 @@ Explain your reasoning for each `?` in a sentence or two.
 Run `sparse_matrix_complexity.py` and paste the output here:
 
 ```
-(paste timing table here)
+CUSTOM
+Build: 0.11823009999352507
+Get: 0.364336300001014
+Items: 0.00044010000419802964
+Multiply: 10.813771300003282
+
+SCIPY
+Build: 0.00166680000256747
+Get: 0.04741900000226451
+Items: 0.00015050000365590677
+Multiply: 0.00024510000366717577
+
+NUMPY
+Build: 0.0011510000040289015
+Get: 0.0030019000041647814
+Items: 0.00012549999519251287
+Multiply: 0.00014229999942472205
+
 ```
 
 ---
@@ -47,28 +73,32 @@ Run `sparse_matrix_complexity.py` and paste the output here:
 | Representation | Space Used |
 |----------------|-----------|
 | Dense n×n      | O(n²)     |
-| Your sparse    | O(?)      |
+| Your sparse    | O(nnz)      |
 
-At what density (percentage of non-zero entries) does your sparse matrix
-use *more* memory than a dense matrix?  Show your reasoning.
+### Measured Memory Usage
+CUSTOM MEMORY: 15664
+SCIPY MEMORY: 56972
+NUMPY MEMORY: 80328
+
+### Explanation
+My sparse only store non-default values, so the memory would be linear with the number of stored entries (O(nnz)).
+Dense NumPy matrices allocate full n×n memory regardless of sparsity, which makes them much heavier in memory.
+SciPy uses optimized CSR structures, but still has more overhead per entry than my simple tuple-based COO design.
 
 ---
 
 ## Observations
 
-1. How does your implementation compare to scipy in terms of speed?
-2. When is a sparse representation faster than a dense one?
-3. Was the overhead per entry (your structure vs. numpy array) noticeable?
+1. SciPy is much faster than my implementation, especially for multiply
+2. My implementation is slow because it uses nested loop and linear search.
+3. Sparse matrices save a lot more memory compared to dense Numpy arrays
 
 ---
 
 ## Conclusions
-
-Write 2–3 sentences summarising what you learned about sparse data structures
-from this experiment.
-
+This experiment demonstrates the trade-off between time and space complexity. My COO implementation is memory efficient and easy to build, but significantly slower than the Python libraries. SciPy achieves the best performance using CSR format and low-level optimizations, while NumPy is fastest for dense operations but not suitable for sparse data.
 ---
 
 ## References
-
-List any resources (textbooks, websites, papers) you used.
+- SciPy CSR document
+- Numpy document
