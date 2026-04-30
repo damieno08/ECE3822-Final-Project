@@ -212,7 +212,7 @@ class game_damien:
                     self.running = False
                     pygame.quit()
                     self.level.network.disconnect()
-
+                    self.level.chat_client.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -249,6 +249,7 @@ class game_damien:
                 self.running = False
                 char_select = False
                 pygame.quit()
+                self.level.chat_client.disconnect()
                 self.level.network.disconnect()
                 return
 
@@ -298,6 +299,7 @@ class game_damien:
         self.character_select()
         if not self.running or self.selected_character is None:
             pygame.quit()
+            self.level.chat_client.disconnect()
             self.level.network.disconnect()
             return
         
@@ -344,6 +346,7 @@ class game_damien:
                         if event.type == pygame.QUIT:
                             pygame.mixer.music.stop()
                             pygame.quit()
+                            self.level.chat_client.disconnect()
                             self.level.network.disconnect()
                             return
 
@@ -353,6 +356,7 @@ class game_damien:
 
                 # exit
                 pygame.quit()
+                self.level.chat_client.disconnect()
                 self.level.network.disconnect()
                 return
             
@@ -363,6 +367,7 @@ class game_damien:
                 if event.type == pygame.QUIT:
                     self.running = False
                     self.level.network.disconnect()
+                    self.level.chat_client.disconnect()
                     pygame.quit()
                     return
 

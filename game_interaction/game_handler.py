@@ -36,8 +36,14 @@ class Damien(Game_Handler):
         self.game = game_damien(self.user.name)
         self.game.run()
         self.score = self.game.level.player.exp
+
+        # Persist chat messages to the user's chat history
+        if self.game.level and self.game.level.chat_log:
+            for msg in self.game.level.chat_log:
+                self.user.update_history("chat", msg)
+
         self._game_session.end_session()
-        return self._game_session.get_time_played(), self.score
+        return self._game_session.get_time_played(), self.score, self.game.level.chat_log
     
 # Santiago game
 class Santiago(Game_Handler):
@@ -61,7 +67,7 @@ class Santiago(Game_Handler):
                 self.user.update_history("chat", msg)
 
         self._game_session.end_session()
-        return self._game_session.get_time_played(), self.score
+        return self._game_session.get_time_played(), self.score, self.game.level.chat_log
     
 # Paul game
 class Paul(Game_Handler):
@@ -78,8 +84,12 @@ class Paul(Game_Handler):
         self.game = game_paul(self.user.name)
         self.game.run()
         self.score = self.game.level.player.exp
+        # Persist chat messages to the user's chat history
+        if self.game.level and self.game.level.chat_log:
+            for msg in self.game.level.chat_log:
+                self.user.update_history("chat", msg)
         self._game_session.end_session()
-        return self._game_session.get_time_played(), self.score
+        return self._game_session.get_time_played(), self.score, self.game.level.chat_log
     
 # richard's game
 class Richard(Game_Handler):
@@ -96,8 +106,13 @@ class Richard(Game_Handler):
         self.game = game_richard(self.user.name)
         self.game.run()
         self.score = self.game.level.player.exp
+        # Persist chat messages to the user's chat history
+        if self.game.level and self.game.level.chat_log:
+            for msg in self.game.level.chat_log:
+                self.user.update_history("chat", msg)
+                print(msg)
         self._game_session.end_session()
-        return self._game_session.get_time_played(), self.score
+        return self._game_session.get_time_played(), self.score, self.game.level.chat_log
 
 class Tom(Game_Handler):
 
@@ -113,7 +128,11 @@ class Tom(Game_Handler):
         self.game = game_tom(self.user.name)
         self.game.run()
         self.score = self.game.level.player.exp
+        # Persist chat messages to the user's chat history
+        if self.game.level and self.game.level.chat_log:
+            for msg in self.game.level.chat_log:
+                self.user.update_history("chat", msg)
         self._game_session.end_session()
-        return self._game_session.get_time_played(), self.score
+        return self._game_session.get_time_played(), self.score, self.game.level.chat_log
     
 

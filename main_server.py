@@ -33,10 +33,15 @@ class ArcadeServer:
 
         # ✅ Load or create leaderboards
         self.leaderboards = self.load_leaderboards()
+        self.chat_clients = []
+        self.chat_lock = threading.Lock()
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server.bind((self.host, self.port))
+
+        self.chat_clients = []
+        self.chat_lock = threading.Lock()
 
     # --------------------------------------------------
     # LEADERBOARD PERSISTENCE
@@ -170,24 +175,38 @@ class ArcadeServer:
                         print(f"[DEBUG] Session Logged: {uname} | {gname} | Score: {score_val}")
 
                 # ---------------- SAVE CHAT BATCH ----------------
-                elif raw_data.startswith("SAVE_CHAT_BATCH"):
-                    parts = raw_data.split("|", 2)
-                    if len(parts) >= 3:
-                        uname = parts[1].strip()
-                        user_obj = self.find_user_by_name(uname)
+                elif raw_data.startswith("SAVE_CHAT"):
+                    messages = raw_data.split("\n")
+
+                    for raw in messages:
+                        if not raw.startswith("SAVE_CHAT"):
+                            continue
+
+                        parts = raw.split("|")
+
+                        if len(parts) < 6:
+                            continue
+
+                        user_name = parts[1].strip()
+                        game_id   = parts[2].strip()
+                        sender    = parts[3].strip()
+                        text      = parts[4].strip()
+                        timestamp = parts[5].strip()
+
+                        user_obj = self.find_user_by_name(user_name)
+
                         if user_obj:
-                            messages = json.loads(parts[2])
-                            for m in messages:
-                                ts = datetime.fromisoformat(m["ts"]) if m.get("ts") else datetime.now()
-                                msg = ChatMessage(
-                                    sender=m["sender"],
-                                    text=m["text"],
-                                    game_id=m.get("game_id", ""),
-                                    timestamp=ts,
-                                    rate_limited=False,
-                                )
-                                user_obj.update_history("chat", msg)
-                            print(f"[DEBUG] Chat saved: {uname} | {len(messages)} message(s)")
+                            msg = ChatMessage(
+                                sender=sender,
+                                text=text,
+                                game_id=game_id,
+                                timestamp=timestamp,
+                                rate_limited=False,
+                            )
+
+                            user_obj.update_history("chat", msg)
+
+                            print(f"[DEBUG] Chat saved: {user_name} | {text}")
 
                 # ---------------- GET LEADERBOARD ----------------
                 elif raw_data.startswith("GET_LEADERBOARD"):
@@ -214,7 +233,6 @@ class ArcadeServer:
                     resp = "USER_RESULTS:" + ("\n".join(results) if results else "No users found")
                     conn.sendall(resp.encode())
 
-                # ---------------- GET HISTORY ----------------
                 # ---------------- GET HISTORY (SERVER) ----------------
                 elif raw_data.startswith("GET_HISTORY:"):
                     target_name = raw_data.split(":")[1].strip()
@@ -228,6 +246,32 @@ class ArcadeServer:
                         conn.sendall(header + user_bytes)
                     else:
                         conn.sendall("ERROR:User not found".encode())
+                # ---------------- LIVE CHAT JOIN----------------
+                elif raw_data.startswith("CHAT_JOIN"):
+                    username = raw_data.split("|")[1]
+
+                    with self.chat_lock:
+                        self.chat_clients.append((conn, username))
+
+                    print(f"[CHAT] {username} joined chat")
+                                
+                # ---------------- LIVE CHAT HANDLING----------------
+                elif raw_data.startswith("CHAT_MSG"):
+                    parts = raw_data.split("|", 2)
+                    if len(parts) < 3:
+                        continue
+
+                    sender = parts[1]
+                    text = parts[2]
+
+                    message = f"CHAT_BROADCAST|{sender}|{text}"
+
+                    with self.chat_lock:
+                        for client, _ in self.chat_clients:
+                            try:
+                                client.sendall((message + "\n").encode())
+                            except:
+                                pass
                 # ---------------- RECENTLY PLAYED ----------------
                 elif raw_data.startswith("GET_RECENTLY_PLAYED:"):
                     uname = raw_data.split(":")[1].strip()
@@ -255,7 +299,6 @@ class ArcadeServer:
 
                                 if g_idx is not None:
                                     entries.append(g_idx)
-
                         # send as CSV
                         conn.sendall(f"RECENT_DATA:{','.join(entries)}".encode())
             except Exception as e:
@@ -263,6 +306,10 @@ class ArcadeServer:
                 break
 
         conn.close()
+        with self.chat_lock:
+            self.chat_clients = [
+            (c, u) for (c, u) in self.chat_clients if c != conn
+            ]
 
 
 if __name__ == "__main__":
