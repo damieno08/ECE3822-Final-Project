@@ -16,6 +16,7 @@ Lab: Lab 6 - Sparse World Map
 import pygame
 from game_interaction.games.game_richard.code.game.settings import *
 
+start_path = str(sys.path[0])
 
 class Tile(pygame.sprite.Sprite):
     """A single tile in the world map."""
