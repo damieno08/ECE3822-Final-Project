@@ -24,11 +24,11 @@ class ArcadeServer:
         self.main_array = ArrayList()
 
         self.game_map = {
-            "0": "Luaianid",
-            "1": "Santiago",
-            "2": "Vermis",
-            "3": "Richard",
-            "4": "Tom"
+            "0": "LUAIANID",
+            "1": "JAG",
+            "2": "VERMIS",
+            "3": "RICHARD",
+            "4": "TOM"
         }
 
         # ✅ Load or create leaderboards

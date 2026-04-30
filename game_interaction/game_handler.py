@@ -26,7 +26,7 @@ class Damien(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
-        super().__init__(user, "Luaianid", "RPG")
+        super().__init__(user, "LUAIANID", "RPG")
         
 
     # run the game and handle game session recording
@@ -74,7 +74,7 @@ class Paul(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
-        super().__init__(user, "Paul", "Adventure")
+        super().__init__(user, "VERMIS", "Adventure")
         
 
     # run the game and handle game session recording
@@ -96,7 +96,7 @@ class Richard(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
-        super().__init__(user, "Richard", "Puzzle")
+        super().__init__(user, "RICHARD", "Puzzle")
         
 
     # run the game and handle game session recording
@@ -118,7 +118,7 @@ class Tom(Game_Handler):
 
     # intialize game with name and user
     def __init__(self, user):
-        super().__init__(user, "Tom", "Adventure")
+        super().__init__(user, "TOM", "Adventure")
         
 
     # run the game and handle game session recording

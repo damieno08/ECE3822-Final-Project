@@ -17,6 +17,7 @@ from game_interaction.game_handler import Damien, Santiago, Paul, Richard, Tom
 from game_interaction.game_session import GameSession
 from game_interaction.leaderboard import Leaderboard
 from datastructures.array import ArrayList
+from algorithms.heap_sort import HeapSortGames
 
 # ============================================================
 # CLIENT CODE
@@ -29,6 +30,9 @@ class ArcadeClient:
         self.root.geometry("550x850")
         self.root.configure(bg="#0d0d0d")
         
+        self.sorter = HeapSortGames()
+        self.current_sort_mode = "time"
+
         self.colors = {
             "bg": "#0d0d0d",
             "fg": "#00ff41", 
@@ -39,10 +43,10 @@ class ArcadeClient:
 
         self.game_metadata = {
             "0": ("LUAIANID", 0, "game_interaction/games/game_damien/graphics/logo.png"),
-            "1": ("JAG_CORE", 1, "game_interaction/games/game_santiago/graphics/logo.png"),
-            "2": ("VERMIS_V1", 2, "game_interaction/games/game_paul/graphics/logo.png"),
-            "3": ("RICHARD_X", 3, "game_interaction/games/game_richard/graphics/logo.png"),
-            "4": ("TOM_MOD", 4, "game_interaction/games/game_tom/graphics/logo.png")
+            "1": ("JAG", 1, "game_interaction/games/game_santiago/graphics/logo.png"),
+            "2": ("VERMIS", 2, "game_interaction/games/game_paul/graphics/logo.png"),
+            "3": ("RICHARD", 3, "game_interaction/games/game_richard/graphics/logo.png"),
+            "4": ("TOM", 4, "game_interaction/games/game_tom/graphics/logo.png")
         }
 
         self.current_user = None
@@ -244,45 +248,154 @@ class ArcadeClient:
     def load_play_history(self, user_obj):
         self.display.config(state='normal')
         self.display.delete('1.0', tk.END)
+
         self.display.insert(tk.END, f"[PLAY HISTORY: {user_obj.name.upper()}]\n{'='*30}\n\n")
-        total = user_obj.get_total_games()
-        if total == 0:
-            self.display.insert(tk.END, "NO PLAY HISTORY FOUND\n")
-        else:
-            for i in range(total):
-                game = user_obj.get_history('game', i)
-                tag = f"game_{i}"
-                self.display.insert(tk.END, f"▶ {game}\n", tag)
-                self.display.tag_config(tag, foreground=self.colors["fg"])
-                self.display.tag_bind(tag, "<Button-1>", lambda e, g=game: messagebox.showinfo("GAME ENTRY", str(g)))
-        
+
+        # ✅ GAME FILTER BUTTONS (like tabs)
+        self.display.insert(tk.END, "SELECT GAME:\n\n")
+
+        for key, (name, idx, _) in self.game_metadata.items():
+            tag = f"filter_{idx}"
+
+            self.display.insert(tk.END, f"[ {name} ]  ", tag)
+
+            self.display.tag_config(tag, foreground=self.colors["fg"], font=("Courier", 10, "bold"))
+
+            # 👇 When clicked → call new function
+            self.display.tag_bind(
+                tag,
+                "<Button-1>",
+                lambda e, i=idx: self.show_game_history(user_obj, i)
+            )
+
+        self.display.insert(tk.END, "\n\n")
+
+        # Optional: default message
+        self.display.insert(tk.END, "SELECT A GAME TO VIEW HISTORY\n")
+
         self.display.insert(tk.END, "\n[ BACK TO PROFILE ]", "back_p")
+        self.display.tag_config("back_p", foreground=self.colors["fg"])
+        self.display.tag_bind("back_p", "<Button-1>", lambda e: self.display_user_profile(user_obj))
+
+        self.display.config(state='disabled')
+
+    def show_game_history(self, user_obj, game_idx):
+        self.display.config(state='normal')
+        self.display.delete('1.0', tk.END)
+
+        game_name = self.game_metadata[str(game_idx)][0]
+        
+        # Header and Toggle Button
+        self.display.insert(tk.END, f"[{game_name} HISTORY]\n", "header")
+        
+        # Visual Toggle Button
+        mode_label = "DATE_ASC" if self.current_sort_mode == "time" else "HIGH_SCORE"
+        self.display.insert(tk.END, f"SORT_MODE: [ {mode_label} ]\n", "toggle")
+        self.display.insert(tk.END, f"{'='*30}\n\n")
+
+        # Configure Tags
+        self.display.tag_config("toggle", foreground="#ffff00", font=("Courier", 10, "bold"))
+        self.display.tag_bind("toggle", "<Button-1>", lambda e: self.toggle_sort_mode(user_obj, game_idx))
+
+        # 1. Gather all game sessions
+        history_list = []
+        for i in range(user_obj.get_total_games()):
+            history_list.append(user_obj.get_history('game', i))
+
+        # 2. Sort using the dynamic mode
+        sorted_history = self.sorter.heap_sort(history_list, mode=self.current_sort_mode)
+
+        # 3. Filter and display
+        found = False
+        for session in sorted_history:
+            if session.game_name == game_name:
+                # Format the display based on mode to highlight the sorted value
+                if self.current_sort_mode == "score":
+                    self.display.insert(tk.END, f"★ SCORE: {str(session.score).rjust(6)} | {session.start_time.strftime("%Y-%m-%d %H:%M:%S")}\n")
+                else:
+                    self.display.insert(tk.END, f"▶ {session.start_time.strftime("%Y-%m-%d %H:%M:%S")} | SCORE: {session.score}\n")
+                found = True
+
+        if not found:
+            self.display.insert(tk.END, "NO HISTORY FOUND FOR THIS GAME\n")
+        
+        # Navigation
+        self.display.insert(tk.END, "\n[ BACK TO GAME SELECT ]", "back_g")
+        self.display.tag_config("back_g", foreground=self.colors["fg"])
+        self.display.tag_bind("back_g", "<Button-1>", lambda e: self.load_play_history(user_obj))
+
+        self.display.config(state='disabled')
+
+    def load_chat_history(self, user_obj):
+        """Unified UI: Shows game selection for chat logs."""
+        self.display.config(state='normal')
+        self.display.delete('1.0', tk.END)
+
+        self.display.insert(tk.END, f"[CHAT REPOSITORY: {user_obj.name.upper()}]\n{'='*30}\n\n")
+        self.display.insert(tk.END, "SELECT SOURCE CORE:\n\n")
+
+        for key, (name, idx, _) in self.game_metadata.items():
+            tag = f"chat_filter_{idx}"
+            self.display.insert(tk.END, f"[ {name} ]  ", tag)
+            self.display.tag_config(tag, foreground=self.colors["fg"], font=("Courier", 10, "bold"))
+            self.display.tag_bind(tag, "<Button-1>", lambda e, i=idx: self.show_filtered_chat(user_obj, i))
+
+        self.display.insert(tk.END, "\n\n[ BACK TO PROFILE ]", "back_p")
         self.display.tag_config("back_p", foreground=self.colors["fg"])
         self.display.tag_bind("back_p", "<Button-1>", lambda e: self.display_user_profile(user_obj))
         self.display.config(state='disabled')
 
-    def load_chat_history(self, user_obj):
+    def toggle_chat_sort_mode(self, user_obj, game_idx):
+        """Switches chat sort mode and refreshes chat view."""
+        self.current_sort_mode = "score" if self.current_sort_mode == "time" else "time"
+        self.show_filtered_chat(user_obj, game_idx)
+
+    def toggle_sort_mode(self, user_obj, game_idx):
+        """Switches between 'time' and 'score' and refreshes the view."""
+        self.current_sort_mode = "score" if self.current_sort_mode == "time" else "time"
+        self.show_game_history(user_obj, game_idx)
+
+    def show_filtered_chat(self, user_obj, game_idx):
         self.display.config(state='normal')
         self.display.delete('1.0', tk.END)
-        self.display.insert(tk.END, f"[CHAT HISTORY: {user_obj.name.upper()}]\n{'='*30}\n\n")
-        
-        try:
-            total = user_obj.chat_history.size()
-            if total == 0:
-                self.display.insert(tk.END, "NO CHAT HISTORY FOUND\n")
-            else:
-                for i in range(total):
-                    msg = user_obj.get_history('chat', i)
-                    tag = f"chat_{i}"
-                    self.display.insert(tk.END, f" •{msg.game_id} {msg.text}\n", tag)
-                    self.display.tag_config(tag, foreground=self.colors["fg"])
-                    self.display.tag_bind(tag, "<Button-1>", lambda e, m=msg: messagebox.showinfo("CHAT ENTRY", str(m)))
-        except:
-            self.display.insert(tk.END, "ERROR LOADING CHAT DATAS\n")
 
-        self.display.insert(tk.END, "\n[ BACK TO PROFILE ]", "back_p")
-        self.display.tag_config("back_p", foreground=self.colors["fg"])
-        self.display.tag_bind("back_p", "<Button-1>", lambda e: self.display_user_profile(user_obj))
+        game_name = self.game_metadata[str(game_idx)][0]
+        
+        # Header and Toggle (Matching Game UI)
+        self.display.insert(tk.END, f"[{game_name} CHAT LOGS]\n", "header")
+        mode_label = "CHRONOLOGICAL" if self.current_sort_mode == "time" else "IMPORTANCE/SCORE"
+        self.display.insert(tk.END, f"SORT_MODE: [ {mode_label} ]\n", "toggle")
+        self.display.insert(tk.END, f"{'='*30}\n\n")
+
+        self.display.tag_config("toggle", foreground="#ffff00", font=("Courier", 10, "bold"))
+        self.display.tag_bind("toggle", "<Button-1>", lambda e: self.toggle_chat_sort_mode(user_obj, game_idx))
+
+        # 1. Collect and Sort
+        chat_list = []
+        for i in range(user_obj.chat_history.size()):
+            msg = user_obj.get_history('chat', i)
+            if msg.game_id == game_name:
+                chat_list.append(msg)
+
+        # Use self.sorter for the heavy lifting
+        sorted_chats = self.sorter.heap_sort(chat_list, mode=self.current_sort_mode)
+
+        # 2. Render
+        if not sorted_chats:
+            self.display.insert(tk.END, "NO DATA FOUND FOR THIS CORE\n")
+        else:
+            for i, msg in enumerate(sorted_chats):
+                tag = f"msg_{i}"
+                ts = msg.timestamp.strftime('%H:%M:%S') if msg.timestamp else "00:00:00"
+                self.display.insert(tk.END, f"[{ts}] {msg.sender}: {msg.text[:25]}...\n", tag)
+                self.display.tag_config(tag, foreground=self.colors["fg"])
+                self.display.tag_bind(tag, "<Button-1>", lambda e, m=msg: messagebox.showinfo("DECRYPTED MESSAGE", str(m)))
+
+        # 3. Navigation
+        self.display.insert(tk.END, "\n[ BACK TO CORE SELECT ]", "back_c")
+        self.display.tag_config("back_c", foreground=self.colors["fg"])
+        self.display.tag_bind("back_c", "<Button-1>", lambda e: self.load_chat_history(user_obj))
+
         self.display.config(state='disabled')
 
     def run_game(self, idx):
