@@ -40,9 +40,6 @@ class ArcadeServer:
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server.bind((self.host, self.port))
 
-        self.chat_clients = []
-        self.chat_lock = threading.Lock()
-
     # --------------------------------------------------
     # LEADERBOARD PERSISTENCE
     # --------------------------------------------------
@@ -210,18 +207,48 @@ class ArcadeServer:
 
                 # ---------------- GET LEADERBOARD ----------------
                 elif raw_data.startswith("GET_LEADERBOARD"):
-                    g_idx = raw_data.split(":")[1].strip()
+                    messages = raw_data.split("\n")
 
-                    if g_idx in self.leaderboards:
-                        lb = self.leaderboards[g_idx]
-                        top = lb.top_n(10)
+                    # default values (IMPORTANT: prevents "unbound local variable" bugs)
+                    g_idx = None
+                    request_user = None
 
-                        output = f"--- TOP PLAYERS ({self.game_map[g_idx]}) ---\n\n"
-                        for i, (user, score) in enumerate(top, start=1):
-                            output += f"{i}. {user} - {score}\n"
+                    for raw in messages:
+                        if not raw.startswith("GET_LEADERBOARD"):
+                            continue
 
-                        conn.sendall(f"LEADERBOARD_DATA:{output}".encode())
+                        parts = raw.split("|")
 
+                        # parse game index
+                        g_idx = parts[0].split(":")[1].strip()
+
+                        # parse requesting user (optional)
+                        if len(parts) > 1:
+                            request_user = parts[1].strip()
+
+                    if not g_idx:
+                        pass # safety guard
+                    else:
+                        if g_idx in self.leaderboards:
+                            lb = self.leaderboards[g_idx]
+                            top = lb.top_n(50)
+
+                            output = f"--- TOP PLAYERS ({self.game_map[g_idx]}) ---\n\n"
+                            user_rank = None
+
+                            for i, (user, score) in enumerate(top, start=1):
+                                output += f"{user} - {score}\n"
+                                if request_user and user == request_user:
+                                    user_rank = i
+
+                            # We use a distinct separator (|||) so the client doesn't 
+                            # get confused by the newlines inside 'output'
+                            rank_msg = f"RANK:{user_rank if user_rank else 'N/A'}"
+                            lb_msg = f"LEADERBOARD_DATA:{output}"
+                            final_send = f"{rank_msg}|||{lb_msg}\n"
+
+                            print(f"Sending: {rank_msg}") # debug
+                            conn.sendall(final_send.encode())
                 # ---------------- QUERY USER ----------------
                 elif raw_data.startswith("QUERY_USER:"):
                     search_val = raw_data.split(":")[1].strip().lower()
