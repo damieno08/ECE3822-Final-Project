@@ -231,7 +231,7 @@ class ArcadeServer:
                     else:
                         if g_idx in self.leaderboards:
                             lb = self.leaderboards[g_idx]
-                            top = lb.top_n(50)
+                            top = lb.top_n(len(self.main_array))
 
                             output = f"--- TOP PLAYERS ({self.game_map[g_idx]}) ---\n\n"
                             user_rank = None
