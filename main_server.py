@@ -14,7 +14,7 @@ from game_interaction.leaderboard import Leaderboard
 
 
 class ArcadeServer:
-    def __init__(self, host='0.0.0.0', port=65432, db_file="users.dat", lb_file="leaderboards.pkl"):
+    def __init__(self, host='0.0.0.0', port=50080, db_file="users.dat", lb_file="leaderboards.pkl"):
         self.host = host
         self.port = port
         self.db_file = db_file
