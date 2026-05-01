@@ -4,8 +4,11 @@ subcharacter.py - Character classes
 Different character types that players can choose from
 """
 
+import os
 import pygame
 from game_interaction.games.game_santiago.code.game.character import Character
+
+_CHARS_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../graphics/characters'))
 
 
 class Character1(Character):
@@ -17,14 +20,13 @@ class Character1(Character):
         self.attack, self.defense = 6, 9
 
         try:
-            self.image = pygame.image.load('../../graphics/characters/clown/down/frame_000.png').convert_alpha()
+            self.image = pygame.image.load(os.path.join(_CHARS_DIR, 'clown', 'down', 'frame_000.png')).convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
             pass
 
-        if is_local:
-            self.import_player_assets(animate=True)
+        self.import_player_assets(animate=True)
 
     @staticmethod
     def get_display_name():
@@ -36,7 +38,7 @@ class Character1(Character):
 
     @staticmethod
     def get_preview_image():
-        return '../../graphics/characters/clown/down/frame_000.png'
+        return os.path.join(_CHARS_DIR, 'clown', 'down', 'frame_000.png')
 
 
 class Character2(Character):
@@ -48,14 +50,13 @@ class Character2(Character):
         self.attack, self.defense = 11, 6
 
         try:
-            self.image = pygame.image.load('../../graphics/characters/jester/down/frame_000.png').convert_alpha()
+            self.image = pygame.image.load(os.path.join(_CHARS_DIR, 'jester', 'down', 'frame_000.png')).convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
             pass
 
-        if is_local:
-            self.import_player_assets(animate=True)
+        self.import_player_assets(animate=True)
 
     @staticmethod
     def get_display_name():
@@ -67,7 +68,7 @@ class Character2(Character):
 
     @staticmethod
     def get_preview_image():
-        return '../../graphics/characters/jester/down/frame_000.png'
+        return os.path.join(_CHARS_DIR, 'jester', 'down', 'frame_000.png')
 
 
 class Character3(Character):
@@ -79,14 +80,13 @@ class Character3(Character):
         self.attack, self.defense = 18, 2
 
         try:
-            self.image = pygame.image.load('../../graphics/characters/joker/down/frame_000.png').convert_alpha()
+            self.image = pygame.image.load(os.path.join(_CHARS_DIR, 'joker', 'down', 'frame_000.png')).convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
             pass
 
-        if is_local:
-            self.import_player_assets(animate=True)
+        self.import_player_assets(animate=True)
 
     @staticmethod
     def get_display_name():
@@ -98,7 +98,7 @@ class Character3(Character):
 
     @staticmethod
     def get_preview_image():
-        return '../../graphics/characters/joker/down/frame_000.png'
+        return os.path.join(_CHARS_DIR, 'joker', 'down', 'frame_000.png')
 
 
 class Character4(Character):
@@ -111,14 +111,13 @@ class Character4(Character):
         self.speed = 7
 
         try:
-            self.image = pygame.image.load('../../graphics/characters/mime/down/frame_000.png').convert_alpha()
+            self.image = pygame.image.load(os.path.join(_CHARS_DIR, 'mime', 'down', 'frame_000.png')).convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
             pass
 
-        if is_local:
-            self.import_player_assets(animate=True)
+        self.import_player_assets(animate=True)
 
     @staticmethod
     def get_display_name():
@@ -130,7 +129,7 @@ class Character4(Character):
 
     @staticmethod
     def get_preview_image():
-        return '../../graphics/characters/mime/down/frame_000.png'
+        return os.path.join(_CHARS_DIR, 'mime', 'down', 'frame_000.png')
 
 
 def get_all_character_classes():
