@@ -310,9 +310,6 @@ class game_damien:
         
         pygame.mixer.init()
 
-        background_music = pygame.mixer.music.load(start_path + "/game_interaction/games/game_damien/audio/background.mp3")
-        pygame.mixer.music.play(-1)
-
         # Create level with selected character
         self.level = Level(
             self.player_name, 
@@ -323,6 +320,14 @@ class game_damien:
             is_multiplayer
         )
         
+        if self.level.player.character_name == "Barbarian" or self.level.player.character_name == "Paladin":
+            pygame.mixer.music.load(start_path + "/game_interaction/games/game_damien/audio/background/background_hype.mp3")
+        elif self.level.player.character_name == "Cleric":
+            pygame.mixer.music.load(start_path + "/game_interaction/games/game_damien/audio/background/background_kinda_hype.mp3")
+        else:
+            pygame.mixer.music.load(start_path + "/game_interaction/games/game_damien/audio/background/background_battle.mp3")
+        pygame.mixer.music.play(-1)
+
         # Game loop
         while self.running:
         
