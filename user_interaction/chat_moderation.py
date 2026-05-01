@@ -4,6 +4,7 @@ chat_moderation.py - Chat moderation: profanity filtering and per-player rate li
 Revision History:
     (ST) 04/26/2026 Create initial class (as profanity_filter.py)
     (ST) 04/29/2026 Rename to chat_moderation; add RateLimiter
+    (RL) 04/30/2026 Add MuteManager (server side mute)
 """
 
 import re
@@ -144,7 +145,40 @@ class RateLimiter:
         oldest = min(timestamps)
         return max(0.0, (oldest + timedelta(seconds=self._window) - now).total_seconds())
 
+class MuteManager:
+    """
+    Server-side mute system.
+    If a player is muted, they cannot send messages in global chat.
+    """
+
+    def __init__(self):
+        self._muted = HashTable()
+
+    def mute(self, player):
+        self._muted.set(player, True)
+    
+    def is_muted(self, player):
+        return player in self._muted
+
 
 # Module-level singletons shared across all ChatMessage instances
 _filter = ProfanityFilter()
 _rate_limiter = RateLimiter()
+_mute_manager = MuteManager()
+
+def can_send(player, text):
+    """
+    Message check for all chat rules.
+    """
+    if _mute_manager.is_muted(player):
+        return False, "You are muted."
+    
+    if not _rate_limiter.is_allowed(player):
+        wait = _rate_limiter.seconds_until_allowed(player)
+        return False, f"Slow down. Try again in {wait:.1f}s."
+    
+    if _filter.contains_profanity(text):
+        _mute_manager.mute(player)
+        return False, "You have been muted for inappropriate language."
+    
+    return True, text
