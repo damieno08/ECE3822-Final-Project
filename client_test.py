@@ -10,6 +10,9 @@ from threading import Thread
 from PIL import Image, ImageTk
 from datetime import datetime, timedelta
 
+import subprocess
+import time
+
 # Ensure these local modules are in your directory
 from user_interaction.user import User
 from user_interaction.chat_message import ChatMessage
@@ -27,6 +30,8 @@ class ArcadeClient:
         self.root.geometry("550x850")
         self.root.configure(bg="#0d0d0d")
         
+        self.ssh_user = ssh_user
+
         self.sorter = HeapSortGames()
         self.current_sort_mode = "time"
         self.my_rank = "N/A"
@@ -63,8 +68,9 @@ class ArcadeClient:
         try:
             self.s.connect((self.server_host, self.server_port))
             Thread(target=self.receive_data, daemon=True).start()
-        except:
-            print("[!] SYSTEM_OFFLINE")
+
+        except Exception as e:
+            print(f"[!] SYSTEM_OFFLINE: {e}")
 
     def receive_data(self):
         while True:
@@ -379,6 +385,25 @@ class ArcadeClient:
         self.display.tag_bind("back_g", "<Button-1>", lambda e: self.load_play_history(user_obj, ranks_data))
         self.display.config(state='disabled')
 
+    def ensure_ssh_tunnel(self, local_port=50080, remote_port=50080):
+        if not self.ssh_user:
+            return
+
+        # If already running → do nothing
+        if hasattr(self, "ssh_process") and self.ssh_process and self.ssh_process.poll() is None:
+            return
+
+        print(f"[SSH] Starting tunnel for multiplayer on port {local_port}...")
+
+        self.ssh_process = subprocess.Popen([
+            "ssh",
+            "-N",
+            "-L", f"{local_port}:localhost:{remote_port}",
+            f"{self.ssh_user}@ece-000.eng.temple.edu"
+        ])
+
+        time.sleep(2)
+
     def load_chat_history(self, user_obj):
         self.display.config(state='normal'); self.display.delete('1.0', tk.END)
         self.display.insert(tk.END, f"[CHAT REPOSITORY: {user_obj.name.upper()}]\n{'='*30}\n\n")
@@ -418,19 +443,31 @@ class ArcadeClient:
 
     def run_game(self, idx, is_multiplayer):
         try:
+            # 🔥 Ensure tunnel ONLY if multiplayer
+            if is_multiplayer:
+                self.ensure_ssh_tunnel(50076, 50076)
+
             handler = self.handler_map[idx](self.current_user)
+
             duration, score, chat_log = handler.start_game(is_multiplayer)
+
             self.current_user.record_play(handler.genre, handler.name, duration.total_seconds())
+
             self.s.sendall(f"SAVE_SESSION|{self.current_user.name}|{score}|{duration}|{idx}\n".encode())
+
             if chat_log:
                 for m in chat_log:
                     game_name = self.game_metadata[str(idx)][0]
                     msg = f"SAVE_CHAT|{self.current_user.name}|{game_name}|{m.sender}|{m.text}|{m.timestamp.isoformat()}\n"
                     self.s.sendall(msg.encode())
+
             self.root.after(0, lambda: self.show_play(idx))
             messagebox.showinfo("COMPLETE", f"SCORE: {score}\nTIME: {duration}")
+
         except Exception as e:
             messagebox.showerror("ERROR", str(e))
+
+import sys
 
 if __name__ == "__main__":
     # Check if user provided: python client.py <host> <port>
