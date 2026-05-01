@@ -297,6 +297,9 @@ class Character(pygame.sprite.Sprite):
             self.animate()
         self.move(self.speed)
 
+    def is_alive(self):
+        return self.hp > 0
+
     def take_damage(self, amount):
         """Take damage with invulnerability frames."""
         if self.vulnerable:

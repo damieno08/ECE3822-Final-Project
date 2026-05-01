@@ -164,7 +164,7 @@ class game_santi:
             f"Connecting as: {self.player_name} | Server: {self.server_host}:{self.server_port} | {self.serializer.upper()}",
             True, (200, 200, 200)
         )
-        network_info_rect = network_info.get_rect(center=(WIDTH/2, 600))
+        network_info_rect = network_info.get_rect(center=(WIDTH/2, 650))
 
         character_classes = get_all_character_classes()
 
@@ -178,8 +178,9 @@ class game_santi:
 
         button_width, button_height = 300, 50
         confirm_button_rect = pygame.Rect(WIDTH/2 - button_width/2, 480, button_width, button_height)
+        return_button_rect  = pygame.Rect(WIDTH/2 - button_width/2, 550, button_width, button_height)
 
-        selected_card    = None
+        selected_card      = None
         clicked_this_frame = False
 
         while char_select:
@@ -188,7 +189,7 @@ class game_santi:
                     char_select = False
                     self.running = False
                     pygame.quit()
-                    if self.level.connected:
+                    if self.level and self.level.connected:
                         self.level.network.disconnect()
                         self.level.chat_client.disconnect()
                     return
@@ -197,7 +198,7 @@ class game_santi:
                         char_select = False
                         self.running = False
                         pygame.quit()
-                        if self.level.connected:
+                        if self.level and self.level.connected:
                             self.level.network.disconnect()
                             self.level.chat_client.disconnect()
                         return
@@ -215,9 +216,20 @@ class game_santi:
                     card.selected = True
                     selected_card = card
 
+            # Confirm — start game with selected character
             if clicked_this_frame and selected_card and confirm_button_rect.collidepoint(mouse_pos):
                 self.selected_character = selected_card.character_class
                 char_select = False
+
+            # Return — go back to client
+            if clicked_this_frame and return_button_rect.collidepoint(mouse_pos):
+                self.running = False
+                char_select = False
+                pygame.quit()
+                if self.level and self.level.connected:
+                    self.level.chat_client.disconnect()
+                    self.level.network.disconnect()
+                return
 
             if not mouse_pressed[0]:
                 clicked_this_frame = False
@@ -228,6 +240,7 @@ class game_santi:
             for card in cards:
                 card.draw(self.screen)
 
+            # Confirm button
             if selected_card:
                 button_color = (50, 150, 50) if confirm_button_rect.collidepoint(mouse_pos) else (30, 100, 30)
             else:
@@ -239,55 +252,125 @@ class game_santi:
             confirm_rect = confirm_text.get_rect(center=confirm_button_rect.center)
             self.screen.blit(confirm_text, confirm_rect)
 
+            # Return button
+            button_color = (150, 30, 30) if return_button_rect.collidepoint(mouse_pos) else (100, 100, 100)
+            pygame.draw.rect(self.screen, button_color, return_button_rect)
+            pygame.draw.rect(self.screen, (255, 255, 255), return_button_rect, 2)
+            return_text = self.button_font.render("Return", True, (255, 255, 255))
+            return_rect = return_text.get_rect(center=return_button_rect.center)
+            self.screen.blit(return_text, return_rect)
+
             self.screen.blit(network_info, network_info_rect)
 
             self.clock.tick(FPS)
             pygame.display.update()
 
     def run(self, is_multiplayer):
-        self.character_select()
+        pygame.mixer.init()
+        _music = os.path.normpath(os.path.join(_here, '../../music/casino_sound_effect.mp3'))
 
-        if not self.running or self.selected_character is None:
-            return
+        while True:
+            # ---- Character selection ----
+            self.running = True
+            self.selected_character = None
+            self.character_select()
 
-        self.level = Level(
-            self.player_name,
-            self.selected_character,
-            self.server_host,
-            self.server_port,
-            self.serializer, 
-            is_multiplayer
-        )
+            if not self.running or self.selected_character is None:
+                return
 
-        while self.running:
-            events = []
-            for event in pygame.event.get():
-                events.append(event)
-                if event.type == pygame.QUIT:
-                    pygame.quit()
+            # ---- Tear down previous level if restarting ----
+            if self.level and self.level.connected:
+                self.level.network.disconnect()
+                self.level.chat_client.disconnect()
+
+            # ---- Create new level ----
+            self.level = Level(
+                self.player_name,
+                self.selected_character,
+                self.server_host,
+                self.server_port,
+                self.serializer,
+                is_multiplayer
+            )
+
+            # ---- Start music ----
+            try:
+                pygame.mixer.music.load(_music)
+                pygame.mixer.music.play(-1)
+            except Exception as e:
+                print(f"[Audio] Could not load music: {e}")
+
+            go_to_select = False
+
+            # ---- Inner game loop ----
+            while self.running:
+
+                # Handle death
+                if not self.level.player.is_alive():
+                    pygame.mixer.music.stop()
+
+                    self.screen.fill((20, 0, 0))
+                    try:
+                        _death_img_path = os.path.normpath(os.path.join(_here, '../../graphics/death.png'))
+                        death_image = pygame.image.load(_death_img_path).convert_alpha()
+                        death_image = pygame.transform.scale(death_image, (WIDTH, HEIGHT))
+                        self.screen.blit(death_image, (0, 0))
+                    except Exception:
+                        death_font = pygame.font.Font(None, 120)
+                        death_text = death_font.render("YOU DIED", True, (200, 0, 0))
+                        self.screen.blit(death_text, death_text.get_rect(center=(WIDTH // 2, HEIGHT // 2)))
+
+                    death_start = pygame.time.get_ticks()
+                    while pygame.time.get_ticks() - death_start < 5000:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                if self.level.connected:
+                                    self.level.chat_client.disconnect()
+                                    self.level.network.disconnect()
+                                pygame.quit()
+                                return
+                        pygame.display.update()
+                        self.clock.tick(FPS)
+
                     if self.level.connected:
-                        self.level.network.disconnect()
-                        
                         self.level.chat_client.disconnect()
+                        self.level.network.disconnect()
+                    pygame.quit()
                     return
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        pygame.quit()
+
+                events = []
+                for event in pygame.event.get():
+                    events.append(event)
+                    if event.type == pygame.QUIT:
+                        pygame.mixer.music.stop()
                         if self.level.connected:
                             self.level.network.disconnect()
-                            
                             self.level.chat_client.disconnect()
+                        pygame.quit()
                         return
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:
+                            pygame.mixer.music.stop()
+                            self.running = False
+                            if self.level.connected:
+                                self.level.network.disconnect()
+                                self.level.chat_client.disconnect()
+                            go_to_select = True
 
-            self.screen.fill('black')
-            try:
-                self.level.run(events)
-            except Exception:
-                import traceback
-                traceback.print_exc()
-                raise
-            pygame.display.update()
-            self.clock.tick(FPS)
+                self.screen.fill('black')
+                try:
+                    self.level.run(events)
+                except Exception:
+                    import traceback
+                    traceback.print_exc()
+                    raise
+                pygame.display.update()
+                self.clock.tick(FPS)
+
+            # Inner loop exited — go back to character select if Escape was pressed,
+            # otherwise the Return button inside character_select already called pygame.quit()
+            if not go_to_select:
+                return
 
 
 if __name__ == '__main__':
