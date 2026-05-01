@@ -24,7 +24,7 @@ from datastructures.array import ArrayList
 from algorithms.heap_sort import HeapSortGames
 
 class ArcadeClient:
-    def __init__(self, server_host='127.0.0.1', server_port=50080):
+    def __init__(self, ssh_user=None):
         self.root = tk.Tk()
         self.root.title("FPGA ARCADE OS v1.0")
         self.root.geometry("550x850")
@@ -55,18 +55,52 @@ class ArcadeClient:
         self.current_user = None
         self.handler_map = {0: Damien, 1: Santiago, 2: Paul, 3: Richard, 4: Tom}
         
-        self.server_host = server_host
-        self.server_port = int(server_port)
-        
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connect_to_server()
         self.show_login_screen()
         self.root.mainloop()
 
+    import subprocess
+    import time
+
+    def ensure_ssh_tunnel(self, local_port=50080, remote_port=50080):
+        if not self.ssh_user:
+            return
+
+        # If already running → do nothing
+        if hasattr(self, "ssh_process") and self.ssh_process and self.ssh_process.poll() is None:
+            return
+
+        print(f"[SSH] Starting tunnel for multiplayer on port {local_port}...")
+
+        self.ssh_process = subprocess.Popen([
+            "ssh",
+            "-N",
+            "-L", f"{local_port}:localhost:{remote_port}",
+            f"{self.ssh_user}@ece-000.eng.temple.edu"
+        ])
+        time.sleep(2)
+
     # ---------------- CONNECTION ----------------
     def connect_to_server(self):
         try:
-            self.s.connect((self.server_host, self.server_port))
+            # If user provided → create SSH tunnel
+            if self.ssh_user:
+                print(f"[SSH] Tunneling through ece-000 as {self.ssh_user}...")
+
+                subprocess.Popen([
+                    "ssh",
+                    "-N",
+                    "-L", "50080:localhost:50080",
+                    f"{self.ssh_user}@ece-000.eng.temple.edu"
+                ])
+
+                # Give tunnel time to establish
+                time.sleep(2)
+
+            # Now connect locally (same as before)
+            self.s.connect(('127.0.0.1', 50080))
+
             Thread(target=self.receive_data, daemon=True).start()
 
         except Exception as e:
@@ -445,7 +479,7 @@ class ArcadeClient:
         try:
             # 🔥 Ensure tunnel ONLY if multiplayer
             if is_multiplayer:
-                self.ensure_ssh_tunnel(50076, 50076)
+                self.ensure_ssh_tunnel(50080, 50080)
 
             handler = self.handler_map[idx](self.current_user)
 
@@ -469,8 +503,31 @@ class ArcadeClient:
 
 import sys
 
+import sys
+
 if __name__ == "__main__":
-    # Check if user provided: python client.py <host> <port>
-    host = sys.argv[1] if len(sys.argv) > 1 else '127.0.0.1'
-    port = sys.argv[2] if len(sys.argv) > 2 else 50080
-    ArcadeClient(host, port)
+    try:
+        # Default values
+        host = '127.0.0.1'
+        port = 50080
+
+        # Parse arguments safely
+        if len(sys.argv) > 1:
+            host = sys.argv[1]
+
+        if len(sys.argv) > 2:
+            try:
+                port = int(sys.argv[2])
+                if not (0 <= port <= 65535):
+                    raise ValueError
+            except ValueError:
+                print("[ERROR] Port must be an integer between 0–65535.")
+                sys.exit(1)
+
+        print(f"[INFO] Connecting to {host}:{port}")
+
+        ArcadeClient(host, port)
+
+    except Exception as e:
+        print(f"[FATAL] Failed to start client: {e}")
+        sys.exit(1)
