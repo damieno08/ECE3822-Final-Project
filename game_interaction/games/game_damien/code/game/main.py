@@ -222,6 +222,7 @@ class game_damien:
                         self.running = False
                         if self.level.connected:
                             self.level.network.disconnect()
+                            self.level.chat_client.disconnect()
                         return
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -388,10 +389,12 @@ class game_damien:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
-                        self.character_select()
                         if self.level.connected:
                             self.level.network.disconnect()
+                            self.level.chat_client.disconnect()
+                        pygame.quit()
                         return
+                        
                         
 
             self.screen.fill('black')
