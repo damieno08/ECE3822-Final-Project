@@ -15,13 +15,13 @@ Lab: Lab 6 - Sparse World Map
 
 import pygame
 from game_interaction.games.game_richard.code.game.settings import *
-
-start_path = str(sys.path[0])
+import os
+import sys
 
 class Tile(pygame.sprite.Sprite):
     """A single tile in the world map."""
 
-    def __init__(self, pos, groups, sprite_type, surface=pygame.Surface((TILESIZE, TILESIZE))):
+    def __init__(self, pos, groups, sprite_type, surface=None):
         """
         Initialize a tile.
 
@@ -30,10 +30,14 @@ class Tile(pygame.sprite.Sprite):
             groups (list): Sprite groups this tile belongs to.
             sprite_type (str): One of 'boundary', 'grass', 'object', 'invisible'.
             surface (pygame.Surface): The image to display.  For boundary/invisible
-                tiles the default transparent surface is used so nothing is drawn.
+                tiles a default transparent surface is used so nothing is drawn.
         """
         super().__init__(groups)
         self.sprite_type = sprite_type
+        # Create a new transparent surface if none provided
+        if surface is None:
+            surface = pygame.Surface((TILESIZE, TILESIZE))
+            surface.set_colorkey((0, 0, 0))  # Make black transparent
         self.image = surface
 
         # Objects are tall (2 tiles) — offset them upward so their base

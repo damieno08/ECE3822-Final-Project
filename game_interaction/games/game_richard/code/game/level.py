@@ -21,14 +21,17 @@ from user_interaction.chat_message import ChatMessage
 import sys
 
 class Level:
-    def __init__(self, player_name, character_class, server_host='localhost',
-server_port=50076, serializer='text'):
+    def __init__(self, player_name, character_class, server_host='localhost', server_port=50076, serializer='text', is_multiplayer=True):
         # Get the display surface
         self.display_surface = pygame.display.get_surface()
 
         # Sprite group setup
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
+
+        self.network = None
+        self.connected = False
+        self.chat_client = None
 
         # Combat sprite groups
         self.current_attack = None
@@ -41,15 +44,15 @@ server_port=50076, serializer='text'):
         # Sprite setup
         self.create_map()
 
-        # Network setup with serializer
-        self.network = NetworkClient("RichGame", player_name, server_host, server_port,
-        serializer)
-        self.connected = self.network.connect()
+        if is_multiplayer:
+            # Network setup with serializer
+            self.network = NetworkClient("RichGame", player_name, server_host, server_port, serializer)
+            self.connected = self.network.connect()
 
-        # NEW CHAT CLIENT
-        self.chat_client = ChatClient(player_name, server_host, 50080)
-        if self.connected:
-            self.chat_client.connect()
+            self.chat_client = ChatClient(player_name, server_host, 50080)
+
+            if self.connected:
+                self.chat_client.connect()
 
         # Chat system
         self.chat              = Chat()
@@ -102,11 +105,15 @@ server_port=50076, serializer='text'):
         import os
 
         gid_map = {}
-        tmx_dir = os.path.dirname(os.path.abspath(tmx_path))
+        # Resolve paths relative to this script's directory
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        tmx_path = os.path.join(script_dir, tmx_path)
+        tmx_dir = os.path.dirname(tmx_path)
 
         try:
             tree = ET.parse(tmx_path)
-        except Exception:
+        except Exception as e:
+            print(f"[Map] ERROR: Could not parse TMX file {tmx_path}: {e}")
             return gid_map
 
         for ts_elem in tree.getroot().findall('tileset'):
@@ -115,32 +122,42 @@ server_port=50076, serializer='text'):
 
             # Load the TSX to get image info
             tsx_path = os.path.join(tmx_dir, tsx_source)
-
             try:
                 tsx_tree = ET.parse(tsx_path)
-            except Exception:
+            except Exception as e:
+                print(f"[Map] WARNING: Could not parse TSX {tsx_path}: {e}")
                 continue
 
             tsx_root = tsx_tree.getroot()
             tw = int(tsx_root.get('tilewidth', TILESIZE))
             th = int(tsx_root.get('tileheight', TILESIZE))
             cols_declared = int(tsx_root.get('columns', 0))
+
             img_elem = tsx_root.find('image')
-            
             if img_elem is None:
+                print(f"[Map] WARNING: No image element in TSX {tsx_path}")
                 continue
-        
+
             # The source path in the TSX may point to the designer's machine.
-            # Fall back to matching just the filename in the TMX directory.
+            # Try to resolve it relative to the TSX file's directory
             img_src = img_elem.get('source', '')
-            img_name = os.path.basename(img_src)
-            img_path = os.path.join(tmx_dir, img_name)
+            img_path = os.path.join(os.path.dirname(tsx_path), img_src)
+            img_path = os.path.normpath(img_path)  # Normalize path separators
+
+            # If that doesn't exist, try looking for just the filename in the tilemap dir
+            if not os.path.exists(img_path):
+                img_name = os.path.basename(img_src)
+                img_path = os.path.join(tmx_dir, img_name)
 
             try:
+                if not os.path.exists(img_path):
+                    print(f"[Map] ERROR: Image file not found: {img_path}")
+                    continue
                 sheet = pygame.image.load(img_path).convert_alpha()
-            except Exception:
+            except Exception as e:
+                print(f"[Map] WARNING: Could not load image {img_path}: {e}")
                 continue
-            
+
             cols = cols_declared if cols_declared > 0 else sheet.get_width() // tw
             rows = sheet.get_height() // th
 
@@ -153,10 +170,11 @@ server_port=50076, serializer='text'):
                         surf = sheet.subsurface(rect)
                         # Scale to game TILESIZE if the tileset uses a different size
                         if tw != TILESIZE or th != TILESIZE:
-                            surf = pygame.transform.scale(surf, (TILESIZE,TILESIZE))
+                            surf = pygame.transform.scale(surf, (TILESIZE, TILESIZE))
                         gid_map[gid] = surf
                     except Exception:
                         pass
+
         return gid_map
 
     def create_map(self):
@@ -170,35 +188,46 @@ server_port=50076, serializer='text'):
         map_FloorBlocks.csv is empty (i.e. the student hasn't designed a
         Tiled map yet). Player spawn is always read from WORLD_MAP.
         """
+        import os
+        # Resolve paths relative to this script's directory
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+
         # Build a global GID -> Surface map from the Tiled project.
         # Students place their .tmx and tileset images in graphics/tilemap/.
         # Falls back to empty dict (tiles render as blank) if not found.
         gid_map = self._load_gid_map('graphics/tilemap/Map.tmx')
+        print(gid_map.keys())
+        #print(type(tile_id), tile_id)
         print(f"[Map] Loaded {len(gid_map)} GID surfaces from Map.tmx")
-        
+
         # --- Layer definitions ---
         # (csv_path, sprite_type, groups)
         LAYERS = [
-        ('map/map_FloorBlocks.csv', 'boundary',
-        [self.visible_sprites, self.obstacle_sprites]),
-        ('map/map_Grass.csv', 'grass',
-        [self.visible_sprites]),
-        ('map/map_Objects.csv', 'object',
-        [self.visible_sprites, self.obstacle_sprites]),
+            ('map/map_FloorBlocks.csv', 'boundary',
+             [self.visible_sprites, self.obstacle_sprites]),
+            ('map/map_Grass.csv',       'grass',
+             [self.visible_sprites]),
+            ('map/map_Objects.csv',     'object',
+             [self.visible_sprites, self.obstacle_sprites]),
         ]
 
         floor_blocks_loaded = False
         for csv_path, sprite_type, groups in LAYERS:
             try:
-                layer = load_layer(csv_path)
+                # Resolve CSV path relative to script directory
+                full_csv_path = os.path.join(script_dir, csv_path)
+                layer = load_layer(full_csv_path)
                 entries = list(layer.items())
                 if not entries:
                     continue
                 print(f"[Map] {csv_path}: {len(entries)} tiles")
                 for (row, col), tile_id in entries:
+                    #print(type(tile_id), tile_id)
                     x = col * TILESIZE
                     y = row * TILESIZE
-                    surf = gid_map.get(tile_id)
+                    # Extract actual GID by masking off flip flags (high bits)
+                    actual_gid = tile_id & 0x0FFFFFFF # Preserve bits 0-28, mask off bits 29-31
+                    surf = gid_map.get(actual_gid)
                     if surf is not None:
                         Tile((x, y), groups, sprite_type, surf)
                     else:
@@ -226,25 +255,26 @@ server_port=50076, serializer='text'):
                     self.player.destroy_attack_callback = self.destroy_attack
 
     def add_starting_items(self):
-        """Add items defined in item.py's create_example_items() to the player's
-        inventory."""
+        """Add items defined in item.py's create_example_items() to the player's inventory."""
         print("Adding starting items to inventory...")
 
         for item in create_example_items():
             success = self.player.inventory.add_item(item)
             if success:
-                print(f" Added: {item.name}")
+                print(f"  Added: {item.name}")
             else:
-                print(f" Inventory full! Couldn't add: {item.name}")
-            
-            print(f"Total items: {len(self.player.inventory.items)}")
-            # Auto-equip the first weapon so combat works immediately on startup
-            for item in self.player.inventory.items:
-                if item.item_type == 'weapon':
-                    self.player.equipped_weapon = item
-                    print(f"Auto-equipped: {item.name}")
-                    break
-            print("Press 'I' to open inventory and switch weapons. SPACE to attack!")
+                print(f"  Inventory full! Couldn't add: {item.name}")
+
+        print(f"Total items: {len(self.player.inventory.items)}")
+
+        # Auto-equip the first weapon so combat works immediately on startup
+        for item in self.player.inventory.items:
+            if item.item_type == 'weapon':
+                self.player.equipped_weapon = item
+                print(f"Auto-equipped: {item.name}")
+                break
+
+        print("Press 'I' to open inventory and switch weapons. SPACE to attack!")
 
     # ------------------------------------------------------------------
     # Chat system
@@ -286,6 +316,9 @@ server_port=50076, serializer='text'):
                         self.chat_input_text += char
 
     def update_chat(self):
+        if not self.connected:
+            return
+
         for sender, text in self.chat_client.get_messages():
 
             if sender == self.network.player_name:
@@ -487,7 +520,9 @@ server_port=50076, serializer='text'):
         for player_id in disconnected:
             self.other_players[player_id].kill()
             del self.other_players[player_id]
-            self.player.other_players = list(self.other_players.values())
+
+        self.player.other_players = list(self.other_players.values())
+
     def handle_events(self, events):
         """Handle pygame events (pass from main game loop)"""
         if self.chat_input_active:
@@ -497,14 +532,16 @@ server_port=50076, serializer='text'):
 
     def draw_names(self):
         """Draw player names above their heads"""
-        if self.network.my_player_id is not None:
-            name_text = f"{self.network.player_name}({self.player.character_name})"
-            name_surface = self.font.render(name_text, True, (0, 255, 0))
-            name_rect = name_surface.get_rect(
-                center=(self.player.rect.centerx, self.player.rect.top - 10)
-            )
-            offset_pos = self.visible_sprites.offset_from_world(name_rect.topleft)
-            self.display_surface.blit(name_surface, offset_pos)
+        if self.connected:
+            if self.network.my_player_id is not None:
+                name_text = f"{self.network.player_name} ({self.player.character_name})"
+                name_surface = self.font.render(name_text, True, (0, 255, 0))
+                name_rect = name_surface.get_rect(
+                    center=(self.player.rect.centerx, self.player.rect.top - 10)
+                )
+                offset_pos = self.visible_sprites.offset_from_world(name_rect.topleft)
+                self.display_surface.blit(name_surface, offset_pos)
+
         for other_player in self.other_players.values():
             name_surface = self.font.render(other_player.name, True, (100, 100, 255))
             name_rect = name_surface.get_rect(
@@ -586,16 +623,16 @@ server_port=50076, serializer='text'):
             enemy.is_waiting = state['is_waiting']
             enemy.wait_timer = state['wait_timer']
             if enemy.patrol_path is not None:
-                enemy.patrol_path.current = state['patrol_current']
+                enemy.patrol_path.current   = state['patrol_current']
                 enemy.patrol_path.direction = state['patrol_direction']
             if hasattr(enemy, 'wander_target'):
                 enemy.wander_target = state['wander_target']
-                enemy.health = state.get('health', enemy.health)
-                enemy.combat_status = state.get('combat_status', 'patrol')
-            
-            if isinstance(snapshot, dict):
-                self.player.hp = snapshot.get('player_hp', self.player.hp)
-                self.player.vulnerable = True # reset after rewind
+            enemy.health        = state.get('health', enemy.health)
+            enemy.combat_status = state.get('combat_status', 'patrol')
+
+        if isinstance(snapshot, dict):
+            self.player.hp = snapshot.get('player_hp', self.player.hp)
+            self.player.vulnerable = True   # reset after rewind
 
     def record_player_state(self):
         if not self.is_time_traveling and not self.connected:
@@ -672,13 +709,17 @@ server_port=50076, serializer='text'):
         self.handle_time_travel_input(events)
         self.handle_enemy_debug_input(events)
 
-        self.update_network()
-        self.update_chat()
-
         # Update player and remote players
+        # Always update local player
         self.player.update()
-        for other_player in self.other_players.values():
-            other_player.update()
+
+        # Only do networking stuff if connected
+        if self.connected:
+            self.update_network()
+            self.update_chat()
+
+            for other_player in self.other_players.values():
+                other_player.update()
 
         # Update enemies; freeze them while time-traveling
         if not self.is_time_traveling:

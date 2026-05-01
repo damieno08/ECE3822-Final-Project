@@ -10,6 +10,10 @@ import argparse
 from game_interaction.games.game_richard.code.game.settings import *
 from game_interaction.games.game_richard.code.game.level import Level
 from game_interaction.games.game_richard.code.game.subcharacter import get_all_character_classes
+import sys
+import time
+
+start_path = str(sys.path[0])
 
 class Button:
     def __init__(self, x, y, width, height, fg, bg, content, fontsize):
@@ -203,14 +207,18 @@ class game_richard:
                     char_select = False
                     self.running = False
                     pygame.quit()
-                    self.level.chat_client.disconnect()
+                    if self.level.connected:
+                        self.level.chat_client.disconnect()
+                        self.level.network.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         char_select = False
                         self.running = False
                         pygame.quit()
-                        self.level.chat_client.disconnect()
+                        if self.level.connected:
+                            self.level.chat_client.disconnect()
+                            self.level.network.disconnect()
                         return
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     clicked_this_frame = True
@@ -264,37 +272,41 @@ class game_richard:
             self.clock.tick(FPS)
             pygame.display.update()
     
-    def run(self):
+    def run(self, is_multiplayer):
         """Main game loop"""
         # Character selection
         self.character_select()
-        
+
         if not self.running or self.selected_character is None:
             return
-        
+
         # Create level with selected character
         self.level = Level(
-            self.player_name, 
-            self.selected_character, 
-            self.server_host, 
-            self.server_port, 
-            self.serializer
+            self.player_name,
+            self.selected_character,
+            self.server_host,
+            self.server_port,
+            self.serializer,
+            is_multiplayer
         )
-        
+
         # Game loop
         while self.running:
             events = []
             for event in pygame.event.get():
                 events.append(event)
                 if event.type == pygame.QUIT:
-                    self.level.network.disconnect()
+                    if self.level.connected:
+                        self.level.network.disconnect()
+                        self.level.chat_client.disconnect()
+
                     pygame.quit()
-                    self.level.chat_client.disconnect()
                     return
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.level.network.disconnect()
-                        self.level.chat_client.disconnect()
+                        if self.level.connected:
+                            self.level.network.disconnect()
+                            self.level.chat_client.disconnect()
                         pygame.quit()
                         return
 

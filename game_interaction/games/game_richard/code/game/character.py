@@ -10,6 +10,7 @@ import pygame
 from game_interaction.games.game_richard.code.game.settings import *
 from game_interaction.games.game_richard.code.game.support import import_folder
 from game_interaction.games.game_richard.code.game.inventory import Inventory
+from game_interaction.games.game_richard.code.game.item import Weapon
 
 class Character(pygame.sprite.Sprite):
     """Base Character class with inventory and networking"""
