@@ -503,30 +503,19 @@ class ArcadeClient:
 
 import sys
 
-import sys
-
 if __name__ == "__main__":
     try:
-        # Default values
-        host = '127.0.0.1'
+        # Enforce exactly ONE argument
+        if len(sys.argv) != 2:
+            print("Usage: python3 client_test.py <ece_username>")
+            sys.exit(1)
+
+        ssh_user = sys.argv[1]
         port = 50080
 
-        # Parse arguments safely
-        if len(sys.argv) > 1:
-            host = sys.argv[1]
+        print(f"[INFO] Connecting via SSH as {ssh_user} on port {port}")
 
-        if len(sys.argv) > 2:
-            try:
-                port = int(sys.argv[2])
-                if not (0 <= port <= 65535):
-                    raise ValueError
-            except ValueError:
-                print("[ERROR] Port must be an integer between 0–65535.")
-                sys.exit(1)
-
-        print(f"[INFO] Connecting to {host}:{port}")
-
-        ArcadeClient(host, port)
+        ArcadeClient(ssh_user=ssh_user)
 
     except Exception as e:
         print(f"[FATAL] Failed to start client: {e}")
