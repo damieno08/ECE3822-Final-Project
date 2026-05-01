@@ -4,6 +4,7 @@ import json
 import pickle
 import threading
 import os
+import sys
 from tkinter import ttk, messagebox
 from threading import Thread
 from PIL import Image, ImageTk
@@ -23,7 +24,7 @@ from datastructures.array import ArrayList
 from algorithms.heap_sort import HeapSortGames
 
 class ArcadeClient:
-    def __init__(self, ssh_user=None):
+    def __init__(self, server_host='127.0.0.1', server_port=50080):
         self.root = tk.Tk()
         self.root.title("FPGA ARCADE OS v1.0")
         self.root.geometry("550x850")
@@ -54,6 +55,9 @@ class ArcadeClient:
         self.current_user = None
         self.handler_map = {0: Damien, 1: Santiago, 2: Paul, 3: Richard, 4: Tom}
         
+        self.server_host = server_host
+        self.server_port = int(server_port)
+        
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connect_to_server()
         self.show_login_screen()
@@ -62,23 +66,7 @@ class ArcadeClient:
     # ---------------- CONNECTION ----------------
     def connect_to_server(self):
         try:
-            # If user provided → create SSH tunnel
-            if self.ssh_user:
-                print(f"[SSH] Tunneling through ece-000 as {self.ssh_user}...")
-
-                subprocess.Popen([
-                    "ssh",
-                    "-N",
-                    "-L", "50080:localhost:50080",
-                    f"{self.ssh_user}@ece-000.eng.temple.edu"
-                ])
-
-                # Give tunnel time to establish
-                time.sleep(2)
-
-            # Now connect locally (same as before)
-            self.s.connect(('127.0.0.1', 50080))
-
+            self.s.connect((self.server_host, self.server_port))
             Thread(target=self.receive_data, daemon=True).start()
 
         except Exception as e:
@@ -482,9 +470,7 @@ class ArcadeClient:
 import sys
 
 if __name__ == "__main__":
-    username = None
-
-    if len(sys.argv) > 1:
-        username = sys.argv[1]
-
-    ArcadeClient(ssh_user=username)
+    # Check if user provided: python client.py <host> <port>
+    host = sys.argv[1] if len(sys.argv) > 1 else '127.0.0.1'
+    port = sys.argv[2] if len(sys.argv) > 2 else 50080
+    ArcadeClient(host, port)
