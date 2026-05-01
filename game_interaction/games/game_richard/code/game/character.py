@@ -80,13 +80,18 @@ class Character(pygame.sprite.Sprite):
 
     def import_player_assets(self, animate=True):
         """Load character animations using unified sprite system"""
+        import os
         from game_interaction.games.game_richard.code.game.sprite_loader import SpriteLoader
-        
+
+        chars_dir = os.path.normpath(
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../graphics/characters')
+        )
+
         # Use the unified sprite loader
-        self.animations = SpriteLoader.load_character_sprites(self.character_name)
-        
+        self.animations = SpriteLoader.load_character_sprites(self.character_name, chars_dir)
+
         # Debug: Print sprite loading info
-        sprite_info = SpriteLoader.get_sprite_info(self.character_name, "../../graphics/characters")
+        sprite_info = SpriteLoader.get_sprite_info(self.character_name, chars_dir)
         print(f"Loaded {sprite_info['type']} sprites for {self.character_name}: {sprite_info}")
         
         # Ensure we have all required animations, add idle versions
@@ -107,7 +112,9 @@ class Character(pygame.sprite.Sprite):
         """Handle input - only for local player"""
         if not self.is_local:
             return
-            
+        if getattr(self, 'input_blocked', False):
+            return
+
         if not self.attacking:
             keys = pygame.key.get_pressed()
 

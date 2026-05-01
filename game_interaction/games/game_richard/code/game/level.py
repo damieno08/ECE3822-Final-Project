@@ -32,6 +32,7 @@ class Level:
         self.network = None
         self.connected = False
         self.chat_client = None
+        self.player_name = player_name
 
         # Combat sprite groups
         self.current_attack = None
@@ -243,7 +244,9 @@ class Level:
                 x = col_index * TILESIZE
                 y = row_index * TILESIZE
                 if col == 'x' and not floor_blocks_loaded:
-                    Tile((x, y), [self.visible_sprites, self.obstacle_sprites],'boundary')
+                    Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'boundary')
+                if col in (' ', 'p', 'n') and not floor_blocks_loaded:
+                    Tile((x, y), [self.visible_sprites], 'grass')
                 if col == 'p':
                     self.player = self.character_class(
                         (x, y),
@@ -290,12 +293,15 @@ class Level:
                 if event.key == pygame.K_RETURN:
                     self.chat_input_active = True
                     self.chat_input_text = ""
+                    self.inventory_ui.active = False   # close inventory when chat opens
+                    self.player.attacking = False      # cancel any pending attack
             else:
                 if event.key == pygame.K_RETURN:
                     text = self.chat_input_text.strip()
                     if text:
+                        sender = self.network.player_name if self.connected else self.player_name
                         msg = ChatMessage(
-                            sender=self.network.player_name,
+                            sender=sender,
                             text=text,
                             game_id="Luainid",
                         )
@@ -708,6 +714,9 @@ class Level:
         self.handle_chat_input(events)
         self.handle_time_travel_input(events)
         self.handle_enemy_debug_input(events)
+
+        # Block player input while chat is open
+        self.player.input_blocked = self.chat_input_active
 
         # Update player and remote players
         # Always update local player

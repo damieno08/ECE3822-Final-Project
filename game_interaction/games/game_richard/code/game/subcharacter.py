@@ -5,8 +5,11 @@ subcharacter.py - Character classes
 Different character types that players can choose from
 """
 
+import os
 import pygame
 from game_interaction.games.game_richard.code.game.character import Character
+
+_CHARS_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../graphics/characters'))
 
 class SpiritSwordCultivator(Character):
     """SpiritSwordCultivator"""
@@ -17,9 +20,8 @@ class SpiritSwordCultivator(Character):
         self.attack, self.defense = 25, 15
         self.speed = 20
         
-        # Load image for remote players or as fallback
         try:
-            self.image = pygame.image.load('../../graphics/characters/SpiritSwordCultivator.png').convert_alpha()
+            self.image = pygame.image.load(os.path.join(_CHARS_DIR, 'SpiritSwordCultivator.png')).convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
@@ -41,8 +43,7 @@ class SpiritSwordCultivator(Character):
 
     @staticmethod
     def get_preview_image():
-        # TODO
-        return '../../graphics/characters/SpiritSwordCultivator.png'
+        return os.path.join(_CHARS_DIR, 'SpiritSwordCultivator.png')
 
 
 class BodyCultivator(Character):
@@ -55,7 +56,7 @@ class BodyCultivator(Character):
         self.speed = 10  # Faster than others
         
         try:
-            self.image = pygame.image.load('../../graphics/characters/BodyCultivator.png').convert_alpha()
+            self.image = pygame.image.load(os.path.join(_CHARS_DIR, 'BodyCultivator.png')).convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
@@ -76,8 +77,7 @@ class BodyCultivator(Character):
 
     @staticmethod
     def get_preview_image():
-        # TODO
-        return '../../graphics/characters/BodyCultivator.png'
+        return os.path.join(_CHARS_DIR, 'BodyCultivator.png')
 
 
 class SpellCultivator(Character):
@@ -90,7 +90,7 @@ class SpellCultivator(Character):
         self.speed = 18
         
         try:
-            self.image = pygame.image.load('../../graphics/characters/SpellCultivator.png').convert_alpha()
+            self.image = pygame.image.load(os.path.join(_CHARS_DIR, 'SpellCultivator.png')).convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
@@ -111,8 +111,7 @@ class SpellCultivator(Character):
 
     @staticmethod
     def get_preview_image():
-        # TODO
-        return '../../graphics/characters/SpellCultivator.png'
+        return os.path.join(_CHARS_DIR, 'SpellCultivator.png')
 
 
 class Alchemist(Character):
@@ -125,7 +124,7 @@ class Alchemist(Character):
         self.speed = 15
         
         try:
-            self.image = pygame.image.load('../../graphics/characters/Alchemist.png').convert_alpha()
+            self.image = pygame.image.load(os.path.join(_CHARS_DIR, 'Alchemist.png')).convert_alpha()
             self.rect = self.image.get_rect(topleft=pos)
             self.hitbox = self.rect.inflate(0, -26)
         except:
@@ -146,8 +145,7 @@ class Alchemist(Character):
 
     @staticmethod
     def get_preview_image():
-        # TODO
-        return '../../graphics/characters/Alchemist.png'
+        return os.path.join(_CHARS_DIR, 'Alchemist.png')
 
 
 def get_all_character_classes():

@@ -34,10 +34,17 @@ class Tile(pygame.sprite.Sprite):
         """
         super().__init__(groups)
         self.sprite_type = sprite_type
-        # Create a new transparent surface if none provided
         if surface is None:
             surface = pygame.Surface((TILESIZE, TILESIZE))
-            surface.set_colorkey((0, 0, 0))  # Make black transparent
+            if sprite_type == 'grass':
+                surface.fill((34, 139, 34))     # green floor
+            elif sprite_type == 'object':
+                surface.fill((101, 67, 33))     # brown objects
+            elif sprite_type in ('boundary', 'invisible'):
+                surface.fill((0, 0, 0))
+                surface.set_colorkey((0, 0, 0)) # invisible collision wall
+            else:
+                surface.fill((80, 80, 80))
         self.image = surface
 
         # Objects are tall (2 tiles) — offset them upward so their base
