@@ -479,7 +479,7 @@ class ArcadeClient:
         try:
             # 🔥 Ensure tunnel ONLY if multiplayer
             if is_multiplayer:
-                self.ensure_ssh_tunnel(50080, 50080)
+                self.ensure_ssh_tunnel(50070, 50070)
 
             handler = self.handler_map[idx](self.current_user)
 
