@@ -57,7 +57,7 @@ class ArcadeClient:
     # ---------------- CONNECTION ----------------
     def connect_to_server(self):
         try:
-            self.s.connect(('127.0.0.1', 65432))
+            self.s.connect(('127.0.0.1', 50080))
             Thread(target=self.receive_data, daemon=True).start()
         except:
             print("[!] SYSTEM_OFFLINE")

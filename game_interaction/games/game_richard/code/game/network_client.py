@@ -19,7 +19,7 @@ import struct
 from queue import Queue
 
 class NetworkClient:
-    def __init__(self, game_name, player_name, server_host='localhost', server_port=8080, serializer='text'):
+    def __init__(self, game_name, player_name, server_host='localhost', server_port=50076, serializer='text'):
         self.game_name = game_name
         self.player_name = player_name
         self.server_host = server_host

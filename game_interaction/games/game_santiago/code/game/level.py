@@ -31,7 +31,7 @@ from user_interaction.chat_message import ChatMessage
 
 class Level:
     def __init__(self, player_name, character_class,
-                 server_host='localhost', server_port=8080, serializer='text', is_multiplayer=True):
+                 server_host='localhost', server_port=50076, serializer='text', is_multiplayer=True):
         self.display_surface = pygame.display.get_surface()
 
         self.floor_sprites      = pygame.sprite.Group()
@@ -54,7 +54,7 @@ class Level:
             self.connected = self.network.connect()
 
             # NEW CHAT CLIENT
-            self.chat_client = ChatClient(player_name, server_host, 65432)
+            self.chat_client = ChatClient(player_name, server_host, 50080)
             if self.connected:
                 self.chat_client.connect()
 

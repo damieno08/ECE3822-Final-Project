@@ -129,7 +129,7 @@ class CharacterCard:
 
 
 class game_santi:
-    def __init__(self, player_name, server_host='localhost', server_port=8080, serializer='text'):
+    def __init__(self, player_name, server_host='localhost', server_port=50076, serializer='text'):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGTH))
 

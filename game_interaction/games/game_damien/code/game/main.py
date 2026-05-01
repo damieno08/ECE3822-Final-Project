@@ -141,7 +141,7 @@ class CharacterCard:
 
 
 class game_damien:
-    def __init__(self, player_name, server_host='18.208.36.230', server_port=50076, serializer='text'):
+    def __init__(self, player_name, server_host='localhost', server_port=50076, serializer='text'):
         # general setup
         
         pygame.init()
