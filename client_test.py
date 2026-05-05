@@ -238,21 +238,100 @@ class ArcadeClient:
     # ---------------- LEADERBOARD DISPLAY ----------------
     def show_play(self, idx):
         self.clear()
+
         name = self.game_metadata[str(idx)][0]
-        tk.Label(self.root, text=f"CORE: {name}", fg=self.colors["fg"], bg=self.colors["bg"], font=("Courier", 18, "bold")).pack(pady=10)
+
+        tk.Label(
+            self.root,
+            text=f"CORE: {name}",
+            fg=self.colors["fg"],
+            bg=self.colors["bg"],
+            font=("Courier", 18, "bold")
+        ).pack(pady=10)
+
+        # -------- RANGE CONTROLS --------
+        control_frame = tk.Frame(self.root, bg=self.colors["bg"])
+        control_frame.pack(pady=5)
+
+        tk.Label(control_frame, text="RANGE:", fg=self.colors["fg"], bg=self.colors["bg"]).pack(side="left")
+
+        self.range_start = tk.Entry(control_frame, width=5, bg="#111", fg=self.colors["fg"], insertbackground=self.colors["fg"])
+        self.range_start.pack(side="left", padx=2)
+        self.range_start.insert(0, "1")
+
+        tk.Label(control_frame, text="TO", fg=self.colors["fg"], bg=self.colors["bg"]).pack(side="left")
+
+        self.range_end = tk.Entry(control_frame, width=5, bg="#111", fg=self.colors["fg"], insertbackground=self.colors["fg"])
+        self.range_end.pack(side="left", padx=2)
+        self.range_end.insert(0, "10")
+
+        tk.Button(
+            control_frame,
+            text="APPLY",
+            bg="#111",
+            fg=self.colors["fg"],
+            command=self.request_range
+        ).pack(side="left", padx=5)
+
+        # -------- LEADERBOARD --------
         lb_frame = tk.Frame(self.root, bg="#000", highlightthickness=1, highlightbackground=self.colors["fg"])
         lb_frame.pack(fill="both", expand=True, padx=20, pady=10)
+
         tk.Label(lb_frame, text="RANK   OPERATOR      SCORE", fg="#000", bg=self.colors["fg"], font=("Courier", 10, "bold")).pack(fill="x")
+
         self.lb_display = tk.Text(lb_frame, bg="#000", fg=self.colors["fg"], font=("Courier", 11), bd=0, padx=10, pady=10)
         self.lb_display.pack(fill="both", expand=True)
-        
+
+        # Fetch FULL leaderboard (important)
         self.s.sendall(f"GET_LEADERBOARD:{idx}|{self.current_user.name}".encode())
-        
-        tk.Button(self.root, text="RUN MODULE", bg=self.colors["fg"], fg="#000", font=("Courier", 12, "bold"),
-          command=lambda i=idx: self.show_start_mode(i)).pack(pady=5)
-        tk.Button(self.root, text="REFRESH", bg="#111", fg=self.colors["fg"], font=("Courier", 10, "bold"),
-                  command=lambda: self.s.sendall(f"GET_LEADERBOARD:{idx}|{self.current_user.name}".encode())).pack(pady=5)
-        tk.Button(self.root, text="CANCEL", bg="#222", fg=self.colors["fg"], command=self.show_game_search).pack(pady=5)
+
+        # -------- BUTTONS --------
+        tk.Button(
+            self.root,
+            text="RUN MODULE",
+            bg=self.colors["fg"],
+            fg="#000",
+            font=("Courier", 12, "bold"),
+            command=lambda i=idx: self.show_start_mode(i)
+        ).pack(pady=5)
+
+        tk.Button(
+            self.root,
+            text="REFRESH",
+            bg="#111",
+            fg=self.colors["fg"],
+            command=lambda i=idx: self.s.sendall(f"GET_LEADERBOARD:{i}|{self.current_user.name}".encode())
+        ).pack(pady=5)
+
+        tk.Button(
+            self.root,
+            text="CANCEL",
+            bg="#222",
+            fg=self.colors["fg"],
+            command=self.show_game_search
+        ).pack(pady=5)
+
+    def request_range(self):
+        try:
+            start = int(self.range_start.get())
+            end = int(self.range_end.get())
+
+            if start < 1 or end < start:
+                raise ValueError
+
+            self.display_leaderboard_slice()
+
+        except:
+            messagebox.showerror("ERROR", "Invalid range input")
+
+    def quick_range(self, game_idx, start, end):
+        self.range_start.delete(0, tk.END)
+        self.range_start.insert(0, str(start))
+
+        self.range_end.delete(0, tk.END)
+        self.range_end.insert(0, str(end))
+
+        self.request_range(game_idx)
 
     def show_start_mode(self, idx):
         self.clear()
@@ -296,6 +375,14 @@ class ArcadeClient:
         ).pack(pady=20)
 
     def render_leaderboard(self, data):
+        # Store full leaderboard
+        self.full_leaderboard = [
+            line for line in data.strip().split("\n") if " - " in line
+        ]
+
+        self.display_leaderboard_slice()
+
+    def display_leaderboard_slice(self):
         self.lb_display.config(state="normal")
         self.lb_display.delete("1.0", tk.END)
 
@@ -303,17 +390,31 @@ class ArcadeClient:
             self.lb_display.insert(tk.END, f"★ YOUR RANK: #{self.my_rank}\n")
             self.lb_display.insert(tk.END, "=" * 35 + "\n\n")
 
-        lines = data.strip().split("\n")
-        entry_count = 0
-        for line in lines:
-            if " - " in line:
-                user, score = line.split(" - ")
-                entry_count += 1
-                marker = " ★ YOU" if user.lower() == self.current_user.name.lower() else ""
-                self.lb_display.insert(
-                    tk.END,
-                    f"{str(entry_count).ljust(6)} {user.upper().ljust(14)} {score.rjust(8)}{marker}\n"
-                )
+        if not hasattr(self, "full_leaderboard"):
+            self.lb_display.insert(tk.END, "NO DATA\n")
+            self.lb_display.config(state="disabled")
+            return
+
+        try:
+            start = int(self.range_start.get()) - 1
+            end = int(self.range_end.get())
+        except:
+            start, end = 0, len(self.full_leaderboard)
+
+        start = max(0, start)
+        end = min(len(self.full_leaderboard), end)
+
+        sliced = self.full_leaderboard[start:end]
+
+        for i, line in enumerate(sliced, start=start + 1):
+            user, score = line.split(" - ")
+            marker = " ★ YOU" if user.lower() == self.current_user.name.lower() else ""
+
+            self.lb_display.insert(
+                tk.END,
+                f"{str(i).ljust(6)} {user.upper().ljust(14)} {score.rjust(8)}{marker}\n"
+            )
+
         self.lb_display.config(state="disabled")
 
     # ---------------- DATABASE LOOKUP ----------------

@@ -1,0 +1,3791 @@
+.
+├── algorithms
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── heap_sort.cpython-312.pyc
+│   │   └── merge_sort.cpython-312.pyc
+│   ├── heap_sort.py
+│   ├── heapsort.mp4
+│   ├── merge_sort.py
+│   ├── mergesort.mp4
+│   └── sort_visualizer.py
+├── client_test.py
+├── create_users.py
+├── datastructures
+│   ├── #bst.py#
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── array.cpython-312.pyc
+│   │   ├── bst.cpython-312.pyc
+│   │   ├── bst_rank.cpython-312.pyc
+│   │   ├── circular_buffer.cpython-312.pyc
+│   │   ├── hash_table.cpython-312.pyc
+│   │   ├── sparse_matrix.cpython-312.pyc
+│   │   └── stack.cpython-312.pyc
+│   ├── array.py
+│   ├── bst.py
+│   ├── bst_rank.py
+│   ├── bst_rank.py~
+│   ├── circular_buffer.py
+│   ├── hash_table.py
+│   ├── linked_list.py
+│   ├── sparse_matrix.py
+│   ├── stack.py
+│   └── tests
+│       ├── #sparse_matrix_tests.py#
+│       ├── bst_rank_tests.py
+│       ├── bst_rank_tests.py~
+│       ├── circular_buffer_tests.py
+│       └── sparse_matrix_tests.py
+├── game_interaction
+│   ├── __pycache__
+│   │   ├── chat.cpython-312.pyc
+│   │   ├── game_handler.cpython-312.pyc
+│   │   ├── game_session.cpython-312.pyc
+│   │   └── leaderboard.cpython-312.pyc
+│   ├── chat.py
+│   ├── game_handler.py
+│   ├── game_session.py
+│   ├── games
+│   │   ├── game_damien
+│   │   │   ├── README.md
+│   │   │   ├── ai_conversations.md
+│   │   │   ├── audio
+│   │   │   │   ├── background
+│   │   │   │   │   ├── background_battle.mp3
+│   │   │   │   │   ├── background_hype.mp3
+│   │   │   │   │   └── background_kinda_hype.mp3
+│   │   │   │   └── death.mp3
+│   │   │   ├── code
+│   │   │   │   ├── game
+│   │   │   │   │   ├── ChatClient.py
+│   │   │   │   │   ├── __pycache__
+│   │   │   │   │   │   ├── ChatClient.cpython-312.pyc
+│   │   │   │   │   │   ├── character.cpython-312.pyc
+│   │   │   │   │   │   ├── enemy.cpython-312.pyc
+│   │   │   │   │   │   ├── inventory.cpython-312.pyc
+│   │   │   │   │   │   ├── inventory_ui.cpython-312.pyc
+│   │   │   │   │   │   ├── item.cpython-312.pyc
+│   │   │   │   │   │   ├── level.cpython-312.pyc
+│   │   │   │   │   │   ├── main.cpython-312.pyc
+│   │   │   │   │   │   ├── map_loader.cpython-312.pyc
+│   │   │   │   │   │   ├── network_client.cpython-312.pyc
+│   │   │   │   │   │   ├── settings.cpython-312.pyc
+│   │   │   │   │   │   ├── sprite_loader.cpython-312.pyc
+│   │   │   │   │   │   ├── subcharacter.cpython-312.pyc
+│   │   │   │   │   │   ├── support.cpython-312.pyc
+│   │   │   │   │   │   ├── tile.cpython-312.pyc
+│   │   │   │   │   │   ├── time_travel.cpython-312.pyc
+│   │   │   │   │   │   └── weapon.cpython-312.pyc
+│   │   │   │   │   ├── character.py
+│   │   │   │   │   ├── datastructures
+│   │   │   │   │   │   ├── __init__.py
+│   │   │   │   │   │   ├── __pycache__
+│   │   │   │   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   │   │   │   ├── patrol_path.cpython-312.pyc
+│   │   │   │   │   │   │   └── waypoint.cpython-312.pyc
+│   │   │   │   │   │   ├── array.py
+│   │   │   │   │   │   ├── complexity
+│   │   │   │   │   │   │   ├── analysis_write_up.md
+│   │   │   │   │   │   │   ├── space_complexity.png
+│   │   │   │   │   │   │   ├── sparse_matrix_complexity.py
+│   │   │   │   │   │   │   └── time_complexity.png
+│   │   │   │   │   │   ├── hash_table.py
+│   │   │   │   │   │   ├── patrol_path.py
+│   │   │   │   │   │   ├── sparse_matrix.py
+│   │   │   │   │   │   ├── stack.py
+│   │   │   │   │   │   ├── tests
+│   │   │   │   │   │   │   ├── linked_list_tests.py
+│   │   │   │   │   │   │   └── sparse_matrix_tests.py
+│   │   │   │   │   │   └── waypoint.py
+│   │   │   │   │   ├── debug.py
+│   │   │   │   │   ├── enemy.py
+│   │   │   │   │   ├── inventory.py
+│   │   │   │   │   ├── inventory_ui.py
+│   │   │   │   │   ├── item.py
+│   │   │   │   │   ├── level.py
+│   │   │   │   │   ├── main.py
+│   │   │   │   │   ├── map
+│   │   │   │   │   │   ├── map_Floor.csv
+│   │   │   │   │   │   ├── map_FloorBlocks.csv
+│   │   │   │   │   │   ├── map_Grass.csv
+│   │   │   │   │   │   └── map_Objects.csv
+│   │   │   │   │   ├── map_loader.py
+│   │   │   │   │   ├── network_client.py
+│   │   │   │   │   ├── settings.py
+│   │   │   │   │   ├── sprite_loader.py
+│   │   │   │   │   ├── subcharacter.py
+│   │   │   │   │   ├── support.py
+│   │   │   │   │   ├── tile.py
+│   │   │   │   │   ├── time_travel.py
+│   │   │   │   │   └── weapon.py
+│   │   │   │   └── server
+│   │   │   │       ├── Makefile
+│   │   │   │       ├── include
+│   │   │   │       │   ├── binary_serializer.h
+│   │   │   │       │   ├── json_serializer.h
+│   │   │   │       │   ├── player.h
+│   │   │   │       │   ├── serializer.h
+│   │   │   │       │   └── text_serializer.h
+│   │   │   │       ├── server_text
+│   │   │   │       ├── src
+│   │   │   │       │   ├── binary_serializer.cpp
+│   │   │   │       │   ├── json_serializer.cpp
+│   │   │   │       │   ├── player.cpp
+│   │   │   │       │   ├── server.cpp
+│   │   │   │       │   └── text_serializer.cpp
+│   │   │   │       └── test_serializers.sh
+│   │   │   └── graphics
+│   │   │       ├── characters
+│   │   │       │   ├── Barbarian
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   └── Barbarian.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   └── Barbarian.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   └── Barbarian.png
+│   │   │       │   │   └── up
+│   │   │       │   │       └── Barbarian.png
+│   │   │       │   ├── Barbarian.png
+│   │   │       │   ├── Cleric
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   └── Cleric.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   └── Cleric.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   └── Cleric.png
+│   │   │       │   │   └── up
+│   │   │       │   │       └── Cleric.png
+│   │   │       │   ├── Cleric.png
+│   │   │       │   ├── Paladin
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   └── Paladin.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   └── Paladin.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   └── Paladin.png
+│   │   │       │   │   └── up
+│   │   │       │   │       └── Paladin.png
+│   │   │       │   ├── Paladin.png
+│   │   │       │   ├── Sorcerer
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   └── Sorcerer.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   └── Sorcerer.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   └── Sorcerer.png
+│   │   │       │   │   └── up
+│   │   │       │   │       └── Sorcerer.png
+│   │   │       │   └── Sorcerer.png
+│   │   │       ├── death.png
+│   │   │       ├── enemies
+│   │   │       │   ├── Thorin.png
+│   │   │       │   ├── dipomph.png
+│   │   │       │   ├── goblin.png
+│   │   │       │   ├── kalthar_veilmantle.png
+│   │   │       │   └── sovereign_spore.png
+│   │   │       ├── font
+│   │   │       │   ├── OutlinePixel7Solid.ttf
+│   │   │       │   └── joystix.ttf
+│   │   │       ├── items
+│   │   │       │   ├── CloakMoonMaiden.png
+│   │   │       │   ├── Dagger.png
+│   │   │       │   ├── GreatSword.png
+│   │   │       │   ├── Longbow.png
+│   │   │       │   ├── MoonMaidenShard.png
+│   │   │       │   ├── SoulStrikeSword.png
+│   │   │       │   ├── SpiderSilkShield.png
+│   │   │       │   └── Staff.png
+│   │   │       ├── logo.png
+│   │   │       ├── test
+│   │   │       │   └── rock.png
+│   │   │       └── tilemap
+│   │   │           ├── dirt.png
+│   │   │           ├── forest_wall.png
+│   │   │           ├── forge_oven.png
+│   │   │           ├── forge_wall.png
+│   │   │           ├── ground.png
+│   │   │           └── wall.png
+│   │   ├── game_paul
+│   │   │   ├── README.md
+│   │   │   ├── ai_conversations.md
+│   │   │   ├── code
+│   │   │   │   ├── game
+│   │   │   │   │   ├── ChatClient.py
+│   │   │   │   │   ├── __pycache__
+│   │   │   │   │   │   ├── ChatClient.cpython-312.pyc
+│   │   │   │   │   │   ├── character.cpython-312.pyc
+│   │   │   │   │   │   ├── enemy.cpython-312.pyc
+│   │   │   │   │   │   ├── inventory.cpython-312.pyc
+│   │   │   │   │   │   ├── inventory_ui.cpython-312.pyc
+│   │   │   │   │   │   ├── item.cpython-312.pyc
+│   │   │   │   │   │   ├── level.cpython-312.pyc
+│   │   │   │   │   │   ├── main.cpython-312.pyc
+│   │   │   │   │   │   ├── network_client.cpython-312.pyc
+│   │   │   │   │   │   ├── settings.cpython-312.pyc
+│   │   │   │   │   │   ├── sprite_loader.cpython-312.pyc
+│   │   │   │   │   │   ├── subcharacter.cpython-312.pyc
+│   │   │   │   │   │   ├── support.cpython-312.pyc
+│   │   │   │   │   │   ├── tile.cpython-312.pyc
+│   │   │   │   │   │   └── time_travel.cpython-312.pyc
+│   │   │   │   │   ├── character.py
+│   │   │   │   │   ├── datastructures
+│   │   │   │   │   │   ├── __init__.py
+│   │   │   │   │   │   ├── __pycache__
+│   │   │   │   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   │   │   │   ├── array.cpython-312.pyc
+│   │   │   │   │   │   │   ├── patrol_path.cpython-312.pyc
+│   │   │   │   │   │   │   ├── stack.cpython-312.pyc
+│   │   │   │   │   │   │   └── waypoint.cpython-312.pyc
+│   │   │   │   │   │   ├── array.py
+│   │   │   │   │   │   ├── complexity
+│   │   │   │   │   │   │   ├── analysis_write_up.md
+│   │   │   │   │   │   │   ├── array_complexity.py
+│   │   │   │   │   │   │   ├── linked_list_complexity.py
+│   │   │   │   │   │   │   └── stack_complexity.py
+│   │   │   │   │   │   ├── patrol_path.py
+│   │   │   │   │   │   ├── stack.py
+│   │   │   │   │   │   ├── tests
+│   │   │   │   │   │   │   ├── array_tests.py
+│   │   │   │   │   │   │   ├── linked_list_tests.py
+│   │   │   │   │   │   │   └── stack_tests.py
+│   │   │   │   │   │   └── waypoint.py
+│   │   │   │   │   ├── debug.py
+│   │   │   │   │   ├── enemy.py
+│   │   │   │   │   ├── inventory.py
+│   │   │   │   │   ├── inventory_ui.py
+│   │   │   │   │   ├── item.py
+│   │   │   │   │   ├── level.py
+│   │   │   │   │   ├── main.py
+│   │   │   │   │   ├── network_client.py
+│   │   │   │   │   ├── settings.py
+│   │   │   │   │   ├── sprite_loader.py
+│   │   │   │   │   ├── subcharacter.py
+│   │   │   │   │   ├── support.py
+│   │   │   │   │   ├── tile.py
+│   │   │   │   │   └── time_travel.py
+│   │   │   │   └── server
+│   │   │   │       ├── Makefile
+│   │   │   │       ├── include
+│   │   │   │       │   ├── binary_serializer.h
+│   │   │   │       │   ├── json_serializer.h
+│   │   │   │       │   ├── player.h
+│   │   │   │       │   ├── serializer.h
+│   │   │   │       │   └── text_serializer.h
+│   │   │   │       ├── src
+│   │   │   │       │   ├── binary_serializer.cpp
+│   │   │   │       │   ├── json_serializer.cpp
+│   │   │   │       │   ├── player.cpp
+│   │   │   │       │   ├── server.cpp
+│   │   │   │       │   └── text_serializer.cpp
+│   │   │   │       └── test_serializers.sh
+│   │   │   └── graphics
+│   │   │       ├── characters
+│   │   │       │   ├── MarketVendor.png
+│   │   │       │   ├── Palletes
+│   │   │       │   │   ├── 31.gpl
+│   │   │       │   │   ├── MarketVendor.aseprite
+│   │   │       │   │   ├── MarketVendor.png
+│   │   │       │   │   ├── SpaceBandit.png
+│   │   │       │   │   ├── SpaceBanditDown.png
+│   │   │       │   │   ├── ZharrsAltTitle.aseprite
+│   │   │       │   │   ├── ZharrsAltTitle.png
+│   │   │       │   │   ├── aap-64.gpl
+│   │   │       │   │   ├── apollo.gpl
+│   │   │       │   │   ├── midnight-ablaze.gpl
+│   │   │       │   │   └── resurrect-64.gpl
+│   │   │       │   ├── Priest.png
+│   │   │       │   ├── cleric
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── dungeonscout.png
+│   │   │       │   ├── forestguard.png
+│   │   │       │   ├── hobbit
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── thief
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── villageMerchant.png
+│   │   │       │   ├── wizard
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   └── wizard.png
+│   │   │       ├── enemies
+│   │   │       │   ├── dungeon_scout
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── forest_guard
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── market_vendor
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── temple_priest
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   └── village_merchant
+│   │   │       │       ├── down
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       ├── left
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       ├── right
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       └── up
+│   │   │       │           ├── frame_000.png
+│   │   │       │           ├── frame_001.png
+│   │   │       │           ├── frame_002.png
+│   │   │       │           ├── frame_003.png
+│   │   │       │           ├── frame_004.png
+│   │   │       │           └── frame_005.png
+│   │   │       ├── font
+│   │   │       │   ├── OutlinePixel7Solid.ttf
+│   │   │       │   └── joystix.ttf
+│   │   │       ├── graphics
+│   │   │       │   ├── characters
+│   │   │       │   │   ├── cleric
+│   │   │       │   │   │   ├── down
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   ├── left
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   ├── right
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   └── up
+│   │   │       │   │   │       ├── frame_000.png
+│   │   │       │   │   │       ├── frame_001.png
+│   │   │       │   │   │       ├── frame_002.png
+│   │   │       │   │   │       ├── frame_003.png
+│   │   │       │   │   │       ├── frame_004.png
+│   │   │       │   │   │       └── frame_005.png
+│   │   │       │   │   ├── hobbit
+│   │   │       │   │   │   ├── down
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   ├── left
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   ├── up
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   └── west
+│   │   │       │   │   │       ├── frame_000.png
+│   │   │       │   │   │       ├── frame_001.png
+│   │   │       │   │   │       ├── frame_002.png
+│   │   │       │   │   │       ├── frame_003.png
+│   │   │       │   │   │       ├── frame_004.png
+│   │   │       │   │   │       └── frame_005.png
+│   │   │       │   │   ├── thief
+│   │   │       │   │   │   ├── down
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   ├── left
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   ├── right
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   └── up
+│   │   │       │   │   │       ├── frame_000.png
+│   │   │       │   │   │       ├── frame_001.png
+│   │   │       │   │   │       ├── frame_002.png
+│   │   │       │   │   │       ├── frame_003.png
+│   │   │       │   │   │       ├── frame_004.png
+│   │   │       │   │   │       └── frame_005.png
+│   │   │       │   │   ├── wizard
+│   │   │       │   │   │   ├── down
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   ├── left
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   ├── right
+│   │   │       │   │   │   │   ├── frame_000.png
+│   │   │       │   │   │   │   ├── frame_001.png
+│   │   │       │   │   │   │   ├── frame_002.png
+│   │   │       │   │   │   │   ├── frame_003.png
+│   │   │       │   │   │   │   ├── frame_004.png
+│   │   │       │   │   │   │   └── frame_005.png
+│   │   │       │   │   │   └── up
+│   │   │       │   │   │       ├── frame_000.png
+│   │   │       │   │   │       ├── frame_001.png
+│   │   │       │   │   │       ├── frame_002.png
+│   │   │       │   │   │       ├── frame_003.png
+│   │   │       │   │   │       ├── frame_004.png
+│   │   │       │   │   │       └── frame_005.png
+│   │   │       │   │   └── wizard.png
+│   │   │       │   ├── font
+│   │   │       │   │   ├── OutlinePixel7Solid.ttf
+│   │   │       │   │   └── joystix.ttf
+│   │   │       │   ├── items
+│   │   │       │   │   ├── StrangeHerb.png
+│   │   │       │   │   ├── energypotion.png
+│   │   │       │   │   ├── healthpotion.png
+│   │   │       │   │   ├── herb.png
+│   │   │       │   │   ├── key.png
+│   │   │       │   │   ├── manapotion.png
+│   │   │       │   │   ├── meat.png
+│   │   │       │   │   ├── mysterypotion.png
+│   │   │       │   │   ├── potion_purple.png
+│   │   │       │   │   ├── potion_yellow.png
+│   │   │       │   │   ├── scithersword.png
+│   │   │       │   │   ├── shovel.png
+│   │   │       │   │   ├── staff.png
+│   │   │       │   │   └── sword.png
+│   │   │       │   ├── logo.png
+│   │   │       │   └── test
+│   │   │       │       └── rock.png
+│   │   │       ├── items
+│   │   │       │   ├── potion_purple.png
+│   │   │       │   ├── potion_yellow.png
+│   │   │       │   ├── scithersword.png
+│   │   │       │   ├── shovel.png
+│   │   │       │   ├── staff.png
+│   │   │       │   └── sword.png
+│   │   │       ├── logo.png
+│   │   │       └── test
+│   │   │           └── rock.png
+│   │   ├── game_richard
+│   │   │   ├── code
+│   │   │   │   ├── game
+│   │   │   │   │   ├── ChatClient.py
+│   │   │   │   │   ├── character.py
+│   │   │   │   │   ├── datastructures
+│   │   │   │   │   │   ├── __init__.py
+│   │   │   │   │   │   ├── array.py
+│   │   │   │   │   │   ├── complexity
+│   │   │   │   │   │   │   ├── analysis_write_up.md
+│   │   │   │   │   │   │   └── sparse_matrix_complexity.py
+│   │   │   │   │   │   ├── hash_table.py
+│   │   │   │   │   │   ├── patrol_path.py
+│   │   │   │   │   │   ├── sparse_matrix.py
+│   │   │   │   │   │   ├── stack.py
+│   │   │   │   │   │   ├── tests
+│   │   │   │   │   │   │   ├── linked_list_tests.py
+│   │   │   │   │   │   │   └── sparse_matrix_tests.py
+│   │   │   │   │   │   └── waypoint.py
+│   │   │   │   │   ├── debug.py
+│   │   │   │   │   ├── enemy.py
+│   │   │   │   │   ├── inventory.py
+│   │   │   │   │   ├── inventory_ui.py
+│   │   │   │   │   ├── item.py
+│   │   │   │   │   ├── level.py
+│   │   │   │   │   ├── main.py
+│   │   │   │   │   ├── map
+│   │   │   │   │   │   ├── map_Floor.csv
+│   │   │   │   │   │   ├── map_FloorBlocks.csv
+│   │   │   │   │   │   ├── map_Grass.csv
+│   │   │   │   │   │   └── map_Objects.csv
+│   │   │   │   │   ├── map_loader.py
+│   │   │   │   │   ├── network_client.py
+│   │   │   │   │   ├── settings.py
+│   │   │   │   │   ├── sprite_loader.py
+│   │   │   │   │   ├── subcharacter.py
+│   │   │   │   │   ├── support.py
+│   │   │   │   │   ├── tile.py
+│   │   │   │   │   ├── time_travel.py
+│   │   │   │   │   └── weapon.py
+│   │   │   │   └── server
+│   │   │   │       ├── Makefile
+│   │   │   │       ├── include
+│   │   │   │       │   ├── binary_serializer.h
+│   │   │   │       │   ├── json_serializer.h
+│   │   │   │       │   ├── player.h
+│   │   │   │       │   ├── serializer.h
+│   │   │   │       │   └── text_serializer.h
+│   │   │   │       ├── src
+│   │   │   │       │   ├── binary_serializer.cpp
+│   │   │   │       │   ├── json_serializer.cpp
+│   │   │   │       │   ├── player.cpp
+│   │   │   │       │   ├── server.cpp
+│   │   │   │       │   └── text_serializer.cpp
+│   │   │   │       └── test_serializers.sh
+│   │   │   └── graphics
+│   │   │       ├── characters
+│   │   │       │   ├── Alchemist.png
+│   │   │       │   ├── BodyCultivator.png
+│   │   │       │   ├── SpellCultivator.png
+│   │   │       │   ├── SpiritSwordCultivator.png
+│   │   │       │   ├── cleric
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── hobbit
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── thief
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   └── wizard
+│   │   │       │       ├── down
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       ├── left
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       ├── right
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       └── up
+│   │   │       │           ├── frame_000.png
+│   │   │       │           ├── frame_001.png
+│   │   │       │           ├── frame_002.png
+│   │   │       │           ├── frame_003.png
+│   │   │       │           ├── frame_004.png
+│   │   │       │           └── frame_005.png
+│   │   │       ├── enemies
+│   │   │       │   ├── dungeon_scout
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_002 (1).png
+│   │   │       │   │   │   ├── frame_002 (2).png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_002 (1).png
+│   │   │       │   │   │   ├── frame_002 (2).png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_002 (1).png
+│   │   │       │   │   │   ├── frame_002 (2).png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_002 (1).png
+│   │   │       │   │       ├── frame_002 (2).png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── forest_guard
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── market_vendor
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── temple_priest
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   └── village_merchant
+│   │   │       │       ├── down
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       ├── left
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       ├── right
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       └── up
+│   │   │       │           ├── frame_000.png
+│   │   │       │           ├── frame_001.png
+│   │   │       │           ├── frame_002.png
+│   │   │       │           ├── frame_003.png
+│   │   │       │           ├── frame_004.png
+│   │   │       │           └── frame_005.png
+│   │   │       ├── font
+│   │   │       │   ├── OutlinePixel7Solid.ttf
+│   │   │       │   └── joystix.ttf
+│   │   │       ├── items
+│   │   │       │   ├── battle_pill.png
+│   │   │       │   ├── healing_pill.png
+│   │   │       │   ├── spatial_ring.png
+│   │   │       │   ├── spirit_armor.png
+│   │   │       │   ├── spirit_staff.png
+│   │   │       │   ├── spirit_sword.png
+│   │   │       │   ├── swift_robe.png
+│   │   │       │   └── wind_swift_sword.png
+│   │   │       ├── logo.png
+│   │   │       └── test
+│   │   │           └── rock.png
+│   │   ├── game_santiago
+│   │   │   ├── code
+│   │   │   │   ├── game
+│   │   │   │   │   ├── ChatClient.py
+│   │   │   │   │   ├── __pycache__
+│   │   │   │   │   │   ├── ChatClient.cpython-312.pyc
+│   │   │   │   │   │   ├── character.cpython-312.pyc
+│   │   │   │   │   │   ├── dialog_data.cpython-312.pyc
+│   │   │   │   │   │   ├── dialog_graph.cpython-312.pyc
+│   │   │   │   │   │   ├── dialog_ui.cpython-312.pyc
+│   │   │   │   │   │   ├── enemy.cpython-312.pyc
+│   │   │   │   │   │   ├── inventory.cpython-312.pyc
+│   │   │   │   │   │   ├── inventory_ui.cpython-312.pyc
+│   │   │   │   │   │   ├── item.cpython-312.pyc
+│   │   │   │   │   │   ├── level.cpython-312.pyc
+│   │   │   │   │   │   ├── main.cpython-312.pyc
+│   │   │   │   │   │   ├── map_loader.cpython-312.pyc
+│   │   │   │   │   │   ├── network_client.cpython-312.pyc
+│   │   │   │   │   │   ├── npc.cpython-312.pyc
+│   │   │   │   │   │   ├── settings.cpython-312.pyc
+│   │   │   │   │   │   ├── sprite_loader.cpython-312.pyc
+│   │   │   │   │   │   ├── subcharacter.cpython-312.pyc
+│   │   │   │   │   │   ├── support.cpython-312.pyc
+│   │   │   │   │   │   ├── tile.cpython-312.pyc
+│   │   │   │   │   │   ├── time_travel.cpython-312.pyc
+│   │   │   │   │   │   └── weapon.cpython-312.pyc
+│   │   │   │   │   ├── ai_npc.py
+│   │   │   │   │   ├── character.py
+│   │   │   │   │   ├── datastructures
+│   │   │   │   │   │   ├── __init__.py
+│   │   │   │   │   │   ├── __pycache__
+│   │   │   │   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   │   │   │   ├── array.cpython-312.pyc
+│   │   │   │   │   │   │   ├── graph.cpython-312.pyc
+│   │   │   │   │   │   │   ├── hash_table.cpython-312.pyc
+│   │   │   │   │   │   │   ├── patrol_path.cpython-312.pyc
+│   │   │   │   │   │   │   ├── stack.cpython-312.pyc
+│   │   │   │   │   │   │   └── waypoint.cpython-312.pyc
+│   │   │   │   │   │   ├── array.py
+│   │   │   │   │   │   ├── complexity
+│   │   │   │   │   │   │   ├── analysis_write_up.md
+│   │   │   │   │   │   │   ├── graph_complexity.py
+│   │   │   │   │   │   │   └── graphs
+│   │   │   │   │   │   │       ├── all_operations.png
+│   │   │   │   │   │   │       └── bfs_vs_dfs.png
+│   │   │   │   │   │   ├── graph.py
+│   │   │   │   │   │   ├── hash_table.py
+│   │   │   │   │   │   ├── patrol_path.py
+│   │   │   │   │   │   ├── sparse_matrix.py
+│   │   │   │   │   │   ├── stack.py
+│   │   │   │   │   │   ├── tests
+│   │   │   │   │   │   │   └── graph_tests.py
+│   │   │   │   │   │   └── waypoint.py
+│   │   │   │   │   ├── debug.py
+│   │   │   │   │   ├── dialog_data.py
+│   │   │   │   │   ├── dialog_graph.py
+│   │   │   │   │   ├── dialog_ui.py
+│   │   │   │   │   ├── enemy.py
+│   │   │   │   │   ├── generate_npc_sprites.py
+│   │   │   │   │   ├── inventory.py
+│   │   │   │   │   ├── inventory_ui.py
+│   │   │   │   │   ├── item.py
+│   │   │   │   │   ├── level.py
+│   │   │   │   │   ├── main.py
+│   │   │   │   │   ├── map
+│   │   │   │   │   │   ├── map_Floor.csv
+│   │   │   │   │   │   ├── map_FloorBlocks.csv
+│   │   │   │   │   │   ├── map_Grass.csv
+│   │   │   │   │   │   └── map_Objects.csv
+│   │   │   │   │   ├── map_loader.py
+│   │   │   │   │   ├── network_client.py
+│   │   │   │   │   ├── npc.py
+│   │   │   │   │   ├── settings.py
+│   │   │   │   │   ├── sprite_loader.py
+│   │   │   │   │   ├── subcharacter.py
+│   │   │   │   │   ├── support.py
+│   │   │   │   │   ├── tile.py
+│   │   │   │   │   ├── time_travel.py
+│   │   │   │   │   └── weapon.py
+│   │   │   │   └── server
+│   │   │   │       ├── Makefile
+│   │   │   │       ├── include
+│   │   │   │       │   ├── binary_serializer.h
+│   │   │   │       │   ├── circular_buffer.h
+│   │   │   │       │   ├── json_serializer.h
+│   │   │   │       │   ├── player.h
+│   │   │   │       │   ├── serializer.h
+│   │   │   │       │   └── text_serializer.h
+│   │   │   │       ├── src
+│   │   │   │       │   ├── binary_serializer.cpp
+│   │   │   │       │   ├── json_serializer.cpp
+│   │   │   │       │   ├── player.cpp
+│   │   │   │       │   ├── position_smoother.cpp
+│   │   │   │       │   ├── server.cpp
+│   │   │   │       │   └── text_serializer.cpp
+│   │   │   │       └── test_serializers.sh
+│   │   │   └── graphics
+│   │   │       ├── characters
+│   │   │       │   ├── clown
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── jester
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── joker
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   └── mime
+│   │   │       │       ├── down
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       ├── left
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       ├── right
+│   │   │       │       │   ├── frame_000.png
+│   │   │       │       │   ├── frame_001.png
+│   │   │       │       │   ├── frame_002.png
+│   │   │       │       │   ├── frame_003.png
+│   │   │       │       │   ├── frame_004.png
+│   │   │       │       │   └── frame_005.png
+│   │   │       │       └── up
+│   │   │       │           ├── frame_000.png
+│   │   │       │           ├── frame_001.png
+│   │   │       │           ├── frame_002.png
+│   │   │       │           ├── frame_003.png
+│   │   │       │           ├── frame_004.png
+│   │   │       │           └── frame_005.png
+│   │   │       ├── enemies
+│   │   │       │   ├── dungeon_scout
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── forest_guard
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── goblin
+│   │   │       │   │   ├── east.png
+│   │   │       │   │   ├── north.png
+│   │   │       │   │   ├── south.png
+│   │   │       │   │   └── west.png
+│   │   │       │   ├── market_vendor
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── temple_priest
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   ├── village_merchant
+│   │   │       │   │   ├── down
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── left
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   ├── right
+│   │   │       │   │   │   ├── frame_000.png
+│   │   │       │   │   │   ├── frame_001.png
+│   │   │       │   │   │   ├── frame_002.png
+│   │   │       │   │   │   ├── frame_003.png
+│   │   │       │   │   │   ├── frame_004.png
+│   │   │       │   │   │   └── frame_005.png
+│   │   │       │   │   └── up
+│   │   │       │   │       ├── frame_000.png
+│   │   │       │   │       ├── frame_001.png
+│   │   │       │   │       ├── frame_002.png
+│   │   │       │   │       ├── frame_003.png
+│   │   │       │   │       ├── frame_004.png
+│   │   │       │   │       └── frame_005.png
+│   │   │       │   └── wandering_goblin
+│   │   │       │       ├── down
+│   │   │       │       │   └── frame_000.png
+│   │   │       │       ├── left
+│   │   │       │       │   └── frame_000.png
+│   │   │       │       ├── right
+│   │   │       │       │   └── frame_000.png
+│   │   │       │       └── up
+│   │   │       │           └── frame_000.png
+│   │   │       ├── font
+│   │   │       │   ├── OutlinePixel7Solid.ttf
+│   │   │       │   └── joystix.ttf
+│   │   │       ├── items
+│   │   │       │   ├── Jesters_Needles.png
+│   │   │       │   ├── clowns_nose.png
+│   │   │       │   ├── cotton_candy.png
+│   │   │       │   ├── custard_pie.png
+│   │   │       │   ├── inflatable_balloon_baton.png
+│   │   │       │   ├── invisible_vest.png
+│   │   │       │   ├── laughing_flask.png
+│   │   │       │   ├── potion_purple.png
+│   │   │       │   ├── potion_yellow.png
+│   │   │       │   ├── rubber_baton.png
+│   │   │       │   ├── scithersword.png
+│   │   │       │   ├── shovel.png
+│   │   │       │   ├── staff.png
+│   │   │       │   └── sword.png
+│   │   │       ├── logo.png
+│   │   │       ├── npcs
+│   │   │       │   ├── Jack
+│   │   │       │   │   ├── idle.png
+│   │   │       │   │   └── south.png
+│   │   │       │   ├── King
+│   │   │       │   │   ├── idle.png
+│   │   │       │   │   └── south.png
+│   │   │       │   ├── Queen
+│   │   │       │   │   ├── idle.png
+│   │   │       │   │   └── south.png
+│   │   │       │   └── README.md
+│   │   │       ├── test
+│   │   │       │   └── rock.png
+│   │   │       └── tilemap
+│   │   │           └── ground.png
+│   │   └── game_tom
+│   │       ├── README.md
+│   │       ├── Tileset
+│   │       │   ├── 2dpixx_ccart_forest_tiles
+│   │       │   │   ├── 2dpixx_ccart_forest_tiles.png
+│   │       │   │   └── LICENSE.TXT
+│   │       │   ├── 2dpixx_ccart_forest_tiles.tar.gz
+│   │       │   ├── Actual
+│   │       │   │   ├── Map.tmx
+│   │       │   │   ├── map_FloorBlocks.tmx
+│   │       │   │   ├── map_FloorBlocks_Floor Blocks.csv
+│   │       │   │   ├── map_FloorBlocks_Grass.csv
+│   │       │   │   ├── map_FloorBlocks_Objects.csv
+│   │       │   │   ├── map_Grass.tmx
+│   │       │   │   └── map_Objects.tmx
+│   │       │   ├── Extras
+│   │       │   │   ├── map_Grass_Floor Blocks.csv
+│   │       │   │   ├── map_Grass_Grass.csv
+│   │       │   │   ├── map_Grass_Objects.csv
+│   │       │   │   ├── map_Objects_Floor Blocks.csv
+│   │       │   │   ├── map_Objects_Grass.csv
+│   │       │   │   └── map_Objects_Objects.csv
+│   │       │   ├── Test 1
+│   │       │   │   ├── 2dpixx_ccart_forest_tiles.png
+│   │       │   │   ├── 2dpixx_ccart_forest_tiles.tsx
+│   │       │   │   ├── Map.tmx
+│   │       │   │   ├── ground.png
+│   │       │   │   ├── map_FloorBlocks.csv
+│   │       │   │   ├── map_FloorBlocks.png
+│   │       │   │   ├── map_FloorBlocks.tmx
+│   │       │   │   ├── map_Grass.csv
+│   │       │   │   ├── map_Grass.png
+│   │       │   │   ├── map_Grass.tmx
+│   │       │   │   ├── map_Objects.csv
+│   │       │   │   ├── map_Objects.png
+│   │       │   │   ├── map_Objects.tmx
+│   │       │   │   ├── terrain_tiles24.png
+│   │       │   │   ├── terrain_tiles24.tsx
+│   │       │   │   ├── test_01.png
+│   │       │   │   ├── tileset_02.png
+│   │       │   │   └── tileset_02.tsx
+│   │       │   ├── terrain_tiles24 (1).png
+│   │       │   ├── terrain_tiles24.png
+│   │       │   ├── terrain_tiles24.tsx
+│   │       │   ├── tileset_01.png
+│   │       │   ├── tileset_02.png
+│   │       │   ├── voda_pesok_trava.png
+│   │       │   └── voda_pesok_trava_revision_2.png
+│   │       ├── ai_conversations.md
+│   │       ├── code
+│   │       │   ├── game
+│   │       │   │   ├── ChatClient.py
+│   │       │   │   ├── __pycache__
+│   │       │   │   │   ├── ChatClient.cpython-312.pyc
+│   │       │   │   │   ├── character.cpython-312.pyc
+│   │       │   │   │   ├── enemy.cpython-312.pyc
+│   │       │   │   │   ├── inventory.cpython-312.pyc
+│   │       │   │   │   ├── inventory_ui.cpython-312.pyc
+│   │       │   │   │   ├── item.cpython-312.pyc
+│   │       │   │   │   ├── level.cpython-312.pyc
+│   │       │   │   │   ├── main.cpython-312.pyc
+│   │       │   │   │   ├── map_loader.cpython-312.pyc
+│   │       │   │   │   ├── network_client.cpython-312.pyc
+│   │       │   │   │   ├── settings.cpython-312.pyc
+│   │       │   │   │   ├── subcharacter.cpython-312.pyc
+│   │       │   │   │   ├── support.cpython-312.pyc
+│   │       │   │   │   ├── tile.cpython-312.pyc
+│   │       │   │   │   ├── time_travel.cpython-312.pyc
+│   │       │   │   │   └── weapon.cpython-312.pyc
+│   │       │   │   ├── character.py
+│   │       │   │   ├── datastructures
+│   │       │   │   │   ├── # !Minibuf-1!#
+│   │       │   │   │   ├── # !Minibuf-2!#
+│   │       │   │   │   ├── #waypoint.py#
+│   │       │   │   │   ├── __init__.py
+│   │       │   │   │   ├── __pycache__
+│   │       │   │   │   │   ├── __init__.cpython-312.pyc
+│   │       │   │   │   │   ├── patrol_path.cpython-312.pyc
+│   │       │   │   │   │   └── waypoint.cpython-312.pyc
+│   │       │   │   │   ├── array.py
+│   │       │   │   │   ├── complexity
+│   │       │   │   │   │   ├── analysis_write_up.md
+│   │       │   │   │   │   └── sparse_matrix_complexity.py
+│   │       │   │   │   ├── hash_table.py
+│   │       │   │   │   ├── patrol_path.py
+│   │       │   │   │   ├── sparse_matrix.py
+│   │       │   │   │   ├── stack.py
+│   │       │   │   │   ├── tests
+│   │       │   │   │   │   ├── linked_list_tests.py
+│   │       │   │   │   │   └── sparse_matrix_tests.py
+│   │       │   │   │   └── waypoint.py
+│   │       │   │   ├── debug.py
+│   │       │   │   ├── enemy.py
+│   │       │   │   ├── graphics
+│   │       │   │   │   ├── characters
+│   │       │   │   │   │   ├── Ernesto.PNG
+│   │       │   │   │   │   ├── Olive.png
+│   │       │   │   │   │   ├── Salamus.png
+│   │       │   │   │   │   ├── Wendl.png
+│   │       │   │   │   │   ├── cleric
+│   │       │   │   │   │   │   ├── down
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── left
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── right
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   └── up
+│   │       │   │   │   │   │       ├── frame_000.png
+│   │       │   │   │   │   │       ├── frame_001.png
+│   │       │   │   │   │   │       ├── frame_002.png
+│   │       │   │   │   │   │       ├── frame_003.png
+│   │       │   │   │   │   │       ├── frame_004.png
+│   │       │   │   │   │   │       └── frame_005.png
+│   │       │   │   │   │   ├── hobbit
+│   │       │   │   │   │   │   ├── down
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── left
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── right
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   └── up
+│   │       │   │   │   │   │       ├── frame_000.png
+│   │       │   │   │   │   │       ├── frame_001.png
+│   │       │   │   │   │   │       ├── frame_002.png
+│   │       │   │   │   │   │       ├── frame_003.png
+│   │       │   │   │   │   │       ├── frame_004.png
+│   │       │   │   │   │   │       └── frame_005.png
+│   │       │   │   │   │   ├── thief
+│   │       │   │   │   │   │   ├── down
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── left
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── right
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   └── up
+│   │       │   │   │   │   │       ├── frame_000.png
+│   │       │   │   │   │   │       ├── frame_001.png
+│   │       │   │   │   │   │       ├── frame_002.png
+│   │       │   │   │   │   │       ├── frame_003.png
+│   │       │   │   │   │   │       ├── frame_004.png
+│   │       │   │   │   │   │       └── frame_005.png
+│   │       │   │   │   │   ├── wizard
+│   │       │   │   │   │   │   ├── down
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── left
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── right
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   └── up
+│   │       │   │   │   │   │       ├── frame_000.png
+│   │       │   │   │   │   │       ├── frame_001.png
+│   │       │   │   │   │   │       ├── frame_002.png
+│   │       │   │   │   │   │       ├── frame_003.png
+│   │       │   │   │   │   │       ├── frame_004.png
+│   │       │   │   │   │   │       └── frame_005.png
+│   │       │   │   │   │   └── wizard.png
+│   │       │   │   │   ├── enemies
+│   │       │   │   │   │   ├── dungeon_scout
+│   │       │   │   │   │   │   ├── down
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── left
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── right
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   └── up
+│   │       │   │   │   │   │       ├── frame_000.png
+│   │       │   │   │   │   │       ├── frame_001.png
+│   │       │   │   │   │   │       ├── frame_002.png
+│   │       │   │   │   │   │       ├── frame_003.png
+│   │       │   │   │   │   │       ├── frame_004.png
+│   │       │   │   │   │   │       └── frame_005.png
+│   │       │   │   │   │   ├── forest_guard
+│   │       │   │   │   │   │   ├── down
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── left
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── right
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   └── up
+│   │       │   │   │   │   │       ├── frame_000.png
+│   │       │   │   │   │   │       ├── frame_001.png
+│   │       │   │   │   │   │       ├── frame_002.png
+│   │       │   │   │   │   │       ├── frame_003.png
+│   │       │   │   │   │   │       ├── frame_004.png
+│   │       │   │   │   │   │       └── frame_005.png
+│   │       │   │   │   │   ├── market_vendor
+│   │       │   │   │   │   │   ├── down
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── left
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── right
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   └── up
+│   │       │   │   │   │   │       ├── frame_000.png
+│   │       │   │   │   │   │       ├── frame_001.png
+│   │       │   │   │   │   │       ├── frame_002.png
+│   │       │   │   │   │   │       ├── frame_003.png
+│   │       │   │   │   │   │       ├── frame_004.png
+│   │       │   │   │   │   │       └── frame_005.png
+│   │       │   │   │   │   ├── temple_priest
+│   │       │   │   │   │   │   ├── down
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── left
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   ├── right
+│   │       │   │   │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   │   │   └── frame_005.png
+│   │       │   │   │   │   │   └── up
+│   │       │   │   │   │   │       ├── frame_000.png
+│   │       │   │   │   │   │       ├── frame_001.png
+│   │       │   │   │   │   │       ├── frame_002.png
+│   │       │   │   │   │   │       ├── frame_003.png
+│   │       │   │   │   │   │       ├── frame_004.png
+│   │       │   │   │   │   │       └── frame_005.png
+│   │       │   │   │   │   └── village_merchant
+│   │       │   │   │   │       ├── down
+│   │       │   │   │   │       │   ├── frame_000.png
+│   │       │   │   │   │       │   ├── frame_001.png
+│   │       │   │   │   │       │   ├── frame_002.png
+│   │       │   │   │   │       │   ├── frame_003.png
+│   │       │   │   │   │       │   ├── frame_004.png
+│   │       │   │   │   │       │   └── frame_005.png
+│   │       │   │   │   │       ├── left
+│   │       │   │   │   │       │   ├── frame_000.png
+│   │       │   │   │   │       │   ├── frame_001.png
+│   │       │   │   │   │       │   ├── frame_002.png
+│   │       │   │   │   │       │   ├── frame_003.png
+│   │       │   │   │   │       │   ├── frame_004.png
+│   │       │   │   │   │       │   └── frame_005.png
+│   │       │   │   │   │       ├── right
+│   │       │   │   │   │       │   ├── frame_000.png
+│   │       │   │   │   │       │   ├── frame_001.png
+│   │       │   │   │   │       │   ├── frame_002.png
+│   │       │   │   │   │       │   ├── frame_003.png
+│   │       │   │   │   │       │   ├── frame_004.png
+│   │       │   │   │   │       │   └── frame_005.png
+│   │       │   │   │   │       └── up
+│   │       │   │   │   │           ├── frame_000.png
+│   │       │   │   │   │           ├── frame_001.png
+│   │       │   │   │   │           ├── frame_002.png
+│   │       │   │   │   │           ├── frame_003.png
+│   │       │   │   │   │           ├── frame_004.png
+│   │       │   │   │   │           └── frame_005.png
+│   │       │   │   │   ├── extra_logo
+│   │       │   │   │   │   └── logo.png
+│   │       │   │   │   ├── font
+│   │       │   │   │   │   ├── OutlinePixel7Solid.ttf
+│   │       │   │   │   │   └── joystix.ttf
+│   │       │   │   │   ├── items
+│   │       │   │   │   │   ├── bow_arrow.png
+│   │       │   │   │   │   ├── flail.png
+│   │       │   │   │   │   ├── gemstones.png
+│   │       │   │   │   │   ├── iron_shield.png
+│   │       │   │   │   │   ├── potion.png
+│   │       │   │   │   │   ├── potion_purple.png
+│   │       │   │   │   │   ├── potion_yellow.png
+│   │       │   │   │   │   ├── scithersword.png
+│   │       │   │   │   │   ├── shovel.png
+│   │       │   │   │   │   ├── staff.png
+│   │       │   │   │   │   ├── sword.png
+│   │       │   │   │   │   └── wooden_shield.png
+│   │       │   │   │   ├── test
+│   │       │   │   │   │   └── rock.png
+│   │       │   │   │   └── tilemap
+│   │       │   │   │       ├── 2dpixx_ccart_forest_tiles.png
+│   │       │   │   │       ├── 2dpixx_ccart_forest_tiles.tsx
+│   │       │   │   │       ├── Map.tmx
+│   │       │   │   │       ├── ground.png
+│   │       │   │   │       ├── map_FloorBlocks.csv
+│   │       │   │   │       ├── map_FloorBlocks.png
+│   │       │   │   │       ├── map_FloorBlocks.tmx
+│   │       │   │   │       ├── map_FloorBlocks_Floor Blocks.csv
+│   │       │   │   │       ├── map_FloorBlocks_Grass.csv
+│   │       │   │   │       ├── map_FloorBlocks_Objects.csv
+│   │       │   │   │       ├── map_Grass.csv
+│   │       │   │   │       ├── map_Grass.png
+│   │       │   │   │       ├── map_Grass.tmx
+│   │       │   │   │       ├── map_Grass_Floor Blocks.csv
+│   │       │   │   │       ├── map_Grass_Grass.csv
+│   │       │   │   │       ├── map_Grass_Objects.csv
+│   │       │   │   │       ├── map_Objects.csv
+│   │       │   │   │       ├── map_Objects.png
+│   │       │   │   │       ├── map_Objects.tmx
+│   │       │   │   │       ├── map_Objects_Floor Blocks.csv
+│   │       │   │   │       ├── map_Objects_Grass.csv
+│   │       │   │   │       ├── map_Objects_Objects.csv
+│   │       │   │   │       ├── rock.tsx
+│   │       │   │   │       ├── terrain_tiles24.png
+│   │       │   │   │       ├── terrain_tiles24.tsx
+│   │       │   │   │       ├── test_01.png
+│   │       │   │   │       ├── tileset_02.png
+│   │       │   │   │       └── tileset_02.tsx
+│   │       │   │   ├── inventory.py
+│   │       │   │   ├── inventory_ui.py
+│   │       │   │   ├── item.py
+│   │       │   │   ├── level.py
+│   │       │   │   ├── main.py
+│   │       │   │   ├── map
+│   │       │   │   │   ├── 2dpixx_ccart_forest_tiles.tsx
+│   │       │   │   │   ├── Map.tmx
+│   │       │   │   │   ├── Map_1.tmx
+│   │       │   │   │   ├── OG
+│   │       │   │   │   │   ├── map_Floor.csv
+│   │       │   │   │   │   ├── map_FloorBlocks.csv
+│   │       │   │   │   │   ├── map_Grass.csv
+│   │       │   │   │   │   └── map_Objects.csv
+│   │       │   │   │   ├── OG_1
+│   │       │   │   │   │   ├── map_FloorBlocks.csv
+│   │       │   │   │   │   ├── map_Grass.csv
+│   │       │   │   │   │   └── map_Objects.csv
+│   │       │   │   │   ├── map_FloorBlocks.csv
+│   │       │   │   │   ├── map_Grass.csv
+│   │       │   │   │   ├── map_Objects.csv
+│   │       │   │   │   ├── rock.tsx
+│   │       │   │   │   └── voda_pesok_trava.tsx
+│   │       │   │   ├── map_loader.py
+│   │       │   │   ├── network_client.py
+│   │       │   │   ├── settings.py
+│   │       │   │   ├── sprite_loader.py
+│   │       │   │   ├── subcharacter.py
+│   │       │   │   ├── support.py
+│   │       │   │   ├── tile.py
+│   │       │   │   ├── time_travel.py
+│   │       │   │   └── weapon.py
+│   │       │   └── server
+│   │       │       ├── Makefile
+│   │       │       ├── include
+│   │       │       │   ├── binary_serializer.h
+│   │       │       │   ├── json_serializer.h
+│   │       │       │   ├── player.h
+│   │       │       │   ├── serializer.h
+│   │       │       │   └── text_serializer.h
+│   │       │       ├── src
+│   │       │       │   ├── binary_serializer.cpp
+│   │       │       │   ├── json_serializer.cpp
+│   │       │       │   ├── player.cpp
+│   │       │       │   ├── server.cpp
+│   │       │       │   └── text_serializer.cpp
+│   │       │       └── test_serializers.sh
+│   │       ├── graphics
+│   │       │   ├── characters
+│   │       │   │   ├── E
+│   │       │   │   │   └── Ernesto.PNG
+│   │       │   │   ├── Ernesto.PNG
+│   │       │   │   ├── Olive.png
+│   │       │   │   ├── Salamus.png
+│   │       │   │   ├── Wendl.png
+│   │       │   │   ├── cleric
+│   │       │   │   │   ├── down
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── left
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── right
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   └── up
+│   │       │   │   │       ├── frame_000.png
+│   │       │   │   │       ├── frame_001.png
+│   │       │   │   │       ├── frame_002.png
+│   │       │   │   │       ├── frame_003.png
+│   │       │   │   │       ├── frame_004.png
+│   │       │   │   │       └── frame_005.png
+│   │       │   │   ├── hobbit
+│   │       │   │   │   ├── down
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── left
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── right
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   └── up
+│   │       │   │   │       ├── frame_000.png
+│   │       │   │   │       ├── frame_001.png
+│   │       │   │   │       ├── frame_002.png
+│   │       │   │   │       ├── frame_003.png
+│   │       │   │   │       ├── frame_004.png
+│   │       │   │   │       └── frame_005.png
+│   │       │   │   ├── thief
+│   │       │   │   │   ├── down
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── left
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── right
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   └── up
+│   │       │   │   │       ├── frame_000.png
+│   │       │   │   │       ├── frame_001.png
+│   │       │   │   │       ├── frame_002.png
+│   │       │   │   │       ├── frame_003.png
+│   │       │   │   │       ├── frame_004.png
+│   │       │   │   │       └── frame_005.png
+│   │       │   │   ├── wizard
+│   │       │   │   │   ├── down
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── left
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── right
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   └── up
+│   │       │   │   │       ├── frame_000.png
+│   │       │   │   │       ├── frame_001.png
+│   │       │   │   │       ├── frame_002.png
+│   │       │   │   │       ├── frame_003.png
+│   │       │   │   │       ├── frame_004.png
+│   │       │   │   │       └── frame_005.png
+│   │       │   │   └── wizard.png
+│   │       │   ├── enemies
+│   │       │   │   ├── dungeon_scout
+│   │       │   │   │   ├── down
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── left
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── right
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   └── up
+│   │       │   │   │       ├── frame_000.png
+│   │       │   │   │       ├── frame_001.png
+│   │       │   │   │       ├── frame_002.png
+│   │       │   │   │       ├── frame_003.png
+│   │       │   │   │       ├── frame_004.png
+│   │       │   │   │       └── frame_005.png
+│   │       │   │   ├── forest_guard
+│   │       │   │   │   ├── down
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── left
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── right
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   └── up
+│   │       │   │   │       ├── frame_000.png
+│   │       │   │   │       ├── frame_001.png
+│   │       │   │   │       ├── frame_002.png
+│   │       │   │   │       ├── frame_003.png
+│   │       │   │   │       ├── frame_004.png
+│   │       │   │   │       └── frame_005.png
+│   │       │   │   ├── market_vendor
+│   │       │   │   │   ├── down
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── left
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── right
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   └── up
+│   │       │   │   │       ├── frame_000.png
+│   │       │   │   │       ├── frame_001.png
+│   │       │   │   │       ├── frame_002.png
+│   │       │   │   │       ├── frame_003.png
+│   │       │   │   │       ├── frame_004.png
+│   │       │   │   │       └── frame_005.png
+│   │       │   │   ├── temple_priest
+│   │       │   │   │   ├── down
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── left
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   ├── right
+│   │       │   │   │   │   ├── frame_000.png
+│   │       │   │   │   │   ├── frame_001.png
+│   │       │   │   │   │   ├── frame_002.png
+│   │       │   │   │   │   ├── frame_003.png
+│   │       │   │   │   │   ├── frame_004.png
+│   │       │   │   │   │   └── frame_005.png
+│   │       │   │   │   └── up
+│   │       │   │   │       ├── frame_000.png
+│   │       │   │   │       ├── frame_001.png
+│   │       │   │   │       ├── frame_002.png
+│   │       │   │   │       ├── frame_003.png
+│   │       │   │   │       ├── frame_004.png
+│   │       │   │   │       └── frame_005.png
+│   │       │   │   └── village_merchant
+│   │       │   │       ├── down
+│   │       │   │       │   ├── frame_000.png
+│   │       │   │       │   ├── frame_001.png
+│   │       │   │       │   ├── frame_002.png
+│   │       │   │       │   ├── frame_003.png
+│   │       │   │       │   ├── frame_004.png
+│   │       │   │       │   └── frame_005.png
+│   │       │   │       ├── left
+│   │       │   │       │   ├── frame_000.png
+│   │       │   │       │   ├── frame_001.png
+│   │       │   │       │   ├── frame_002.png
+│   │       │   │       │   ├── frame_003.png
+│   │       │   │       │   ├── frame_004.png
+│   │       │   │       │   └── frame_005.png
+│   │       │   │       ├── right
+│   │       │   │       │   ├── frame_000.png
+│   │       │   │       │   ├── frame_001.png
+│   │       │   │       │   ├── frame_002.png
+│   │       │   │       │   ├── frame_003.png
+│   │       │   │       │   ├── frame_004.png
+│   │       │   │       │   └── frame_005.png
+│   │       │   │       └── up
+│   │       │   │           ├── frame_000.png
+│   │       │   │           ├── frame_001.png
+│   │       │   │           ├── frame_002.png
+│   │       │   │           ├── frame_003.png
+│   │       │   │           ├── frame_004.png
+│   │       │   │           └── frame_005.png
+│   │       │   ├── extra_logo
+│   │       │   │   └── logo.png
+│   │       │   ├── font
+│   │       │   │   ├── OutlinePixel7Solid.ttf
+│   │       │   │   └── joystix.ttf
+│   │       │   ├── items
+│   │       │   │   ├── bow_arrow.png
+│   │       │   │   ├── flail.png
+│   │       │   │   ├── gemstones.png
+│   │       │   │   ├── iron_shield.png
+│   │       │   │   ├── potion.png
+│   │       │   │   ├── potion_purple.png
+│   │       │   │   ├── potion_yellow.png
+│   │       │   │   ├── scithersword.png
+│   │       │   │   ├── shovel.png
+│   │       │   │   ├── staff.png
+│   │       │   │   ├── sword.png
+│   │       │   │   └── wooden_shield.png
+│   │       │   ├── logo.png
+│   │       │   ├── test
+│   │       │   │   └── rock.png
+│   │       │   └── tilemap
+│   │       │       ├── Map.tmx
+│   │       │       └── New folder
+│   │       │           ├── 2dpixx_ccart_forest_tiles.png
+│   │       │           ├── 2dpixx_ccart_forest_tiles.tsx
+│   │       │           ├── Map.png
+│   │       │           ├── ground.png
+│   │       │           ├── map_FloorBlocks.csv
+│   │       │           ├── map_FloorBlocks.png
+│   │       │           ├── map_FloorBlocks.tmx
+│   │       │           ├── map_Grass.csv
+│   │       │           ├── map_Grass.png
+│   │       │           ├── map_Grass.tmx
+│   │       │           ├── map_Objects.csv
+│   │       │           ├── map_Objects.png
+│   │       │           ├── map_Objects.tmx
+│   │       │           ├── terrain_tiles24.png
+│   │       │           ├── terrain_tiles24.tsx
+│   │       │           ├── test_01.png
+│   │       │           ├── tileset_02.png
+│   │       │           └── tileset_02.tsx
+│   │       └── test
+│   │           ├── 0.tsx
+│   │           ├── Collection.tsx
+│   │           ├── Test
+│   │           │   ├── Scribe
+│   │           │   │   ├── grasstiles-norm.blend
+│   │           │   │   ├── topdown_tiles
+│   │           │   │   │   └── tiles
+│   │           │   │   │       ├── beach-shallow0
+│   │           │   │   │       │   ├── curve_in
+│   │           │   │   │       │   │   ├── 0
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 180
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 270
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   └── 90
+│   │           │   │   │       │   │       └── 0.png
+│   │           │   │   │       │   ├── curve_out
+│   │           │   │   │       │   │   ├── 0
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 180
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 270
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   └── 90
+│   │           │   │   │       │   │       └── 0.png
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── beach0
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── deep0
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── grass-beach0
+│   │           │   │   │       │   ├── curve_in
+│   │           │   │   │       │   │   ├── 0
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 180
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 270
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   └── 90
+│   │           │   │   │       │   │       └── 0.png
+│   │           │   │   │       │   ├── curve_out
+│   │           │   │   │       │   │   ├── 0
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 180
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 270
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   └── 90
+│   │           │   │   │       │   │       └── 0.png
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── grass0
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── grass1
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── grass2
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── grass3
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── grass4
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── grass5
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       ├── shallow-deep0
+│   │           │   │   │       │   ├── curve_in
+│   │           │   │   │       │   │   ├── 0
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 180
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 270
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   └── 90
+│   │           │   │   │       │   │       └── 0.png
+│   │           │   │   │       │   ├── curve_out
+│   │           │   │   │       │   │   ├── 0
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 180
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   ├── 270
+│   │           │   │   │       │   │   │   └── 0.png
+│   │           │   │   │       │   │   └── 90
+│   │           │   │   │       │   │       └── 0.png
+│   │           │   │   │       │   └── straight
+│   │           │   │   │       │       ├── 0
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 180
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       ├── 270
+│   │           │   │   │       │       │   └── 0.png
+│   │           │   │   │       │       └── 90
+│   │           │   │   │       │           └── 0.png
+│   │           │   │   │       └── shallow0
+│   │           │   │   │           └── straight
+│   │           │   │   │               ├── 0
+│   │           │   │   │               │   └── 0.png
+│   │           │   │   │               ├── 180
+│   │           │   │   │               │   └── 0.png
+│   │           │   │   │               ├── 270
+│   │           │   │   │               │   └── 0.png
+│   │           │   │   │               └── 90
+│   │           │   │   │                   └── 0.png
+│   │           │   │   └── topdown_tiles.zip
+│   │           │   └── TopDown
+│   │           │       ├── top-down-rpg-assets-1.1.0
+│   │           │       │   └── top-down-rpg-assets
+│   │           │       │       ├── Sargassum.png
+│   │           │       │       ├── Thorn dragon nest eggs.png
+│   │           │       │       ├── Thorn dragon nest.png
+│   │           │       │       ├── ancient tree cut dec.png
+│   │           │       │       ├── ancient tree cut mar notiles.png
+│   │           │       │       ├── ancient tree cut mar.png
+│   │           │       │       ├── ancient tree cut nov notiles.png
+│   │           │       │       ├── ancient tree cut nov.png
+│   │           │       │       ├── ancient tree cut oct notiles.png
+│   │           │       │       ├── ancient tree cut oct.png
+│   │           │       │       ├── ancient tree cut sep notiles.png
+│   │           │       │       ├── ancient tree cut sep.png
+│   │           │       │       ├── ancient tree cut snow notiles.png
+│   │           │       │       ├── ancient tree cut snow.png
+│   │           │       │       ├── ancient tree dec.png
+│   │           │       │       ├── ancient tree mar notiles.png
+│   │           │       │       ├── ancient tree mar.png
+│   │           │       │       ├── ancient tree nov notiles.png
+│   │           │       │       ├── ancient tree nov.png
+│   │           │       │       ├── ancient tree oct notiles.png
+│   │           │       │       ├── ancient tree oct.png
+│   │           │       │       ├── ancient tree sep notiles.png
+│   │           │       │       ├── ancient tree sep.png
+│   │           │       │       ├── ancient tree snow notiles.png
+│   │           │       │       ├── ancient tree snow.png
+│   │           │       │       ├── ant mound.png
+│   │           │       │       ├── anvil.png
+│   │           │       │       ├── appletree.png
+│   │           │       │       ├── arena notiles.png
+│   │           │       │       ├── arena snowy notiles.png
+│   │           │       │       ├── arena snowy.png
+│   │           │       │       ├── arena.png
+│   │           │       │       ├── baretree.png
+│   │           │       │       ├── berry bush apr.png
+│   │           │       │       ├── berry bush oct.png
+│   │           │       │       ├── berry bush sep.png
+│   │           │       │       ├── birch apr.png
+│   │           │       │       ├── birch dec.png
+│   │           │       │       ├── birch nov.png
+│   │           │       │       ├── birch oct.png
+│   │           │       │       ├── birch sep.png
+│   │           │       │       ├── blackberry bush apr.png
+│   │           │       │       ├── blackberry bush aug.png
+│   │           │       │       ├── blackberry bush berries.png
+│   │           │       │       ├── blackberry bush dec.png
+│   │           │       │       ├── blackberry bush flowers.png
+│   │           │       │       ├── blackberry bush jan.png
+│   │           │       │       ├── blackberry bush jun.png
+│   │           │       │       ├── blackberry bush mar.png
+│   │           │       │       ├── blackberry bush may.png
+│   │           │       │       ├── blackberry bush nov.png
+│   │           │       │       ├── blackberry bush oct.png
+│   │           │       │       ├── blackberry bush sep.png
+│   │           │       │       ├── blocked cave.png
+│   │           │       │       ├── blueberry bush apr.png
+│   │           │       │       ├── blueberry bush oct.png
+│   │           │       │       ├── blueberry bush sep.png
+│   │           │       │       ├── boat.png
+│   │           │       │       ├── books.png
+│   │           │       │       ├── boulder snow.png
+│   │           │       │       ├── boulder.png
+│   │           │       │       ├── box.png
+│   │           │       │       ├── bronzefan tree apr.png
+│   │           │       │       ├── bronzefan tree aug.png
+│   │           │       │       ├── bronzefan tree dec snow.png
+│   │           │       │       ├── bronzefan tree dec.png
+│   │           │       │       ├── bronzefan tree jun.png
+│   │           │       │       ├── bronzefan tree mar.png
+│   │           │       │       ├── bronzefan tree may.png
+│   │           │       │       ├── bronzefan tree nov snow.png
+│   │           │       │       ├── bronzefan tree nov.png
+│   │           │       │       ├── bronzefan tree oct.png
+│   │           │       │       ├── bronzefan tree sep.png
+│   │           │       │       ├── bush apr.png
+│   │           │       │       ├── bush dec snow.png
+│   │           │       │       ├── bush dec.png
+│   │           │       │       ├── bush mar.png
+│   │           │       │       ├── bush nov.png
+│   │           │       │       ├── bush oct.png
+│   │           │       │       ├── bush sep.png
+│   │           │       │       ├── cactus.png
+│   │           │       │       ├── campfire ash.png
+│   │           │       │       ├── campfire embers.png
+│   │           │       │       ├── campfire fire.png
+│   │           │       │       ├── campfire.png
+│   │           │       │       ├── carrageen moss.png
+│   │           │       │       ├── cassiterite.png
+│   │           │       │       ├── caulerpa lentillifera.png
+│   │           │       │       ├── cave up.png
+│   │           │       │       ├── cave whirlpool.png
+│   │           │       │       ├── cave.png
+│   │           │       │       ├── caveExit.png
+│   │           │       │       ├── cedar.png
+│   │           │       │       ├── cedarcut.png
+│   │           │       │       ├── charactite.png
+│   │           │       │       ├── charbush apr chars.png
+│   │           │       │       ├── charbush apr.png
+│   │           │       │       ├── charbush dec.png
+│   │           │       │       ├── charbush mar.png
+│   │           │       │       ├── charbush may chars.png
+│   │           │       │       ├── charbush may.png
+│   │           │       │       ├── charbush nov.png
+│   │           │       │       ├── charbush oct.png
+│   │           │       │       ├── charging pad.png
+│   │           │       │       ├── charging pad2.png
+│   │           │       │       ├── cherry tree apr.png
+│   │           │       │       ├── cherry tree dec.png
+│   │           │       │       ├── cherry tree jul.png
+│   │           │       │       ├── cherry tree jun.png
+│   │           │       │       ├── cherry tree may.png
+│   │           │       │       ├── cherry tree nov.png
+│   │           │       │       ├── cherry tree oct.png
+│   │           │       │       ├── cherry tree sep.png
+│   │           │       │       ├── chromite.png
+│   │           │       │       ├── cinnabar.png
+│   │           │       │       ├── coal ore.png
+│   │           │       │       ├── coconutpalm.png
+│   │           │       │       ├── constructing building 1.png
+│   │           │       │       ├── constructing building foundation.png
+│   │           │       │       ├── copper ore.png
+│   │           │       │       ├── copper wire#e.png
+│   │           │       │       ├── copper wire#en.png
+│   │           │       │       ├── copper wire#ens.png
+│   │           │       │       ├── copper wire#ensw.png
+│   │           │       │       ├── copper wire#enw.png
+│   │           │       │       ├── copper wire#es.png
+│   │           │       │       ├── copper wire#esw.png
+│   │           │       │       ├── copper wire#ew.png
+│   │           │       │       ├── copper wire#n.png
+│   │           │       │       ├── copper wire#ns.png
+│   │           │       │       ├── copper wire#nsw.png
+│   │           │       │       ├── copper wire#nw.png
+│   │           │       │       ├── copper wire#s.png
+│   │           │       │       ├── copper wire#sw.png
+│   │           │       │       ├── copper wire#w.png
+│   │           │       │       ├── copper wire.png
+│   │           │       │       ├── coral arena blocked.png
+│   │           │       │       ├── coral arena open.png
+│   │           │       │       ├── coral monster stem 2.png
+│   │           │       │       ├── coral monster stem.png
+│   │           │       │       ├── cracked boulder.png
+│   │           │       │       ├── cracks.png
+│   │           │       │       ├── cracky boulder.png
+│   │           │       │       ├── dragontail.png
+│   │           │       │       ├── dryshrub.png
+│   │           │       │       ├── exit.png
+│   │           │       │       ├── fallen cloud.png
+│   │           │       │       ├── flax apr.png
+│   │           │       │       ├── flax cut.png
+│   │           │       │       ├── flax feb.png
+│   │           │       │       ├── flax jul.png
+│   │           │       │       ├── flax mar.png
+│   │           │       │       ├── flax nov.png
+│   │           │       │       ├── flax planted.png
+│   │           │       │       ├── forge.png
+│   │           │       │       ├── forsythia apr.png
+│   │           │       │       ├── forsythia jun.png
+│   │           │       │       ├── forsythia may.png
+│   │           │       │       ├── forsythia nov.png
+│   │           │       │       ├── forsythia oct.png
+│   │           │       │       ├── forsythia sep.png
+│   │           │       │       ├── fountain construction.png
+│   │           │       │       ├── fountain filled.png
+│   │           │       │       ├── fountain spring.png
+│   │           │       │       ├── fountain.png
+│   │           │       │       ├── fritillaria imperialis.png
+│   │           │       │       ├── galena.png
+│   │           │       │       ├── gaping pit.png
+│   │           │       │       ├── granite.png
+│   │           │       │       ├── grass green.png
+│   │           │       │       ├── hamster wheel generator.png
+│   │           │       │       ├── hamster wheel generator2.png
+│   │           │       │       ├── heartroot.png
+│   │           │       │       ├── hematite.png
+│   │           │       │       ├── house avail.png
+│   │           │       │       ├── house player.png
+│   │           │       │       ├── house snowy avail.png
+│   │           │       │       ├── house snowy player.png
+│   │           │       │       ├── house snowy.png
+│   │           │       │       ├── house.png
+│   │           │       │       ├── house2 avail.png
+│   │           │       │       ├── house2 player.png
+│   │           │       │       ├── house2 snowy avail.png
+│   │           │       │       ├── house2 snowy player.png
+│   │           │       │       ├── house2 snowy.png
+│   │           │       │       ├── house2.png
+│   │           │       │       ├── hydra tree apr chars.png
+│   │           │       │       ├── hydra tree apr.png
+│   │           │       │       ├── hydra tree dec.png
+│   │           │       │       ├── hydra tree mar.png
+│   │           │       │       ├── hydra tree nov.png
+│   │           │       │       ├── hydra tree oct chars.png
+│   │           │       │       ├── hydra tree oct.png
+│   │           │       │       ├── hydra tree sep chars.png
+│   │           │       │       ├── hydra tree sep.png
+│   │           │       │       ├── iceberg ice.png
+│   │           │       │       ├── iceberg notiles noshade.png
+│   │           │       │       ├── iceberg notiles.png
+│   │           │       │       ├── iceberg ocean.png
+│   │           │       │       ├── icespikes.png
+│   │           │       │       ├── landing tower construction.png
+│   │           │       │       ├── landing tower.png
+│   │           │       │       ├── lava pond cooled dustgrass.png
+│   │           │       │       ├── lava pond cooled notiles.png
+│   │           │       │       ├── lava pond cooled.png
+│   │           │       │       ├── lava pond dustgrass.png
+│   │           │       │       ├── lava pond notiles.png
+│   │           │       │       ├── lava pond.png
+│   │           │       │       ├── lilac dec.png
+│   │           │       │       ├── lilac jul.png
+│   │           │       │       ├── lilac jun purple.png
+│   │           │       │       ├── lilac may.png
+│   │           │       │       ├── lilac oct.png
+│   │           │       │       ├── lilac sep.png
+│   │           │       │       ├── logs.png
+│   │           │       │       ├── loom.png
+│   │           │       │       ├── loot chest opened.png
+│   │           │       │       ├── loot chest.png
+│   │           │       │       ├── loot.png
+│   │           │       │       ├── maelstrom disturbed.png
+│   │           │       │       ├── maelstrom.png
+│   │           │       │       ├── melanterite.png
+│   │           │       │       ├── mineral spring frozen.png
+│   │           │       │       ├── mineral spring snowy.png
+│   │           │       │       ├── mineral spring.png
+│   │           │       │       ├── minium.png
+│   │           │       │       ├── molybdenite.png
+│   │           │       │       ├── mortar.png
+│   │           │       │       ├── musa banana.png
+│   │           │       │       ├── musa.png
+│   │           │       │       ├── mushroom.png
+│   │           │       │       ├── niter.png
+│   │           │       │       ├── oats apr.png
+│   │           │       │       ├── oats aug.png
+│   │           │       │       ├── oats jun.png
+│   │           │       │       ├── oats may.png
+│   │           │       │       ├── oats nov.png
+│   │           │       │       ├── oats planted.png
+│   │           │       │       ├── olive tree blossom.png
+│   │           │       │       ├── olive tree olives.png
+│   │           │       │       ├── olive tree.png
+│   │           │       │       ├── orange tree bare.png
+│   │           │       │       ├── orange tree blossom.png
+│   │           │       │       ├── orange tree oranges.png
+│   │           │       │       ├── orange tree.png
+│   │           │       │       ├── palm.png
+│   │           │       │       ├── pine bare snow.png
+│   │           │       │       ├── pine bare.png
+│   │           │       │       ├── pine deco snow.png
+│   │           │       │       ├── pine deco.png
+│   │           │       │       ├── pine snow.png
+│   │           │       │       ├── pine.png
+│   │           │       │       ├── pot.png
+│   │           │       │       ├── potted cactus.png
+│   │           │       │       ├── potted rose buds.png
+│   │           │       │       ├── potted rose dead.png
+│   │           │       │       ├── potted rose flowers.png
+│   │           │       │       ├── potted rose sapling.png
+│   │           │       │       ├── potted rose seeds.png
+│   │           │       │       ├── potted rose wilted.png
+│   │           │       │       ├── quartzite.png
+│   │           │       │       ├── recycle bin with item.png
+│   │           │       │       ├── recycle bin.png
+│   │           │       │       ├── red pine snow.png
+│   │           │       │       ├── red pine.png
+│   │           │       │       ├── redthorn apr.png
+│   │           │       │       ├── redthorn jun.png
+│   │           │       │       ├── redthorn nov.png
+│   │           │       │       ├── redthorn oct.png
+│   │           │       │       ├── redthorn sep.png
+│   │           │       │       ├── reeds apr.png
+│   │           │       │       ├── reeds nov.png
+│   │           │       │       ├── rose buds.png
+│   │           │       │       ├── rose dead.png
+│   │           │       │       ├── rose flowers.png
+│   │           │       │       ├── rose planted.png
+│   │           │       │       ├── rose sapling.png
+│   │           │       │       ├── rose wilted.png
+│   │           │       │       ├── rowan apr.png
+│   │           │       │       ├── rowan aug.png
+│   │           │       │       ├── rowan dec.png
+│   │           │       │       ├── rowan jan.png
+│   │           │       │       ├── rowan may.png
+│   │           │       │       ├── rowan nov.png
+│   │           │       │       ├── rowan oct.png
+│   │           │       │       ├── rowan sep.png
+│   │           │       │       ├── savannahtree.png
+│   │           │       │       ├── scheelite.png
+│   │           │       │       ├── school notiles.png
+│   │           │       │       ├── school snowy notiles.png
+│   │           │       │       ├── school snowy.png
+│   │           │       │       ├── school.png
+│   │           │       │       ├── seashell.png
+│   │           │       │       ├── shallow water.png
+│   │           │       │       ├── shop notiles.png
+│   │           │       │       ├── shop snowy notiles.png
+│   │           │       │       ├── shop snowy.png
+│   │           │       │       ├── shop.png
+│   │           │       │       ├── shrimps.png
+│   │           │       │       ├── sign.png
+│   │           │       │       ├── small willow chest.png
+│   │           │       │       ├── smoke signal ash pigeon.png
+│   │           │       │       ├── smoke signal ash.png
+│   │           │       │       ├── smoke signal.png
+│   │           │       │       ├── snow patch.png
+│   │           │       │       ├── spinning wheel.png
+│   │           │       │       ├── station notiles.png
+│   │           │       │       ├── station snowy notiles.png
+│   │           │       │       ├── station snowy.png
+│   │           │       │       ├── station.png
+│   │           │       │       ├── steppe farm.png
+│   │           │       │       ├── stick.png
+│   │           │       │       ├── stone pine.png
+│   │           │       │       ├── stone.png
+│   │           │       │       ├── swamp tree apr.png
+│   │           │       │       ├── swamp tree dec.png
+│   │           │       │       ├── swamp tree mar.png
+│   │           │       │       ├── swamp tree nov.png
+│   │           │       │       ├── swamp tree oct.png
+│   │           │       │       ├── swamp tree sep.png
+│   │           │       │       ├── table 1.png
+│   │           │       │       ├── table 2.png
+│   │           │       │       ├── table 3.png
+│   │           │       │       ├── table 4.png
+│   │           │       │       ├── table housing.png
+│   │           │       │       ├── tall tree apr deco.png
+│   │           │       │       ├── tall tree apr.png
+│   │           │       │       ├── tall tree dec deco snow.png
+│   │           │       │       ├── tall tree dec deco.png
+│   │           │       │       ├── tall tree dec snow.png
+│   │           │       │       ├── tall tree dec.png
+│   │           │       │       ├── tall tree mar deco.png
+│   │           │       │       ├── tall tree mar.png
+│   │           │       │       ├── tall tree may deco.png
+│   │           │       │       ├── tall tree may.png
+│   │           │       │       ├── tall tree nov deco.png
+│   │           │       │       ├── tall tree nov.png
+│   │           │       │       ├── tall tree oct deco.png
+│   │           │       │       ├── tall tree oct.png
+│   │           │       │       ├── tall tree sep deco.png
+│   │           │       │       ├── tall tree sep.png
+│   │           │       │       ├── tallgrass.png
+│   │           │       │       ├── tent 2.png
+│   │           │       │       ├── tent.png
+│   │           │       │       ├── thornvine.png
+│   │           │       │       ├── tiny platinum nugget.png
+│   │           │       │       ├── tree apr.png
+│   │           │       │       ├── tree dec snow.png
+│   │           │       │       ├── tree dec.png
+│   │           │       │       ├── tree mar.png
+│   │           │       │       ├── tree may pears.png
+│   │           │       │       ├── tree may.png
+│   │           │       │       ├── tree nov.png
+│   │           │       │       ├── tree oct.png
+│   │           │       │       ├── tree sep.png
+│   │           │       │       ├── truffle.png
+│   │           │       │       ├── wall horisontal.png
+│   │           │       │       ├── wall vertical.png
+│   │           │       │       ├── wheat apr.png
+│   │           │       │       ├── wheat jul.png
+│   │           │       │       ├── wheat mar.png
+│   │           │       │       ├── wheat may.png
+│   │           │       │       ├── wheat nov.png
+│   │           │       │       ├── wheat planted.png
+│   │           │       │       ├── whirlpool frozen.png
+│   │           │       │       ├── whirlpool.png
+│   │           │       │       ├── willow apr.png
+│   │           │       │       ├── willow chest.png
+│   │           │       │       ├── willow nov.png
+│   │           │       │       ├── willow oct.png
+│   │           │       │       ├── willowcut.png
+│   │           │       │       ├── wilted plants.png
+│   │           │       │       ├── windmill construction.png
+│   │           │       │       ├── windmill.png
+│   │           │       │       ├── winter orb bare notiles noshade.png
+│   │           │       │       ├── winter orb bare notiles.png
+│   │           │       │       ├── winter orb bare.png
+│   │           │       │       ├── winter orb chars notiles noshade.png
+│   │           │       │       ├── winter orb chars notiles.png
+│   │           │       │       ├── winter orb chars.png
+│   │           │       │       ├── winter orb filling notiles noshade.png
+│   │           │       │       ├── winter orb filling notiles.png
+│   │           │       │       ├── winter orb filling.png
+│   │           │       │       ├── winter orb ice chars notiles noshade.png
+│   │           │       │       ├── winter orb ice chars notiles.png
+│   │           │       │       ├── winter orb ice chars.png
+│   │           │       │       ├── winter orb ice notiles noshade.png
+│   │           │       │       ├── winter orb ice notiles.png
+│   │           │       │       ├── winter orb ice.png
+│   │           │       │       ├── winter orb net notiles noshade.png
+│   │           │       │       ├── winter orb net notiles.png
+│   │           │       │       ├── winter orb net.png
+│   │           │       │       ├── winter orb notiles noshade.png
+│   │           │       │       ├── winter orb notiles.png
+│   │           │       │       ├── winter orb snow chars.png
+│   │           │       │       ├── winter orb snow.png
+│   │           │       │       ├── winter orb.png
+│   │           │       │       ├── workshop notiles.png
+│   │           │       │       ├── workshop snowy notiles.png
+│   │           │       │       ├── workshop snowy.png
+│   │           │       │       ├── workshop.png
+│   │           │       │       └── yellowgrass.png
+│   │           │       ├── top-down-rpg-assets-1.1.0.zip
+│   │           │       ├── top-down-tiled-rpg-assets
+│   │           │       │   ├── Objects
+│   │           │       │   │   ├── Sargassum.png
+│   │           │       │   │   ├── Thorn dragon nest eggs.png
+│   │           │       │   │   ├── Thorn dragon nest.png
+│   │           │       │   │   ├── ant mound.png
+│   │           │       │   │   ├── anvil.png
+│   │           │       │   │   ├── appletree.png
+│   │           │       │   │   ├── arena snowy.png
+│   │           │       │   │   ├── arena.png
+│   │           │       │   │   ├── baretree.png
+│   │           │       │   │   ├── berry bush apr.png
+│   │           │       │   │   ├── berry bush oct.png
+│   │           │       │   │   ├── berry bush sep.png
+│   │           │       │   │   ├── birch apr.png
+│   │           │       │   │   ├── birch dec.png
+│   │           │       │   │   ├── birch nov.png
+│   │           │       │   │   ├── birch oct.png
+│   │           │       │   │   ├── birch sep.png
+│   │           │       │   │   ├── blackberry bush apr.png
+│   │           │       │   │   ├── blackberry bush aug.png
+│   │           │       │   │   ├── blackberry bush berries.png
+│   │           │       │   │   ├── blackberry bush dec.png
+│   │           │       │   │   ├── blackberry bush flowers.png
+│   │           │       │   │   ├── blackberry bush jan.png
+│   │           │       │   │   ├── blackberry bush jun.png
+│   │           │       │   │   ├── blackberry bush mar.png
+│   │           │       │   │   ├── blackberry bush may.png
+│   │           │       │   │   ├── blackberry bush nov.png
+│   │           │       │   │   ├── blackberry bush oct.png
+│   │           │       │   │   ├── blackberry bush sep.png
+│   │           │       │   │   ├── blocked cave.png
+│   │           │       │   │   ├── blueberry bush apr.png
+│   │           │       │   │   ├── blueberry bush oct.png
+│   │           │       │   │   ├── blueberry bush sep.png
+│   │           │       │   │   ├── boat.png
+│   │           │       │   │   ├── books.png
+│   │           │       │   │   ├── boulder snow.png
+│   │           │       │   │   ├── boulder.png
+│   │           │       │   │   ├── box.png
+│   │           │       │   │   ├── bush apr.png
+│   │           │       │   │   ├── bush dec.png
+│   │           │       │   │   ├── bush mar.png
+│   │           │       │   │   ├── bush nov.png
+│   │           │       │   │   ├── bush oct.png
+│   │           │       │   │   ├── bush sep.png
+│   │           │       │   │   ├── cactus.png
+│   │           │       │   │   ├── campfire ash.png
+│   │           │       │   │   ├── campfire embers.png
+│   │           │       │   │   ├── campfire fire.png
+│   │           │       │   │   ├── campfire.png
+│   │           │       │   │   ├── carrageen moss.png
+│   │           │       │   │   ├── cassiterite.png
+│   │           │       │   │   ├── caulerpa lentillifera.png
+│   │           │       │   │   ├── cave up.png
+│   │           │       │   │   ├── cave whirlpool.png
+│   │           │       │   │   ├── cave.png
+│   │           │       │   │   ├── caveExit.png
+│   │           │       │   │   ├── cedar.png
+│   │           │       │   │   ├── cedarcut.png
+│   │           │       │   │   ├── charactite.png
+│   │           │       │   │   ├── charbush apr chars.png
+│   │           │       │   │   ├── charbush apr.png
+│   │           │       │   │   ├── charbush dec.png
+│   │           │       │   │   ├── charbush mar.png
+│   │           │       │   │   ├── charbush may chars.png
+│   │           │       │   │   ├── charbush may.png
+│   │           │       │   │   ├── charbush nov.png
+│   │           │       │   │   ├── charbush oct.png
+│   │           │       │   │   ├── charging pad.png
+│   │           │       │   │   ├── charging pad2.png
+│   │           │       │   │   ├── cherry tree apr.png
+│   │           │       │   │   ├── cherry tree dec.png
+│   │           │       │   │   ├── cherry tree jul.png
+│   │           │       │   │   ├── cherry tree jun.png
+│   │           │       │   │   ├── cherry tree may.png
+│   │           │       │   │   ├── cherry tree nov.png
+│   │           │       │   │   ├── cherry tree oct.png
+│   │           │       │   │   ├── cherry tree sep.png
+│   │           │       │   │   ├── chromite.png
+│   │           │       │   │   ├── cinnabar.png
+│   │           │       │   │   ├── coal ore.png
+│   │           │       │   │   ├── coconutpalm.png
+│   │           │       │   │   ├── constructing building 1.png
+│   │           │       │   │   ├── constructing building foundation.png
+│   │           │       │   │   ├── copper ore.png
+│   │           │       │   │   ├── copper wire#e.png
+│   │           │       │   │   ├── copper wire#en.png
+│   │           │       │   │   ├── copper wire#ens.png
+│   │           │       │   │   ├── copper wire#ensw.png
+│   │           │       │   │   ├── copper wire#enw.png
+│   │           │       │   │   ├── copper wire#es.png
+│   │           │       │   │   ├── copper wire#esw.png
+│   │           │       │   │   ├── copper wire#ew.png
+│   │           │       │   │   ├── copper wire#n.png
+│   │           │       │   │   ├── copper wire#ns.png
+│   │           │       │   │   ├── copper wire#nsw.png
+│   │           │       │   │   ├── copper wire#nw.png
+│   │           │       │   │   ├── copper wire#s.png
+│   │           │       │   │   ├── copper wire#sw.png
+│   │           │       │   │   ├── copper wire#w.png
+│   │           │       │   │   ├── copper wire.png
+│   │           │       │   │   ├── coral arena blocked.png
+│   │           │       │   │   ├── coral arena open.png
+│   │           │       │   │   ├── coral monster stem 2.png
+│   │           │       │   │   ├── coral monster stem.png
+│   │           │       │   │   ├── cracked boulder.png
+│   │           │       │   │   ├── cracks.png
+│   │           │       │   │   ├── cracky boulder.png
+│   │           │       │   │   ├── dragontail.png
+│   │           │       │   │   ├── dryshrub.png
+│   │           │       │   │   ├── exit.png
+│   │           │       │   │   ├── flax apr.png
+│   │           │       │   │   ├── flax cut.png
+│   │           │       │   │   ├── flax feb.png
+│   │           │       │   │   ├── flax jul.png
+│   │           │       │   │   ├── flax mar.png
+│   │           │       │   │   ├── flax nov.png
+│   │           │       │   │   ├── flax planted.png
+│   │           │       │   │   ├── forge.png
+│   │           │       │   │   ├── forsythia apr.png
+│   │           │       │   │   ├── forsythia jun.png
+│   │           │       │   │   ├── forsythia may.png
+│   │           │       │   │   ├── forsythia nov.png
+│   │           │       │   │   ├── forsythia oct.png
+│   │           │       │   │   ├── forsythia sep.png
+│   │           │       │   │   ├── fritillaria imperialis.png
+│   │           │       │   │   ├── galena.png
+│   │           │       │   │   ├── granite.png
+│   │           │       │   │   ├── grass green.png
+│   │           │       │   │   ├── hamster wheel generator.png
+│   │           │       │   │   ├── hamster wheel generator2.png
+│   │           │       │   │   ├── heartroot.png
+│   │           │       │   │   ├── hematite.png
+│   │           │       │   │   ├── house avail.png
+│   │           │       │   │   ├── house player.png
+│   │           │       │   │   ├── house snowy avail.png
+│   │           │       │   │   ├── house snowy player.png
+│   │           │       │   │   ├── house snowy.png
+│   │           │       │   │   ├── house.png
+│   │           │       │   │   ├── house2 avail.png
+│   │           │       │   │   ├── house2 player.png
+│   │           │       │   │   ├── house2 snowy avail.png
+│   │           │       │   │   ├── house2 snowy player.png
+│   │           │       │   │   ├── house2 snowy.png
+│   │           │       │   │   ├── house2.png
+│   │           │       │   │   ├── hydra tree apr chars.png
+│   │           │       │   │   ├── hydra tree apr.png
+│   │           │       │   │   ├── hydra tree dec.png
+│   │           │       │   │   ├── hydra tree mar.png
+│   │           │       │   │   ├── hydra tree nov.png
+│   │           │       │   │   ├── hydra tree oct chars.png
+│   │           │       │   │   ├── hydra tree oct.png
+│   │           │       │   │   ├── hydra tree sep chars.png
+│   │           │       │   │   ├── hydra tree sep.png
+│   │           │       │   │   ├── iceberg ice.png
+│   │           │       │   │   ├── iceberg ocean.png
+│   │           │       │   │   ├── icespikes.png
+│   │           │       │   │   ├── landing tower construction.png
+│   │           │       │   │   ├── landing tower.png
+│   │           │       │   │   ├── lilac dec.png
+│   │           │       │   │   ├── lilac jul.png
+│   │           │       │   │   ├── lilac jun purple.png
+│   │           │       │   │   ├── lilac may.png
+│   │           │       │   │   ├── lilac oct.png
+│   │           │       │   │   ├── lilac sep.png
+│   │           │       │   │   ├── logs.png
+│   │           │       │   │   ├── loom.png
+│   │           │       │   │   ├── loot chest opened.png
+│   │           │       │   │   ├── loot chest.png
+│   │           │       │   │   ├── loot.png
+│   │           │       │   │   ├── melanterite.png
+│   │           │       │   │   ├── minium.png
+│   │           │       │   │   ├── molybdenite.png
+│   │           │       │   │   ├── mortar.png
+│   │           │       │   │   ├── musa banana.png
+│   │           │       │   │   ├── musa.png
+│   │           │       │   │   ├── mushroom.png
+│   │           │       │   │   ├── niter.png
+│   │           │       │   │   ├── oats apr.png
+│   │           │       │   │   ├── oats aug.png
+│   │           │       │   │   ├── oats jun.png
+│   │           │       │   │   ├── oats may.png
+│   │           │       │   │   ├── oats nov.png
+│   │           │       │   │   ├── oats planted.png
+│   │           │       │   │   ├── olive tree blossom.png
+│   │           │       │   │   ├── olive tree olives.png
+│   │           │       │   │   ├── olive tree.png
+│   │           │       │   │   ├── orange tree bare.png
+│   │           │       │   │   ├── orange tree blossom.png
+│   │           │       │   │   ├── orange tree oranges.png
+│   │           │       │   │   ├── orange tree.png
+│   │           │       │   │   ├── palm.png
+│   │           │       │   │   ├── pine deco snow.png
+│   │           │       │   │   ├── pine deco.png
+│   │           │       │   │   ├── pine snow.png
+│   │           │       │   │   ├── pine.png
+│   │           │       │   │   ├── pot.png
+│   │           │       │   │   ├── potted cactus.png
+│   │           │       │   │   ├── potted rose buds.png
+│   │           │       │   │   ├── potted rose dead.png
+│   │           │       │   │   ├── potted rose flowers.png
+│   │           │       │   │   ├── potted rose sapling.png
+│   │           │       │   │   ├── potted rose seeds.png
+│   │           │       │   │   ├── potted rose wilted.png
+│   │           │       │   │   ├── quartzite.png
+│   │           │       │   │   ├── recycle bin with item.png
+│   │           │       │   │   ├── recycle bin.png
+│   │           │       │   │   ├── red pine snow.png
+│   │           │       │   │   ├── red pine.png
+│   │           │       │   │   ├── redthorn apr.png
+│   │           │       │   │   ├── redthorn jun.png
+│   │           │       │   │   ├── redthorn nov.png
+│   │           │       │   │   ├── redthorn oct.png
+│   │           │       │   │   ├── redthorn sep.png
+│   │           │       │   │   ├── reeds apr.png
+│   │           │       │   │   ├── reeds nov.png
+│   │           │       │   │   ├── rose buds.png
+│   │           │       │   │   ├── rose dead.png
+│   │           │       │   │   ├── rose flowers.png
+│   │           │       │   │   ├── rose planted.png
+│   │           │       │   │   ├── rose sapling.png
+│   │           │       │   │   ├── rose wilted.png
+│   │           │       │   │   ├── rowan apr.png
+│   │           │       │   │   ├── rowan aug.png
+│   │           │       │   │   ├── rowan dec.png
+│   │           │       │   │   ├── rowan jan.png
+│   │           │       │   │   ├── rowan may.png
+│   │           │       │   │   ├── rowan nov.png
+│   │           │       │   │   ├── rowan oct.png
+│   │           │       │   │   ├── rowan sep.png
+│   │           │       │   │   ├── savannahtree.png
+│   │           │       │   │   ├── scheelite.png
+│   │           │       │   │   ├── school snowy.png
+│   │           │       │   │   ├── school.png
+│   │           │       │   │   ├── seashell.png
+│   │           │       │   │   ├── shallow water.png
+│   │           │       │   │   ├── shop snowy.png
+│   │           │       │   │   ├── shop.png
+│   │           │       │   │   ├── shrimps.png
+│   │           │       │   │   ├── sign.png
+│   │           │       │   │   ├── small willow chest.png
+│   │           │       │   │   ├── smoke signal ash pigeon.png
+│   │           │       │   │   ├── smoke signal ash.png
+│   │           │       │   │   ├── smoke signal.png
+│   │           │       │   │   ├── snow patch.png
+│   │           │       │   │   ├── spinning wheel.png
+│   │           │       │   │   ├── station snowy.png
+│   │           │       │   │   ├── station.png
+│   │           │       │   │   ├── steppe farm.png
+│   │           │       │   │   ├── stick.png
+│   │           │       │   │   ├── stone pine.png
+│   │           │       │   │   ├── stone.png
+│   │           │       │   │   ├── swamp tree apr.png
+│   │           │       │   │   ├── swamp tree dec.png
+│   │           │       │   │   ├── swamp tree mar.png
+│   │           │       │   │   ├── swamp tree nov.png
+│   │           │       │   │   ├── swamp tree oct.png
+│   │           │       │   │   ├── swamp tree sep.png
+│   │           │       │   │   ├── table 1.png
+│   │           │       │   │   ├── table 2.png
+│   │           │       │   │   ├── table 3.png
+│   │           │       │   │   ├── table 4.png
+│   │           │       │   │   ├── table housing.png
+│   │           │       │   │   ├── tall tree apr deco.png
+│   │           │       │   │   ├── tall tree apr.png
+│   │           │       │   │   ├── tall tree dec deco snow.png
+│   │           │       │   │   ├── tall tree dec deco.png
+│   │           │       │   │   ├── tall tree dec snow.png
+│   │           │       │   │   ├── tall tree dec.png
+│   │           │       │   │   ├── tall tree mar deco.png
+│   │           │       │   │   ├── tall tree mar.png
+│   │           │       │   │   ├── tall tree may deco.png
+│   │           │       │   │   ├── tall tree may.png
+│   │           │       │   │   ├── tall tree nov deco.png
+│   │           │       │   │   ├── tall tree nov.png
+│   │           │       │   │   ├── tall tree oct deco.png
+│   │           │       │   │   ├── tall tree oct.png
+│   │           │       │   │   ├── tall tree sep deco.png
+│   │           │       │   │   ├── tall tree sep.png
+│   │           │       │   │   ├── tallgrass.png
+│   │           │       │   │   ├── tent 2.png
+│   │           │       │   │   ├── tent.png
+│   │           │       │   │   ├── thornvine.png
+│   │           │       │   │   ├── tiny platinum nugget.png
+│   │           │       │   │   ├── tree apr.png
+│   │           │       │   │   ├── tree dec snow.png
+│   │           │       │   │   ├── tree dec.png
+│   │           │       │   │   ├── tree mar.png
+│   │           │       │   │   ├── tree may pears.png
+│   │           │       │   │   ├── tree may.png
+│   │           │       │   │   ├── tree nov.png
+│   │           │       │   │   ├── tree oct.png
+│   │           │       │   │   ├── tree sep.png
+│   │           │       │   │   ├── truffle.png
+│   │           │       │   │   ├── wall horisontal.png
+│   │           │       │   │   ├── wall vertical.png
+│   │           │       │   │   ├── wheat apr.png
+│   │           │       │   │   ├── wheat jul.png
+│   │           │       │   │   ├── wheat mar.png
+│   │           │       │   │   ├── wheat may.png
+│   │           │       │   │   ├── wheat nov.png
+│   │           │       │   │   ├── wheat planted.png
+│   │           │       │   │   ├── whirlpool frozen.png
+│   │           │       │   │   ├── whirlpool.png
+│   │           │       │   │   ├── willow apr.png
+│   │           │       │   │   ├── willow chest.png
+│   │           │       │   │   ├── willow nov.png
+│   │           │       │   │   ├── willow oct.png
+│   │           │       │   │   ├── willowcut.png
+│   │           │       │   │   ├── wilted plants.png
+│   │           │       │   │   ├── windmill construction.png
+│   │           │       │   │   ├── windmill.png
+│   │           │       │   │   ├── winter orb bare.png
+│   │           │       │   │   ├── winter orb filling.png
+│   │           │       │   │   ├── winter orb ice chars.png
+│   │           │       │   │   ├── winter orb ice.png
+│   │           │       │   │   ├── winter orb net.png
+│   │           │       │   │   ├── winter orb snow chars.png
+│   │           │       │   │   ├── winter orb snow.png
+│   │           │       │   │   ├── winter orb.png
+│   │           │       │   │   ├── workshop snowy.png
+│   │           │       │   │   ├── workshop.png
+│   │           │       │   │   └── yellowgrass.png
+│   │           │       │   └── Tiles
+│   │           │       │       ├── algae green.png
+│   │           │       │       ├── basalt.png
+│   │           │       │       ├── cave coral black weakened.png
+│   │           │       │       ├── cave coral black.png
+│   │           │       │       ├── cave gravel 2.png
+│   │           │       │       ├── cave gravel 3.png
+│   │           │       │       ├── cave gravel 4.png
+│   │           │       │       ├── cave gravel 5.png
+│   │           │       │       ├── cave gravel.png
+│   │           │       │       ├── cave ice.png
+│   │           │       │       ├── cave magma cold.png
+│   │           │       │       ├── cave magma.png
+│   │           │       │       ├── cave wall.png
+│   │           │       │       ├── cave water stalagmite.png
+│   │           │       │       ├── caveCliff2.png
+│   │           │       │       ├── caveCliff3.png
+│   │           │       │       ├── caveCliff4.png
+│   │           │       │       ├── caveCliff5.png
+│   │           │       │       ├── cavewater.png
+│   │           │       │       ├── clay.png
+│   │           │       │       ├── cliff ice.png
+│   │           │       │       ├── cliff.png
+│   │           │       │       ├── coldCaveGravel.png
+│   │           │       │       ├── coldcliff.png
+│   │           │       │       ├── construction path snowy.png
+│   │           │       │       ├── construction path.png
+│   │           │       │       ├── coral black weakened.png
+│   │           │       │       ├── coral black.png
+│   │           │       │       ├── coral blue chars.png
+│   │           │       │       ├── coral blue.png
+│   │           │       │       ├── coral orange.png
+│   │           │       │       ├── coralgreen.png
+│   │           │       │       ├── coralred.png
+│   │           │       │       ├── coralyellow.png
+│   │           │       │       ├── cyan grass.png
+│   │           │       │       ├── darkCaveGravel.png
+│   │           │       │       ├── darkcliff.png
+│   │           │       │       ├── deepocean.png
+│   │           │       │       ├── dryland.png
+│   │           │       │       ├── dustgrass.png
+│   │           │       │       ├── dustland.png
+│   │           │       │       ├── farmland.png
+│   │           │       │       ├── granite cliff.png
+│   │           │       │       ├── granite floor.png
+│   │           │       │       ├── granite tile.png
+│   │           │       │       ├── grass nov.png
+│   │           │       │       ├── grass oct.png
+│   │           │       │       ├── grass sep.png
+│   │           │       │       ├── grass.png
+│   │           │       │       ├── gravel.png
+│   │           │       │       ├── higherland.png
+│   │           │       │       ├── highland arid.png
+│   │           │       │       ├── highland.png
+│   │           │       │       ├── ice.png
+│   │           │       │       ├── infested gravel.png
+│   │           │       │       ├── junglegrass.png
+│   │           │       │       ├── landcoralblack.png
+│   │           │       │       ├── lilypad.png
+│   │           │       │       ├── loading.png
+│   │           │       │       ├── map tile city.png
+│   │           │       │       ├── map tile forest.png
+│   │           │       │       ├── map tile grass.png
+│   │           │       │       ├── map tile mountain.png
+│   │           │       │       ├── map tile ocean.png
+│   │           │       │       ├── map tile sand.png
+│   │           │       │       ├── monsoongrass.png
+│   │           │       │       ├── mountainfloor.png
+│   │           │       │       ├── mud.png
+│   │           │       │       ├── ocean.png
+│   │           │       │       ├── path snowy.png
+│   │           │       │       ├── path.png
+│   │           │       │       ├── path2 snowy.png
+│   │           │       │       ├── path2.png
+│   │           │       │       ├── pebbles cave.png
+│   │           │       │       ├── pebbles snow.png
+│   │           │       │       ├── pebbles.png
+│   │           │       │       ├── permasnow.png
+│   │           │       │       ├── quartzite cliff.png
+│   │           │       │       ├── quartzite floor.png
+│   │           │       │       ├── quartzite tile.png
+│   │           │       │       ├── sand ash.png
+│   │           │       │       ├── sand orange.png
+│   │           │       │       ├── sand white.png
+│   │           │       │       ├── sand.png
+│   │           │       │       ├── savannah.png
+│   │           │       │       ├── shallowwater.png
+│   │           │       │       ├── snow.png
+│   │           │       │       ├── stone tile.png
+│   │           │       │       ├── swamp grass mar.png
+│   │           │       │       ├── swamp grass nov.png
+│   │           │       │       ├── swamp grass oct.png
+│   │           │       │       ├── swamp grass sep.png
+│   │           │       │       ├── taiga.png
+│   │           │       │       ├── thornfloor damp.png
+│   │           │       │       ├── thornfloor.png
+│   │           │       │       ├── tundra.png
+│   │           │       │       ├── water.png
+│   │           │       │       ├── wood tile.png
+│   │           │       │       ├── wood wall.png
+│   │           │       │       ├── woodpath snowy.png
+│   │           │       │       ├── woodpath.png
+│   │           │       │       ├── woodpath2.png
+│   │           │       │       └── yellow grass.png
+│   │           │       ├── top-down-tiled-rpg-assets-1.0.1
+│   │           │       │   ├── Objects
+│   │           │       │   │   ├── Sargassum.png
+│   │           │       │   │   ├── Thorn dragon nest eggs.png
+│   │           │       │   │   ├── Thorn dragon nest.png
+│   │           │       │   │   ├── ancient tree cut mar.png
+│   │           │       │   │   ├── ancient tree cut nov.png
+│   │           │       │   │   ├── ancient tree cut oct.png
+│   │           │       │   │   ├── ancient tree cut sep.png
+│   │           │       │   │   ├── ancient tree cut snow.png
+│   │           │       │   │   ├── ancient tree mar.png
+│   │           │       │   │   ├── ancient tree nov.png
+│   │           │       │   │   ├── ancient tree oct.png
+│   │           │       │   │   ├── ancient tree sep.png
+│   │           │       │   │   ├── ancient tree snow.png
+│   │           │       │   │   ├── ant mound.png
+│   │           │       │   │   ├── anvil.png
+│   │           │       │   │   ├── appletree.png
+│   │           │       │   │   ├── arena snowy.png
+│   │           │       │   │   ├── arena.png
+│   │           │       │   │   ├── baretree.png
+│   │           │       │   │   ├── berry bush apr.png
+│   │           │       │   │   ├── berry bush oct.png
+│   │           │       │   │   ├── berry bush sep.png
+│   │           │       │   │   ├── birch apr.png
+│   │           │       │   │   ├── birch dec.png
+│   │           │       │   │   ├── birch nov.png
+│   │           │       │   │   ├── birch oct.png
+│   │           │       │   │   ├── birch sep.png
+│   │           │       │   │   ├── blackberry bush apr.png
+│   │           │       │   │   ├── blackberry bush aug.png
+│   │           │       │   │   ├── blackberry bush berries.png
+│   │           │       │   │   ├── blackberry bush dec.png
+│   │           │       │   │   ├── blackberry bush flowers.png
+│   │           │       │   │   ├── blackberry bush jan.png
+│   │           │       │   │   ├── blackberry bush jun.png
+│   │           │       │   │   ├── blackberry bush mar.png
+│   │           │       │   │   ├── blackberry bush may.png
+│   │           │       │   │   ├── blackberry bush nov.png
+│   │           │       │   │   ├── blackberry bush oct.png
+│   │           │       │   │   ├── blackberry bush sep.png
+│   │           │       │   │   ├── blocked cave.png
+│   │           │       │   │   ├── blueberry bush apr.png
+│   │           │       │   │   ├── blueberry bush oct.png
+│   │           │       │   │   ├── blueberry bush sep.png
+│   │           │       │   │   ├── boat.png
+│   │           │       │   │   ├── books.png
+│   │           │       │   │   ├── boulder snow.png
+│   │           │       │   │   ├── boulder.png
+│   │           │       │   │   ├── box.png
+│   │           │       │   │   ├── bush apr.png
+│   │           │       │   │   ├── bush dec snow.png
+│   │           │       │   │   ├── bush dec.png
+│   │           │       │   │   ├── bush mar.png
+│   │           │       │   │   ├── bush nov.png
+│   │           │       │   │   ├── bush oct.png
+│   │           │       │   │   ├── bush sep.png
+│   │           │       │   │   ├── cactus.png
+│   │           │       │   │   ├── campfire ash.png
+│   │           │       │   │   ├── campfire embers.png
+│   │           │       │   │   ├── campfire fire.png
+│   │           │       │   │   ├── campfire.png
+│   │           │       │   │   ├── carrageen moss.png
+│   │           │       │   │   ├── cassiterite.png
+│   │           │       │   │   ├── caulerpa lentillifera.png
+│   │           │       │   │   ├── cave up.png
+│   │           │       │   │   ├── cave whirlpool.png
+│   │           │       │   │   ├── cave.png
+│   │           │       │   │   ├── caveExit.png
+│   │           │       │   │   ├── cedar.png
+│   │           │       │   │   ├── cedarcut.png
+│   │           │       │   │   ├── charactite.png
+│   │           │       │   │   ├── charbush apr chars.png
+│   │           │       │   │   ├── charbush apr.png
+│   │           │       │   │   ├── charbush dec.png
+│   │           │       │   │   ├── charbush mar.png
+│   │           │       │   │   ├── charbush may chars.png
+│   │           │       │   │   ├── charbush may.png
+│   │           │       │   │   ├── charbush nov.png
+│   │           │       │   │   ├── charbush oct.png
+│   │           │       │   │   ├── charging pad.png
+│   │           │       │   │   ├── charging pad2.png
+│   │           │       │   │   ├── cherry tree apr.png
+│   │           │       │   │   ├── cherry tree dec.png
+│   │           │       │   │   ├── cherry tree jul.png
+│   │           │       │   │   ├── cherry tree jun.png
+│   │           │       │   │   ├── cherry tree may.png
+│   │           │       │   │   ├── cherry tree nov.png
+│   │           │       │   │   ├── cherry tree oct.png
+│   │           │       │   │   ├── cherry tree sep.png
+│   │           │       │   │   ├── chromite.png
+│   │           │       │   │   ├── cinnabar.png
+│   │           │       │   │   ├── coal ore.png
+│   │           │       │   │   ├── coconutpalm.png
+│   │           │       │   │   ├── constructing building 1.png
+│   │           │       │   │   ├── constructing building foundation.png
+│   │           │       │   │   ├── copper ore.png
+│   │           │       │   │   ├── copper wire#e.png
+│   │           │       │   │   ├── copper wire#en.png
+│   │           │       │   │   ├── copper wire#ens.png
+│   │           │       │   │   ├── copper wire#ensw.png
+│   │           │       │   │   ├── copper wire#enw.png
+│   │           │       │   │   ├── copper wire#es.png
+│   │           │       │   │   ├── copper wire#esw.png
+│   │           │       │   │   ├── copper wire#ew.png
+│   │           │       │   │   ├── copper wire#n.png
+│   │           │       │   │   ├── copper wire#ns.png
+│   │           │       │   │   ├── copper wire#nsw.png
+│   │           │       │   │   ├── copper wire#nw.png
+│   │           │       │   │   ├── copper wire#s.png
+│   │           │       │   │   ├── copper wire#sw.png
+│   │           │       │   │   ├── copper wire#w.png
+│   │           │       │   │   ├── copper wire.png
+│   │           │       │   │   ├── coral arena blocked.png
+│   │           │       │   │   ├── coral arena open.png
+│   │           │       │   │   ├── coral monster stem 2.png
+│   │           │       │   │   ├── coral monster stem.png
+│   │           │       │   │   ├── cracked boulder.png
+│   │           │       │   │   ├── cracks.png
+│   │           │       │   │   ├── cracky boulder.png
+│   │           │       │   │   ├── dragontail.png
+│   │           │       │   │   ├── dryshrub.png
+│   │           │       │   │   ├── exit.png
+│   │           │       │   │   ├── flax apr.png
+│   │           │       │   │   ├── flax cut.png
+│   │           │       │   │   ├── flax feb.png
+│   │           │       │   │   ├── flax jul.png
+│   │           │       │   │   ├── flax mar.png
+│   │           │       │   │   ├── flax nov.png
+│   │           │       │   │   ├── flax planted.png
+│   │           │       │   │   ├── forge.png
+│   │           │       │   │   ├── forsythia apr.png
+│   │           │       │   │   ├── forsythia jun.png
+│   │           │       │   │   ├── forsythia may.png
+│   │           │       │   │   ├── forsythia nov.png
+│   │           │       │   │   ├── forsythia oct.png
+│   │           │       │   │   ├── forsythia sep.png
+│   │           │       │   │   ├── fritillaria imperialis.png
+│   │           │       │   │   ├── galena.png
+│   │           │       │   │   ├── granite.png
+│   │           │       │   │   ├── grass green.png
+│   │           │       │   │   ├── hamster wheel generator.png
+│   │           │       │   │   ├── hamster wheel generator2.png
+│   │           │       │   │   ├── heartroot.png
+│   │           │       │   │   ├── hematite.png
+│   │           │       │   │   ├── house avail.png
+│   │           │       │   │   ├── house player.png
+│   │           │       │   │   ├── house snowy avail.png
+│   │           │       │   │   ├── house snowy player.png
+│   │           │       │   │   ├── house snowy.png
+│   │           │       │   │   ├── house.png
+│   │           │       │   │   ├── house2 avail.png
+│   │           │       │   │   ├── house2 player.png
+│   │           │       │   │   ├── house2 snowy avail.png
+│   │           │       │   │   ├── house2 snowy player.png
+│   │           │       │   │   ├── house2 snowy.png
+│   │           │       │   │   ├── house2.png
+│   │           │       │   │   ├── hydra tree apr chars.png
+│   │           │       │   │   ├── hydra tree apr.png
+│   │           │       │   │   ├── hydra tree dec.png
+│   │           │       │   │   ├── hydra tree mar.png
+│   │           │       │   │   ├── hydra tree nov.png
+│   │           │       │   │   ├── hydra tree oct chars.png
+│   │           │       │   │   ├── hydra tree oct.png
+│   │           │       │   │   ├── hydra tree sep chars.png
+│   │           │       │   │   ├── hydra tree sep.png
+│   │           │       │   │   ├── iceberg ice.png
+│   │           │       │   │   ├── iceberg ocean.png
+│   │           │       │   │   ├── icespikes.png
+│   │           │       │   │   ├── landing tower construction.png
+│   │           │       │   │   ├── landing tower.png
+│   │           │       │   │   ├── lava pond cooled dustgrass.png
+│   │           │       │   │   ├── lava pond cooled.png
+│   │           │       │   │   ├── lava pond dustgrass.png
+│   │           │       │   │   ├── lava pond.png
+│   │           │       │   │   ├── lilac dec.png
+│   │           │       │   │   ├── lilac jul.png
+│   │           │       │   │   ├── lilac jun purple.png
+│   │           │       │   │   ├── lilac may.png
+│   │           │       │   │   ├── lilac oct.png
+│   │           │       │   │   ├── lilac sep.png
+│   │           │       │   │   ├── logs.png
+│   │           │       │   │   ├── loom.png
+│   │           │       │   │   ├── loot chest opened.png
+│   │           │       │   │   ├── loot chest.png
+│   │           │       │   │   ├── loot.png
+│   │           │       │   │   ├── maelstrom disturbed.png
+│   │           │       │   │   ├── maelstrom.png
+│   │           │       │   │   ├── melanterite.png
+│   │           │       │   │   ├── minium.png
+│   │           │       │   │   ├── molybdenite.png
+│   │           │       │   │   ├── mortar.png
+│   │           │       │   │   ├── musa banana.png
+│   │           │       │   │   ├── musa.png
+│   │           │       │   │   ├── mushroom.png
+│   │           │       │   │   ├── niter.png
+│   │           │       │   │   ├── oats apr.png
+│   │           │       │   │   ├── oats aug.png
+│   │           │       │   │   ├── oats jun.png
+│   │           │       │   │   ├── oats may.png
+│   │           │       │   │   ├── oats nov.png
+│   │           │       │   │   ├── oats planted.png
+│   │           │       │   │   ├── olive tree blossom.png
+│   │           │       │   │   ├── olive tree olives.png
+│   │           │       │   │   ├── olive tree.png
+│   │           │       │   │   ├── orange tree bare.png
+│   │           │       │   │   ├── orange tree blossom.png
+│   │           │       │   │   ├── orange tree oranges.png
+│   │           │       │   │   ├── orange tree.png
+│   │           │       │   │   ├── palm.png
+│   │           │       │   │   ├── pine bare snow.png
+│   │           │       │   │   ├── pine bare.png
+│   │           │       │   │   ├── pine deco snow.png
+│   │           │       │   │   ├── pine deco.png
+│   │           │       │   │   ├── pine snow.png
+│   │           │       │   │   ├── pine.png
+│   │           │       │   │   ├── pot.png
+│   │           │       │   │   ├── potted cactus.png
+│   │           │       │   │   ├── potted rose buds.png
+│   │           │       │   │   ├── potted rose dead.png
+│   │           │       │   │   ├── potted rose flowers.png
+│   │           │       │   │   ├── potted rose sapling.png
+│   │           │       │   │   ├── potted rose seeds.png
+│   │           │       │   │   ├── potted rose wilted.png
+│   │           │       │   │   ├── quartzite.png
+│   │           │       │   │   ├── recycle bin with item.png
+│   │           │       │   │   ├── recycle bin.png
+│   │           │       │   │   ├── red pine snow.png
+│   │           │       │   │   ├── red pine.png
+│   │           │       │   │   ├── redthorn apr.png
+│   │           │       │   │   ├── redthorn jun.png
+│   │           │       │   │   ├── redthorn nov.png
+│   │           │       │   │   ├── redthorn oct.png
+│   │           │       │   │   ├── redthorn sep.png
+│   │           │       │   │   ├── reeds apr.png
+│   │           │       │   │   ├── reeds nov.png
+│   │           │       │   │   ├── rose buds.png
+│   │           │       │   │   ├── rose dead.png
+│   │           │       │   │   ├── rose flowers.png
+│   │           │       │   │   ├── rose planted.png
+│   │           │       │   │   ├── rose sapling.png
+│   │           │       │   │   ├── rose wilted.png
+│   │           │       │   │   ├── rowan apr.png
+│   │           │       │   │   ├── rowan aug.png
+│   │           │       │   │   ├── rowan dec.png
+│   │           │       │   │   ├── rowan jan.png
+│   │           │       │   │   ├── rowan may.png
+│   │           │       │   │   ├── rowan nov.png
+│   │           │       │   │   ├── rowan oct.png
+│   │           │       │   │   ├── rowan sep.png
+│   │           │       │   │   ├── savannahtree.png
+│   │           │       │   │   ├── scheelite.png
+│   │           │       │   │   ├── school snowy.png
+│   │           │       │   │   ├── school.png
+│   │           │       │   │   ├── seashell.png
+│   │           │       │   │   ├── shallow water.png
+│   │           │       │   │   ├── shop snowy.png
+│   │           │       │   │   ├── shop.png
+│   │           │       │   │   ├── shrimps.png
+│   │           │       │   │   ├── sign.png
+│   │           │       │   │   ├── small willow chest.png
+│   │           │       │   │   ├── smoke signal ash pigeon.png
+│   │           │       │   │   ├── smoke signal ash.png
+│   │           │       │   │   ├── smoke signal.png
+│   │           │       │   │   ├── snow patch.png
+│   │           │       │   │   ├── spinning wheel.png
+│   │           │       │   │   ├── station snowy.png
+│   │           │       │   │   ├── station.png
+│   │           │       │   │   ├── steppe farm.png
+│   │           │       │   │   ├── stick.png
+│   │           │       │   │   ├── stone pine.png
+│   │           │       │   │   ├── stone.png
+│   │           │       │   │   ├── swamp tree apr.png
+│   │           │       │   │   ├── swamp tree dec.png
+│   │           │       │   │   ├── swamp tree mar.png
+│   │           │       │   │   ├── swamp tree nov.png
+│   │           │       │   │   ├── swamp tree oct.png
+│   │           │       │   │   ├── swamp tree sep.png
+│   │           │       │   │   ├── table 1.png
+│   │           │       │   │   ├── table 2.png
+│   │           │       │   │   ├── table 3.png
+│   │           │       │   │   ├── table 4.png
+│   │           │       │   │   ├── table housing.png
+│   │           │       │   │   ├── tall tree apr deco.png
+│   │           │       │   │   ├── tall tree apr.png
+│   │           │       │   │   ├── tall tree dec deco snow.png
+│   │           │       │   │   ├── tall tree dec deco.png
+│   │           │       │   │   ├── tall tree dec snow.png
+│   │           │       │   │   ├── tall tree dec.png
+│   │           │       │   │   ├── tall tree mar deco.png
+│   │           │       │   │   ├── tall tree mar.png
+│   │           │       │   │   ├── tall tree may deco.png
+│   │           │       │   │   ├── tall tree may.png
+│   │           │       │   │   ├── tall tree nov deco.png
+│   │           │       │   │   ├── tall tree nov.png
+│   │           │       │   │   ├── tall tree oct deco.png
+│   │           │       │   │   ├── tall tree oct.png
+│   │           │       │   │   ├── tall tree sep deco.png
+│   │           │       │   │   ├── tall tree sep.png
+│   │           │       │   │   ├── tallgrass.png
+│   │           │       │   │   ├── tent 2.png
+│   │           │       │   │   ├── tent.png
+│   │           │       │   │   ├── thornvine.png
+│   │           │       │   │   ├── tiny platinum nugget.png
+│   │           │       │   │   ├── tree apr.png
+│   │           │       │   │   ├── tree dec snow.png
+│   │           │       │   │   ├── tree dec.png
+│   │           │       │   │   ├── tree mar.png
+│   │           │       │   │   ├── tree may pears.png
+│   │           │       │   │   ├── tree may.png
+│   │           │       │   │   ├── tree nov.png
+│   │           │       │   │   ├── tree oct.png
+│   │           │       │   │   ├── tree sep.png
+│   │           │       │   │   ├── truffle.png
+│   │           │       │   │   ├── wall horisontal.png
+│   │           │       │   │   ├── wall vertical.png
+│   │           │       │   │   ├── wheat apr.png
+│   │           │       │   │   ├── wheat jul.png
+│   │           │       │   │   ├── wheat mar.png
+│   │           │       │   │   ├── wheat may.png
+│   │           │       │   │   ├── wheat nov.png
+│   │           │       │   │   ├── wheat planted.png
+│   │           │       │   │   ├── whirlpool frozen.png
+│   │           │       │   │   ├── whirlpool.png
+│   │           │       │   │   ├── willow apr.png
+│   │           │       │   │   ├── willow chest.png
+│   │           │       │   │   ├── willow nov.png
+│   │           │       │   │   ├── willow oct.png
+│   │           │       │   │   ├── willowcut.png
+│   │           │       │   │   ├── wilted plants.png
+│   │           │       │   │   ├── windmill construction.png
+│   │           │       │   │   ├── windmill.png
+│   │           │       │   │   ├── winter orb bare.png
+│   │           │       │   │   ├── winter orb filling.png
+│   │           │       │   │   ├── winter orb ice chars.png
+│   │           │       │   │   ├── winter orb ice.png
+│   │           │       │   │   ├── winter orb net.png
+│   │           │       │   │   ├── winter orb snow chars.png
+│   │           │       │   │   ├── winter orb snow.png
+│   │           │       │   │   ├── winter orb.png
+│   │           │       │   │   ├── workshop snowy.png
+│   │           │       │   │   ├── workshop.png
+│   │           │       │   │   └── yellowgrass.png
+│   │           │       │   └── Tiles
+│   │           │       │       ├── algae green.png
+│   │           │       │       ├── basalt.png
+│   │           │       │       ├── cave coral black weakened.png
+│   │           │       │       ├── cave coral black.png
+│   │           │       │       ├── cave gravel 2.png
+│   │           │       │       ├── cave gravel 3.png
+│   │           │       │       ├── cave gravel 4.png
+│   │           │       │       ├── cave gravel 5.png
+│   │           │       │       ├── cave gravel.png
+│   │           │       │       ├── cave ice.png
+│   │           │       │       ├── cave magma cold.png
+│   │           │       │       ├── cave magma.png
+│   │           │       │       ├── cave wall.png
+│   │           │       │       ├── cave water stalagmite.png
+│   │           │       │       ├── caveCliff2.png
+│   │           │       │       ├── caveCliff3.png
+│   │           │       │       ├── caveCliff4.png
+│   │           │       │       ├── caveCliff5.png
+│   │           │       │       ├── cavewater.png
+│   │           │       │       ├── clay.png
+│   │           │       │       ├── cliff ice.png
+│   │           │       │       ├── cliff.png
+│   │           │       │       ├── coldCaveGravel.png
+│   │           │       │       ├── coldcliff.png
+│   │           │       │       ├── construction path snowy.png
+│   │           │       │       ├── construction path.png
+│   │           │       │       ├── coral black weakened.png
+│   │           │       │       ├── coral black.png
+│   │           │       │       ├── coral blue chars.png
+│   │           │       │       ├── coral blue.png
+│   │           │       │       ├── coral orange.png
+│   │           │       │       ├── coralgreen.png
+│   │           │       │       ├── coralred.png
+│   │           │       │       ├── coralyellow.png
+│   │           │       │       ├── cyan grass.png
+│   │           │       │       ├── darkCaveGravel.png
+│   │           │       │       ├── darkcliff.png
+│   │           │       │       ├── deepocean.png
+│   │           │       │       ├── dryland.png
+│   │           │       │       ├── dustgrass.png
+│   │           │       │       ├── dustland.png
+│   │           │       │       ├── farmland.png
+│   │           │       │       ├── granite cliff.png
+│   │           │       │       ├── granite floor.png
+│   │           │       │       ├── granite tile.png
+│   │           │       │       ├── grass nov.png
+│   │           │       │       ├── grass oct.png
+│   │           │       │       ├── grass sep.png
+│   │           │       │       ├── grass.png
+│   │           │       │       ├── gravel.png
+│   │           │       │       ├── higherland.png
+│   │           │       │       ├── highland arid.png
+│   │           │       │       ├── highland.png
+│   │           │       │       ├── ice.png
+│   │           │       │       ├── infested gravel.png
+│   │           │       │       ├── junglegrass.png
+│   │           │       │       ├── landcoralblack.png
+│   │           │       │       ├── lilypad.png
+│   │           │       │       ├── loading.png
+│   │           │       │       ├── map tile city.png
+│   │           │       │       ├── map tile forest.png
+│   │           │       │       ├── map tile grass.png
+│   │           │       │       ├── map tile mountain.png
+│   │           │       │       ├── map tile ocean.png
+│   │           │       │       ├── map tile sand.png
+│   │           │       │       ├── monsoongrass.png
+│   │           │       │       ├── mountainfloor.png
+│   │           │       │       ├── mud.png
+│   │           │       │       ├── ocean.png
+│   │           │       │       ├── path snowy.png
+│   │           │       │       ├── path.png
+│   │           │       │       ├── path2 snowy.png
+│   │           │       │       ├── path2.png
+│   │           │       │       ├── pebbles cave.png
+│   │           │       │       ├── pebbles snow.png
+│   │           │       │       ├── pebbles.png
+│   │           │       │       ├── permasnow.png
+│   │           │       │       ├── quartzite cliff.png
+│   │           │       │       ├── quartzite floor.png
+│   │           │       │       ├── quartzite tile.png
+│   │           │       │       ├── sand ash.png
+│   │           │       │       ├── sand orange.png
+│   │           │       │       ├── sand white.png
+│   │           │       │       ├── sand.png
+│   │           │       │       ├── savannah.png
+│   │           │       │       ├── shallowwater.png
+│   │           │       │       ├── snow.png
+│   │           │       │       ├── stone tile.png
+│   │           │       │       ├── swamp grass mar.png
+│   │           │       │       ├── swamp grass nov.png
+│   │           │       │       ├── swamp grass oct.png
+│   │           │       │       ├── swamp grass sep.png
+│   │           │       │       ├── taidra.png
+│   │           │       │       ├── taiga.png
+│   │           │       │       ├── thornfloor damp.png
+│   │           │       │       ├── thornfloor.png
+│   │           │       │       ├── tundra snowy.png
+│   │           │       │       ├── tundra.png
+│   │           │       │       ├── water.png
+│   │           │       │       ├── wood tile.png
+│   │           │       │       ├── wood wall.png
+│   │           │       │       ├── woodpath snowy.png
+│   │           │       │       ├── woodpath.png
+│   │           │       │       ├── woodpath2.png
+│   │           │       │       └── yellow grass.png
+│   │           │       ├── top-down-tiled-rpg-assets-1.0.1.zip
+│   │           │       └── top-down-tiled-rpg-assets.zip
+│   │           ├── Test 1
+│   │           │   ├── 2dpixx_ccart_forest_tiles.png
+│   │           │   ├── 2dpixx_ccart_forest_tiles.tsx
+│   │           │   ├── Map.tmx
+│   │           │   ├── ground.png
+│   │           │   ├── map_FloorBlocks.csv
+│   │           │   ├── map_FloorBlocks.png
+│   │           │   ├── map_FloorBlocks.tmx
+│   │           │   ├── map_Grass.csv
+│   │           │   ├── map_Grass.png
+│   │           │   ├── map_Grass.tmx
+│   │           │   ├── map_Objects.csv
+│   │           │   ├── map_Objects.png
+│   │           │   ├── map_Objects.tmx
+│   │           │   ├── terrain_tiles24.png
+│   │           │   ├── terrain_tiles24.tsx
+│   │           │   ├── test_01.png
+│   │           │   ├── tileset_02.png
+│   │           │   └── tileset_02.tsx
+│   │           ├── arena snowy.tsx
+│   │           ├── preview-village.tsx
+│   │           ├── terrain-v7.tsx
+│   │           ├── terrain-v7_0.tsx
+│   │           ├── terrain_0.png
+│   │           ├── terrain_0.tsx
+│   │           ├── test_map.tmx
+│   │           └── uheartbeast
+│   │               ├── 2dpixx_ccart_forest_tiles.tsx
+│   │               ├── RPGTileset.png
+│   │               ├── RPGTileset.tsx
+│   │               ├── ground.png
+│   │               ├── map_FloorBlocks_Floor Blocks.csv
+│   │               ├── map_FloorBlocks_Grass.csv
+│   │               ├── map_FloorBlocks_Objects.csv
+│   │               ├── test_01.tmx
+│   │               ├── tileset_02.tsx
+│   │               └── voda_pesok_trava.tsx
+│   ├── leaderboard.py
+│   └── tests
+│       ├── leaderboard_test.py
+│       └── leaderboard_test.py~
+├── main_server.py
+├── server
+│   ├── Makefile
+│   ├── include
+│   │   ├── binary_serializer.h
+│   │   ├── json_serializer.h
+│   │   ├── player.h
+│   │   ├── serializer.h
+│   │   └── text_serializer.h
+│   ├── obj_text
+│   │   ├── binary_serializer.o
+│   │   ├── json_serializer.o
+│   │   ├── player.o
+│   │   └── text_serializer.o
+│   ├── server_text
+│   ├── src
+│   │   ├── binary_serializer.cpp
+│   │   ├── json_serializer.cpp
+│   │   ├── player.cpp
+│   │   ├── server.cpp
+│   │   └── text_serializer.cpp
+│   └── test_serializers.sh
+├── structure.txt
+├── uml_diagrams
+│   ├── UML_OV_final_project.svg
+│   └── UML_final_project.svg
+└── user_interaction
+    ├── __pycache__
+    │   ├── chat_history.cpython-312.pyc
+    │   ├── chat_message.cpython-312.pyc
+    │   ├── chat_moderation.cpython-312.pyc
+    │   ├── game_recommendation.cpython-312.pyc
+    │   ├── history.cpython-312.pyc
+    │   ├── play_history.cpython-312.pyc
+    │   ├── user.cpython-312.pyc
+    │   └── user_storage.cpython-312.pyc
+    ├── chat_history.py
+    ├── chat_message.py
+    ├── chat_moderation.py
+    ├── game_recommendation.py
+    ├── history.py
+    ├── play_history.py
+    ├── user.py
+    ├── user_indexing.py
+    └── user_storage.py
+
+527 directories, 3262 files
