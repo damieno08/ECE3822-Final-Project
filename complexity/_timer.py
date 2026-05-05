@@ -176,6 +176,8 @@ def save_space_plot(filename, title, series):
     fig.patch.set_facecolor("#fafafa")
     ax.set_facecolor("#ffffff")
 
+    all_positive = any(t > 0 for s in kb_series for _, t in s["rows"])
+
     for i, s in enumerate(kb_series):
         rows  = s["rows"]
         ns    = [r[0] for r in rows]
@@ -186,19 +188,28 @@ def save_space_plot(filename, title, series):
         ax.plot(ns, ts, marker=mark, color=color, label=s["label"],
                 linewidth=2.2, markersize=7, zorder=3)
 
-        cname = s.get("complexity")
-        if cname and cname in _THEORY and len(ns) > 1:
-            fn    = _THEORY[cname]
-            mid   = len(ns) // 2
-            f_mid = fn(ns[mid])
-            if f_mid != 0:
-                scale  = ts[mid] / f_mid
-                theory = [fn(n) * scale for n in ns]
-                ax.plot(ns, theory, linestyle="--", color=color, alpha=0.5,
-                        linewidth=1.6, label=f"{cname} fit", zorder=2)
+        if all_positive:
+            cname = s.get("complexity")
+            if cname and cname in _THEORY and len(ns) > 1:
+                fn    = _THEORY[cname]
+                mid   = len(ns) // 2
+                f_mid = fn(ns[mid])
+                if f_mid != 0:
+                    scale  = ts[mid] / f_mid
+                    theory = [fn(n) * scale for n in ns]
+                    ax.plot(ns, theory, linestyle="--", color=color, alpha=0.5,
+                            linewidth=1.6, label=f"{cname} fit", zorder=2)
 
     ax.set_xscale("log")
-    ax.set_yscale("log")
+    if all_positive:
+        ax.set_yscale("log")
+    else:
+        ax.set_ylim(-0.5, 2)
+        ax.axhline(y=0, color="#888", linestyle="--", linewidth=1, alpha=0.6)
+        ax.text(0.5, 0.5, "O(1) -- no heap allocation measured\n(stack space not tracked by tracemalloc)",
+                transform=ax.transAxes, ha="center", va="center",
+                fontsize=11, color="#555555",
+                bbox=dict(boxstyle="round,pad=0.4", facecolor="#f0f0f0", alpha=0.8))
     ax.xaxis.set_major_formatter(
         mticker.FuncFormatter(lambda x, _: f"{int(x):,}" if x >= 1 else f"{x:.2g}")
     )

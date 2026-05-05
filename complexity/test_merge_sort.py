@@ -3,9 +3,13 @@ test_merge_sort.py - Complexity test for algorithms.merge_sort.MergeSort
 
 Process tested: MergeSort(items) -- full sort of a random list of N integers.
 
-Expected: O(n log n)
-  Each time N doubles the ratio should be slightly above 2x
-  (the log factor grows slowly, so at large N it converges toward 2x).
+Time Complexity
+    O(n log n)  -- divides list log n times, merges O(n) elements each level.
+
+Space Complexity
+    O(n)  -- _merge() builds new result lists at each level; the total extra
+              memory across all active merge calls at any point is O(n).
+              Recursion stack depth is O(log n) but dominated by the O(n) lists.
 
 Revision History:
     (ST) 05/05/2026 Create initial file
@@ -18,7 +22,7 @@ import random
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from algorithms.merge_sort import MergeSort
-from complexity._timer import bench, print_table, save_plot
+from complexity._timer import bench, bench_space, print_table, print_space_table, save_plot, save_space_plot
 
 SIZES = [100, 500, 1_000, 5_000, 10_000, 50_000, 100_000]
 
@@ -54,12 +58,28 @@ def run():
         expected="O(n log n)  --  same asymptotic; key adds a constant factor",
     )
 
+    # ── Space ─────────────────────────────────────────────────────────────────
+    rows_space = bench_space(MergeSort, SIZES, setup=setup)
+    print_space_table(
+        "MergeSort  peak heap allocation",
+        rows_space,
+        expected="O(n)  --  _merge() allocates new lists at each level; ratio ~ N2/N1",
+    )
+
+    # ── Graphs ────────────────────────────────────────────────────────────────
     save_plot(
         "merge_sort.png",
         "MergeSort -- O(n log n)",
         [
             {"label": "MergeSort (plain list)",  "rows": rows,     "complexity": "O(n log n)"},
             {"label": "MergeSort (key+reverse)", "rows": rows_key, "complexity": "O(n log n)", "marker": "s"},
+        ],
+    )
+    save_space_plot(
+        "merge_sort_space.png",
+        "MergeSort -- Space Complexity  O(n)",
+        [
+            {"label": "peak heap allocation  [O(n)]", "rows": rows_space, "complexity": "O(n)"},
         ],
     )
 

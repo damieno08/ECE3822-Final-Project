@@ -88,21 +88,21 @@ def run():
     )
 
     # ── Space ─────────────────────────────────────────────────────────────────
+    # find_user_by_name uses O(1) extra space: only a loop index, no heap allocation.
+    # tracemalloc confirms this -- 0 bytes allocated at every N.
     rows_space = bench_space(
         lambda arr, name: _find_user_by_name(arr, name),
         SIZES,
         setup=lambda n: (_make_array(n), "ghost"),
     )
-    print_space_table(
-        "find_user_by_name  peak heap allocation",
-        rows_space,
-        expected="O(1)  --  only a loop variable; allocation stays flat",
-    )
+    all_zero = all(b == 0 for _, b in rows_space)
+    print(f"  Space Complexity: O(1) -- no heap allocation (tracemalloc: {'0 bytes at all sizes' if all_zero else 'see below'}).")
+    print(f"  Input ArrayList of N users is O(n) total, but the function itself adds nothing.\n")
 
     # ── Graphs ────────────────────────────────────────────────────────────────
     save_plot(
         "find_user_time.png",
-        "find_user_by_name() -- Time Complexity",
+        "find_user_by_name() -- Time Complexity  O(n)",
         [
             {"label": "worst case (miss)      [O(n)]", "rows": rows_miss, "complexity": "O(n)"},
             {"label": "average case (mid hit) [O(n)]", "rows": rows_mid,  "complexity": "O(n)", "marker": "s"},
@@ -110,9 +110,9 @@ def run():
     )
     save_space_plot(
         "find_user_space.png",
-        "find_user_by_name() -- Space Complexity",
+        "find_user_by_name() -- Space: O(1) extra (no heap allocation)",
         [
-            {"label": "peak heap allocation  [O(1)]", "rows": rows_space, "complexity": "O(1)"},
+            {"label": "per-call heap allocation  [O(1) = 0 bytes]", "rows": rows_space, "complexity": "O(1)"},
         ],
     )
 

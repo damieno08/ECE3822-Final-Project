@@ -17,8 +17,9 @@ Time Complexity
                    in the AVL BST to find the k-th order statistic.
 
 Space Complexity
-    O(k)  -- result list grows linearly with k; BST traversal uses O(log n)
-              stack frames but k dominates for the returned list.
+    O(n)  -- the BST itself stores one node per user.
+    O(1) per call  -- no extra heap allocation beyond the fixed-size result
+                      list (k entries), which is constant when k is fixed.
 
 Revision History:
     (ST) 05/05/2026 Create initial file
@@ -92,7 +93,7 @@ def run():
     print_space_table(
         f"top_n({K})  peak heap allocation",
         rows_space,
-        expected="O(k)  -- result list of k tuples; k=10 constant so allocation stays flat",
+        expected=f"O(1) per call (k={K} fixed) -- result list constant size; BST itself is O(n)",
     )
 
     # ── Graphs ────────────────────────────────────────────────────────────────
@@ -105,9 +106,9 @@ def run():
     )
     save_space_plot(
         "leaderboard_top_n_space.png",
-        f"Leaderboard.top_n({K}) -- Space Complexity vs. leaderboard size N",
+        f"Leaderboard.top_n({K}) -- Space: O(1)/call (k fixed), O(n) BST",
         [
-            {"label": f"peak heap allocation  [O(k)=O({K})]", "rows": rows_space, "complexity": "O(1)"},
+            {"label": f"per-call heap allocation  [O(1), k={K} fixed]", "rows": rows_space, "complexity": "O(1)"},
         ],
     )
 

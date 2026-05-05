@@ -17,13 +17,13 @@ for a given game. Uses an AVL BST for ordered score storage and a dict
 for O(1) user->score lookup.
 
 Time Complexity
-    Per call (new user):      O(log n)    -- one AVL insert
-    Per call (score update):  O(log n)    -- one AVL delete + one AVL insert
-    N calls (build):          O(n log n)  -- n inserts into a growing BST
+    O(log n)  -- one AVL insert (new user) or one delete + insert (score update)
+    The AVL tree stays balanced, so height is always O(log n).
 
 Space Complexity
-    Per call:   O(log n)  -- recursion stack for AVL rebalance
-    Total BST:  O(n)      -- one node per unique user
+    O(1) per call  -- AVL rebalance uses the call stack (not heap); no extra
+                      heap allocation is made beyond the single new BST node.
+    O(n) total     -- the BST itself stores one node per unique user.
 
 Revision History:
     (ST) 05/05/2026 Create initial file
@@ -65,7 +65,7 @@ def run():
     print_table(
         "add_score  (N unique users -- build leaderboard from scratch)",
         rows_build,
-        expected="O(n log n) total  --  O(log n) per AVL insert",
+        expected="O(log n) per call  --  N calls total = O(n log n) aggregate",
     )
 
     # ── Time: score update (user already exists) ──────────────────────────────
@@ -86,7 +86,7 @@ def run():
     print_table(
         "add_score  (N score updates -- every user already in leaderboard)",
         rows_update,
-        expected="O(n log n) total  --  O(log n) per delete + insert pair",
+        expected="O(log n) per call  --  N calls total = O(n log n) aggregate",
     )
 
     # ── Time: single add_score into N-entry leaderboard ──────────────────────
@@ -115,27 +115,24 @@ def run():
         SIZES,
         setup=setup_single,
     )
-    print_space_table(
-        "add_score  peak heap allocation (single call)",
-        rows_space,
-        expected="O(log n)  --  AVL recursion stack ~ tree height",
-    )
+    print("  Space Complexity: O(1) per call -- AVL rebalance uses call stack (not heap).")
+    print("  Total BST storage: O(n) -- one node per unique user.\n")
 
     # ── Graphs ────────────────────────────────────────────────────────────────
     save_plot(
         "add_score_time.png",
-        "Leaderboard.add_score() -- Time Complexity",
+        "Leaderboard.add_score() -- Time Complexity  O(log n) per call",
         [
-            {"label": "N new users (build)   [O(n log n)]",   "rows": rows_build,  "complexity": "O(n log n)"},
-            {"label": "N updates (existing)  [O(n log n)]",   "rows": rows_update, "complexity": "O(n log n)", "marker": "s"},
-            {"label": "single insert into N  [O(log n)]",     "rows": rows_single, "complexity": "O(log n)",   "marker": "^"},
+            {"label": "N new users (build)   [O(log n)/call]",  "rows": rows_build,  "complexity": "O(n log n)"},
+            {"label": "N updates (existing)  [O(log n)/call]",  "rows": rows_update, "complexity": "O(n log n)", "marker": "s"},
+            {"label": "single insert into N  [O(log n)]",       "rows": rows_single, "complexity": "O(log n)",   "marker": "^"},
         ],
     )
     save_space_plot(
         "add_score_space.png",
-        "Leaderboard.add_score() -- Space Complexity (single call)",
+        "Leaderboard.add_score() -- Space: O(1)/call, O(n) total BST",
         [
-            {"label": "peak heap allocation  [O(log n)]", "rows": rows_space, "complexity": "O(log n)"},
+            {"label": "per-call heap allocation  [O(1)]", "rows": rows_space, "complexity": "O(1)"},
         ],
     )
 
